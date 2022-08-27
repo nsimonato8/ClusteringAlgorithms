@@ -5,16 +5,13 @@ from pandas import Series
 
 def has_changed(before, after):
     """
-        This function returns a naive index of the state change of the "before" DataFrame.
+    This function returns a naive index of the state change of the "before" DataFrame.
 
-        The result is just the sum of the absolute values of the numeric differences beetween before['cluster'] and
-        after['cluster'], applied to the inverse logit function for standardization.
-    :param before:
-        Pandas DataFrame that represents the state of the data before the iteration.
-    :param after:
-        Pandas DataFrame that represents the state of the data after the iteration.
-    :return:
-        A boolean that 's True iff before and after are different.
+    The result is just the sum of the absolute values of the numeric differences beetween before['cluster'] and
+    after['cluster'], applied to the inverse logit function for standardization.
+    :param before: Pandas DataFrame that represents the state of the data before the iteration.
+    :param after: Pandas DataFrame that represents the state of the data after the iteration.
+    :return: A boolean that 's True iff before and after are different.
     """
 
     assert before['cluster'].size == after['cluster'].size and before['cluster'].size > 0 and after[
@@ -25,13 +22,11 @@ def has_changed(before, after):
 
 def entropy(data: Series):
     """
-        Utility function that calculates the entropy of a Pandas Series.
+    Utility function that calculates the entropy of a Pandas Series.
 
-        The entropy formula refers to this page: https://en.wikipedia.org/wiki/Entropy_(information_theory).
-    :param data: 
-        The input Pandas Series
-    :return: 
-        The entropy of the Pandas Series, expressed as a float beetween 0 and 1.
+    The entropy formula refers to this page: https://en.wikipedia.org/wiki/Entropy_(information_theory).
+    :param data: The input Pandas Series
+    :return: The entropy of the Pandas Series, expressed as a float beetween 0 and 1.
     """
     if data.empty:
         return 0
@@ -43,16 +38,13 @@ def entropy(data: Series):
 
 def var_entropy(before, after):
     """
-        This function returns the variation of entropy from the "before" DataFrame to the "after" DataFrame.
+    This function returns the variation of entropy from the "before" DataFrame to the "after" DataFrame.
 
-        The result is just the sum of the absolute values of the numeric differences beetween before['cluster'] and
-        after['cluster'], applied to the inverse logit function for standardization.
-    :param before:
-        Pandas DataFrame that represents the state of the data before the iteration.
-    :param after:
-        Pandas DataFrame that represents the state of the data after the iteration.
-    :return:
-        A float index beetween 0 and 1.
+    The result is just the sum of the absolute values of the numeric differences beetween before['cluster'] and
+    after['cluster'], applied to the inverse logit function for standardization.
+    :param before: Pandas DataFrame that represents the state of the data before the iteration.
+    :param after: Pandas DataFrame that represents the state of the data after the iteration.
+    :return: A float index beetween 0 and 1.
     """
 
     assert before['cluster'].size == after['cluster'].size and before['cluster'].size > 0 and after[

@@ -43,23 +43,14 @@ def kmeans(data: DataFrame, similarity=Utils.distances.euclidean_distance, infog
            k: int = 5, init: str = 'random', settings: dict = DEF_SETTINGS, verbose: int = 0):
     """ 
     This functions assings a cluster number to each instance of data.
-
-        :param data:
-            This Dataframe contains the data to be clustered.
-        :param similarity:
-            This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1;
-        :param infogain:
-            This function returns the Information Gain Index after the last iteration. In this case, it returns true if there are changes after the iteration.
-        :param k:
-            The expected number of clusters. Default value is 5;
-        :param init:
-            The initialization method. Accepted values: ['forgy', 'random']. Default value is 'random';
-        :param settings:
-            This dictionary contains the settings for the optimization of the algorithm's performance.
-        :param verbose:
-            An integer that describes how much visual output the function prints.
-        :return DataFrame
-            The initial DataFrame, but with a new column, with a progressive id for each cluster.
+    :param data: This Dataframe contains the data to be clustered.
+    :param similarity: This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1;
+    :param infogain: This function returns the Information Gain Index after the last iteration. In this case, it returns true if there are changes after the iteration.
+    :param k: The expected number of clusters. Default value is 5;
+    :param init: The initialization method. Accepted values: ['forgy', 'random']. Default value is 'random';
+    :param settings: This dictionary contains the settings for the optimization of the algorithm's performance.
+    :param verbose: An integer that describes how much visual output the function prints.
+    :return The initial DataFrame, but with a new column, with a progressive id for each cluster.
     """
     means = []
     iterations = 0
@@ -115,12 +106,9 @@ def kmeans(data: DataFrame, similarity=Utils.distances.euclidean_distance, infog
 def calculate_medoid(cluster: DataFrame, verbose: int, similarity):
     """
     This function returns the instance of data that is the nearest to the mean instance of the
-    :param verbose:
-        An integer that describes how much visual output the function prints.
-    :param cluster:
-        This DataFrame should be a cluster.
-    :param similarity:
-        This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
+    :param verbose: An integer that describes how much visual output the function prints.
+    :param cluster: This DataFrame should be a cluster.
+    :param similarity: This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
     :return: Series
     """
     result = None
@@ -143,20 +131,13 @@ def kmedoids(data: DataFrame, similarity=Utils.distances.euclidean_distance, inf
              k: int = 5, settings: dict = DEF_SETTINGS, verbose: int = 0):
     """
     This functions assings a cluster number to each instance of data.
-
-        :param verbose:
-            An integer that describes how much visual output the function prints.
-        :param data:
-            This Dataframe contains the data to be clustered.
-        :param similarity:
-            This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1;
-        :param infogain:
-            This function returns the Information Gain Index after the last iteration;
-        :param k:
-            The expected number of clusters. Default value is 5;
-        :param settings:
-            This dictionary contains the settings for the optimization of the algorithm's performance.
-        :return DataFrame
+    :param verbose: An integer that describes how much visual output the function prints.
+    :param data: This Dataframe contains the data to be clustered.
+    :param similarity: This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1;
+    :param infogain: This function returns the Information Gain Index after the last iteration;
+    :param k: The expected number of clusters. Default value is 5;
+    :param settings: This dictionary contains the settings for the optimization of the algorithm's performance.
+    :return DataFrame
     """
     medoids = []
     iterations = 0

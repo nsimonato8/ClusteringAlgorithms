@@ -12,17 +12,12 @@ from pandas import DataFrame
 #   Once the distances are obtained,  delete the rows and columns corresponding to the old cluster r and s in the D matrix,
 #   because r and s do not exist anymore. Then add a new row and column in D corresponding to cluster t.
 # 5.Repeat Step 3 a total of n − 1 times until there is only one cluster left.
-def HACprototype(data: DataFrame, similarity, settings: dict):
+def HAC(data: DataFrame, similarity, settings: dict):
     """
     A prototype for the HAC algorithm.
-
-    :param data:
-        The Pandas DataFrame that contains the data to be clustered.
-    :param similarity:
-        The similarity function that will be used. It must return a float between 0 and 1.
-    :param settings:
-        Dictionary of settings that will be used for performance's optimization.
-    :return:
-        Dataframe
+    :param data: The Pandas DataFrame that contains the data to be clustered.
+    :param similarity: The similarity function that will be used. It must return a float between 0 and 1.
+    :param settings: Dictionary of settings that will be used for performance's optimization.
+    :return: Dataframe
     """
     return pd.DataFrame()

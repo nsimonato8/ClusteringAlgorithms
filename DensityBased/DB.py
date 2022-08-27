@@ -32,16 +32,11 @@ def neighbourhood(data: DataFrame, point: DataFrame, epsilon: float, similarity)
     This functions returns the neighbourhood of point, given that points is contained in data.
 
     The neighbourhood of point is defined as the set of points at maximum distance (intended as similarity distance) epsilon.
-    :param data:
-        The input DataFrame.
-    :param point:
-        The currently visited point.
-    :param epsilon:
-        The radius parameter.
-    :param similarity:
-        This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
-    :return:
-        DataFrame
+    :param data: The input DataFrame.
+    :param point: The currently visited point.
+    :param epsilon: The radius parameter.
+    :param similarity: This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
+    :return: DataFrame
     """
     assert point.shape[0] != 1, "The inserted point is not valid"
 
@@ -56,20 +51,13 @@ def neighbourhood(data: DataFrame, point: DataFrame, epsilon: float, similarity)
 def dbscan(data: DataFrame, epsilon: float, minpts: int, similarity, settings: dict = DEF_SETTINGS, verbose: int = 0):
     """
     Implementation of the DB-Scan algorithm. For more information, see: https://en.wikipedia.org/wiki/DBSCAN
-    :param data: 
-        The input DataFrame.
-    :param epsilon: 
-        The radius parameter.
-    :param minpts:  
-        The neighbourhood density treshold.
-    :param similarity: 
-        This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
-    :param settings:
-        This dictionary contains the settings for the optimization of the algorithm's performance.
-    :param verbose:
-        An integer that describes how much visual output the function prints.
-    :return:
-        DataFrame
+    :param data:  The input DataFrame.
+    :param epsilon: The radius parameter.
+    :param minpts: The neighbourhood density treshold.
+    :param similarity: This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
+    :param settings: This dictionary contains the settings for the optimization of the algorithm's performance.
+    :param verbose: An integer that describes how much visual output the function prints.
+    :return: DataFrame
     """
     clusters_count = 0
     iterations = 0
