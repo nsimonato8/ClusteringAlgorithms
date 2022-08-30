@@ -89,7 +89,7 @@ venv.bak/
 
 #Folders
 /.idea
-/TestData/
+/TestData
 
 #Data files
 .csv

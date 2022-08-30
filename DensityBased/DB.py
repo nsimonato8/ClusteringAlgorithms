@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 from matplotlib import pyplot as plt
-from pandas import DataFrame
+from pandas import DataFrame, Series
 
 from DensityBased.settings import DEF_SETTINGS
 
@@ -27,7 +27,7 @@ from DensityBased.settings import DEF_SETTINGS
 # 18. until unvisited is empty;
 
 
-def neighbourhood(data: DataFrame, point: DataFrame, epsilon: float, similarity):
+def neighbourhood(data: DataFrame, point: Series, epsilon: float, similarity):
     """
     This functions returns the neighbourhood of point, given that points is contained in data.
 
@@ -38,10 +38,9 @@ def neighbourhood(data: DataFrame, point: DataFrame, epsilon: float, similarity)
     :param similarity: This function returns the similarity index between the two instances of the considered data. It must be a float between 0 and 1.
     :return: DataFrame
     """
-    assert point.shape[0] != 1, "The inserted point is not valid"
 
     result = data.copy()
-    # point['p_similarity'] = 0.0
+    point['p_similarity'] = 0.0
     result['p_similarity'] = data.apply(lambda x: similarity(x, point), axis=1)
     result = result.loc[result['p_similarity'] <= epsilon]
     result.drop(columns=["p_similarity"], axis=1, inplace=True)
@@ -86,7 +85,7 @@ def dbscan(data: DataFrame, epsilon: float, minpts: int, similarity, settings: d
                         p_neighbourhood = pd.concat([p_neighbourhood, q_neighbourhood], axis=0)
                     if p_neighbourhood.iloc[i]['cluster'] == 0:
                         data.loc[p_neighbourhood.iloc[i, p_neighbourhood.columns.get_loc("index")] == data[
-                            'index'], "cluster"] = clusters_count  # TODO: Find out how to communicate the index among copies of the dataframe
+                            'index'], "cluster"] = clusters_count
 
         if verbose == 1:
             print(
