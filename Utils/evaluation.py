@@ -19,16 +19,16 @@ def silhouette_score(data: DataFrame, distance):
     assert data['cluster'].size > 0, f"Column 'cluster' does not exists."
 
     k = data['cluster'].max()
-    clusters_mean_index = [1] * k
+    clusters_mean_index = []
 
     for i in range(k):
         cluster = data.loc[data['cluster'] == i + 1].copy()
         out_cluster = data.loc[data['cluster'] != i + 1].copy()
         cluster = a_index(cluster, distance)
         cluster = b_index(cluster, out_cluster, distance)
-        cluster['max_index'] = cluster.loc[:, ['a_index', 'b_index']].max(axis=1)
-        cluster['silhouette_index'] = (cluster['b_index'] - cluster['a_index']) / cluster['max_index']
-        clusters_mean_index[i] = cluster['silhouette_index'].mean()
+        cluster['silhouette_index'] = (cluster['b_index'] - cluster['a_index']) / cluster.loc[:,
+                                                                                  ['a_index', 'b_index']].max(axis=1)
+        clusters_mean_index.append(cluster['silhouette_index'].mean())
 
     return mean(clusters_mean_index)
 
