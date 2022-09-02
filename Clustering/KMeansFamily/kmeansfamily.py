@@ -19,7 +19,7 @@ from pandas import DataFrame
 
 import Utils.distances
 import Utils.infogain
-from KMeansFamily.settings import DEF_SETTINGS
+from Clustering.KMeansFamily.settings import DEF_SETTINGS
 
 
 def calculate_mean(cluster: DataFrame):

@@ -3,8 +3,7 @@ import unittest
 
 import pandas as pd
 
-import KMeansFamily.kmeansfamily
-from DensityBased.DB import dbscan
+from Clustering.DensityBased.DB import dbscan
 from Utils import distances, evaluation, infogain
 from Utils.distances import cosine_distance
 from Utils.evaluation import silhouette_score
@@ -22,8 +21,8 @@ class TestClustering(unittest.TestCase):
 
         print("Clustering...")
         timestamp = datetime.datetime.now()
-        result = KMeansFamily.kmeansfamily.kmeans(data=test_data, similarity=distances.cosine_distance,
-                                                  infogain=infogain.has_changed, verbose=1)
+        result = Clustering.KMeansFamily.kmeansfamily.kmeans(data=test_data, similarity=distances.cosine_distance,
+                                                             infogain=infogain.has_changed, verbose=1)
         print(f"\tTime elapsed:\t{datetime.datetime.now() - timestamp}")
 
         print(f"Score:\t{evaluation.silhouette_score(data=result, distance=distances.cosine_distance)}")
@@ -37,8 +36,8 @@ class TestClustering(unittest.TestCase):
 
         print("Clustering...")
         timestamp = datetime.datetime.now()
-        result = KMeansFamily.kmeansfamily.kmedoids(data=test_data, similarity=distances.cosine_distance,
-                                                    infogain=infogain.has_changed, verbose=1)
+        result = Clustering.KMeansFamily.kmeansfamily.kmedoids(data=test_data, similarity=distances.cosine_distance,
+                                                               infogain=infogain.has_changed, verbose=1)
         print(f"\tTime elapsed:\t{datetime.datetime.now() - timestamp}")
 
         print(f"Score:\t{evaluation.silhouette_score(data=result, distance=distances.cosine_distance)}")

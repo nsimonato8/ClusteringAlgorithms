@@ -4,7 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from pandas import DataFrame, Series
 
-from DensityBased.settings import DEF_SETTINGS
+from Clustering.DensityBased.settings import DEF_SETTINGS
 
 
 #  1. Mark all the objects as unvisited;
