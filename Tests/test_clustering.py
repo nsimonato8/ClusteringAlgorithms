@@ -2,11 +2,11 @@ import datetime
 import unittest
 
 import pandas as pd
+from sklearn.metrics import silhouette_score
 
 from Clustering.DensityBased.DB import dbscan
-from Utils import distances, evaluation, infogain
-from Utils.distances import cosine_distance
-from Utils.evaluation import silhouette_score
+from Clustering.KMeansFamily.kmeansfamily import kmeans, kmedoids
+from DataPreProcessing.Visualization.visualization import visualize_cluster
 
 
 class TestClustering(unittest.TestCase):
@@ -14,51 +14,90 @@ class TestClustering(unittest.TestCase):
     def test_kmeans(self):
         # self.assertEqual('foo'.upper(), 'FOO')
         print("KMEANS TEST:\nImporting data...")
-        test_data = pd.read_csv("../TestData/session_sample.csv")  # Importing the sample data
+        test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
+                                engine='python')  # Importing the sample data
 
-        settings = {'iterations_max': 10}
-        print(f"Settings:\n\tMaximum number of iterations: {settings['iterations_max']}")
+        settings = {'n_init': 10,
+                    'max_iter': 500,
+                    'verbose': 0,
+                    'algorithm': 'lloyd'}
+        param = {'n_clusters': 5}
+        print("Settings:")
+        for s in settings:
+            print(f"\t{s}: {settings[s]}")
+        print("Hyper Parameters:")
+        for p in param:
+            print(f"\t{p}: {param[p]}")
 
         print("Clustering...")
         timestamp = datetime.datetime.now()
-        result = Clustering.KMeansFamily.kmeansfamily.kmeans(data=test_data, similarity=distances.cosine_distance,
-                                                             infogain=infogain.has_changed, verbose=1)
+        result = kmeans(data=test_data, hyperpar=param, settings=settings)
         print(f"\tTime elapsed:\t{datetime.datetime.now() - timestamp}")
 
-        print(f"Score:\t{evaluation.silhouette_score(data=result, distance=distances.cosine_distance)}")
+        visualize_cluster(data=test_data, labels=result['cluster'], i=1, h=3)
+
+        score = silhouette_score(X=test_data, labels=result['cluster'])
+        print(f"Score:\t{score}\n\n")
+        self.assertGreaterEqual(score, 0.0)
 
     def test_kmedoids(self):
         print("KMEDOIDS TEST:\nImporting data...")
-        test_data = pd.read_csv("../TestData/session_sample.csv")  # Importing the sample data
+        test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
+                                engine='python')  # Importing the sample data
 
-        settings = {'iterations_max': 10}
-        print(f"Settings:\n\tMaximum number of iterations: {settings['iterations_max']}")
+        settings = {'max_iter': 500,
+                    'method': 'alternate',
+                    'init': 'heuristic',
+                    'random_state': None}
+        param = {'n_clusters': 8,
+                 'metric': 'euclidean'}
+
+        print("Settings:")
+        for s in settings:
+            print(f"\t{s}: {settings[s]}")
+        print("Hyper Parameters:")
+        for p in param:
+            print(f"\t{p}: {param[p]}")
 
         print("Clustering...")
         timestamp = datetime.datetime.now()
-        result = Clustering.KMeansFamily.kmeansfamily.kmedoids(data=test_data, similarity=distances.cosine_distance,
-                                                               infogain=infogain.has_changed, verbose=1)
+        result = kmedoids(data=test_data, hyperpar=param, settings=settings)
         print(f"\tTime elapsed:\t{datetime.datetime.now() - timestamp}")
 
-        print(f"Score:\t{evaluation.silhouette_score(data=result, distance=distances.cosine_distance)}")
+        score = silhouette_score(X=test_data, labels=result['cluster'])
+        print(f"Score:\t{score}\n\n")
+        self.assertGreaterEqual(score, 0.0)
         pass
 
     def test_dbscan(self):
         print("DBSCAN TEST:\nImporting data...")
-        test_data = pd.read_csv("../TestData/session_sample.csv", header=0)  # Importing the sample data
+        test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
+                                engine='python')  # Importing the sample data
         # test_data.drop(columns="user_id", inplace=True)
 
-        settings = {'iterations_max': 10}
-        print(f"Settings:\n\tMaximum number of iterations: {settings['iterations_max']}")
+        settings = {'n_jobs': 10,
+                    'algorithm': 'auto'}
+        param = {'epsilon': 5,
+                 'minpts': 5,
+                 'metric': 'minkowski',
+                 'p': 2}
+
+        print("Settings:")
+        for s in settings:
+            print(f"\t{s}: {settings[s]}")
+        print("Hyper Parameters:")
+        for p in param:
+            print(f"\t{p}: {param[p]}")
 
         print("Clustering...")
-        result = dbscan(data=test_data, similarity=cosine_distance, verbose=1, settings=settings, epsilon=0.381,
-                        minpts=2)
+        timestamp = datetime.datetime.now()
+        result = dbscan(data=test_data, hyperpar=param, settings=settings)
 
-        try:
-            print(f"Score:{silhouette_score(data=result, distance=cosine_distance)}")
-        except Exception:
-            print("Result is empty!")
+        print(f"\tTime elapsed:\t{datetime.datetime.now() - timestamp}")
+
+        score = silhouette_score(X=test_data, labels=result['cluster'])
+        print(f"Score:\t{score}\n\n")
+        self.assertGreaterEqual(score, -1.0)
         pass
 
 

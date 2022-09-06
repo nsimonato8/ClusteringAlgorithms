@@ -11,7 +11,7 @@ def date_to_features(data: DataFrame, colname: str) -> None:
     :param data: The input DataFrame
     :return: None
     """
-    date_names = ["year", "month", "day", "hour", "minute", "second", "msecond"]
+    date_names = ["month", "day", "hour", "minute", "second", "msecond"]
 
     def convert_date_str(date_time: str) -> (int, int, int, int, int, int, int):
         mseconds = 0
@@ -20,7 +20,7 @@ def date_to_features(data: DataFrame, colname: str) -> None:
         except ValueError:
             date = datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S')
             mseconds = date.microsecond
-        return date.year, date.month, date.day, date.hour, date.minute, date.second, mseconds
+        return date.month, date.day, date.hour, date.minute, date.second, mseconds
 
     for n in range(len(date_names)):
         data.loc[:, f"{colname}_{date_names[n]}"] = data[colname].apply(lambda s: convert_date_str(s)[n])
@@ -66,6 +66,7 @@ def flag_to_features(data: DataFrame) -> None:
     """
     flag_names = ["Unknown1", "Unknown2", "Unknown3", "ACK", "PSH", "RST", "SYN", "FIN"]
     for i in range(len(flag_names)):
-        data.loc[:, f"flg_{flag_names[i]}"] = data["flg"].apply(lambda s: 0 if s[i] == "." else 1)
+        if i > 2:
+            data.loc[:, f"flg_{flag_names[i]}"] = data["flg"].apply(lambda s: 0 if s[i] == "." else 1)
     data.drop(columns=["flg"], inplace=True)
     pass

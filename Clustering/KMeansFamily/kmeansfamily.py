@@ -23,7 +23,8 @@ def kmeans(data: DataFrame, hyperpar: dict, settings: dict):
     :param data: This Dataframe contains the data to be clustered.
     :return The initial DataFrame, but with a new column, with a progressive id for each cluster.
     """
-    fit = KMeans(n_clusters=hyperpar['n_clusters'], init='k-means++', n_init=10, max_iter=settings['max_iter'],
+    fit = KMeans(n_clusters=hyperpar['n_clusters'], init='k-means++', n_init=settings['n_init'],
+                 max_iter=settings['max_iter'],
                  tol=0.0001, verbose=settings['verbose'], random_state=None, copy_x=True,
                  algorithm=settings['algorithm'])
     data.loc[:, 'cluster'] = fit.fit_predict(data)
@@ -38,7 +39,7 @@ def kmedoids(data: DataFrame, hyperpar: dict, settings: dict):
     :param settings: This dictionary contains the settings for the optimization of the algorithm's performance.
     :return DataFrame
     """
-    fit = KMedoids(n_clusters=hyperpar['n_clusters'], metric=hyperpar['metric'], init=settings['heuristic'],
+    fit = KMedoids(n_clusters=hyperpar['n_clusters'], metric=hyperpar['metric'], init=settings['init'],
                    max_iter=settings['max_iter'], random_state=settings['random_state'])
     data.loc[:, 'cluster'] = fit.fit_predict(data)
     return data

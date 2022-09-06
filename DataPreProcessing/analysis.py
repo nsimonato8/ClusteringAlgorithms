@@ -39,7 +39,7 @@ def clean_dataset(data: DataFrame) -> None:
     """
     to_drop_mpls = [f"mpls{i}" for i in range(1, 11)]
     to_drop = to_drop_mpls + ["smk", "dmk", "nh", "nhb", "svln", "dvln", "ismc", "odmc", "idmc", "osmc", "cl", "sl",
-                              "al", "eng", "exid", "ra", "td"]
+                              "al", "eng", "exid", "ra", "td", "in", "out"]
 
     data.drop(columns=to_drop, inplace=True)
     pass
@@ -81,7 +81,7 @@ def expand_dataset(data: DataFrame) -> None:
 
 
 if __name__ == "__main__":
-    file_path = "../Data/sessions.csv"
+    file_path = "../Data/10k_sessions.csv"
     dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
     print("[BEFORE] Structure of the dataset:")
     dataset.info()
@@ -108,4 +108,4 @@ if __name__ == "__main__":
     dataset.info()
     print(dataset.head(n=15))
 
-    dataset.to_csv("../Data/sessions_cleaned.csv", index=False)
+    dataset.to_csv("../Data/10k_sessions_cleaned.csv", index=False)
