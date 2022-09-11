@@ -9,18 +9,12 @@ The MATR algorithms returns the best hyperparameter lambda, given a certain clus
 #     -candidates [{r1, · · · , rT} ] --> A list of possibile candidates for the number of present clusters.
 #     -number of repetitions [J]      --> The number of iterations that the algorithm will execute.
 #     -trace gap [delta]              --> The margin of error of the number of clusters identified.
-import numpy as np
+from datetime import datetime
+
 import pandas as pd
 from pandas import DataFrame
 
-from Utils.algebric_op import inverse_matrix, trace
-
-
-def construct_clustering_matrix(data: DataFrame):
-    Z = pd.DataFrame(np.zeros(shape=(data.shape[0], (data['cluster'].max() + 2))))
-    for i in range(data.shape[0]):
-        Z.iloc[i, data['cluster'].iloc[i] + 1] = 1
-    return Z
+from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix
 
 
 def MATR(A, D: DataFrame, S: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR"):
@@ -47,7 +41,7 @@ def MATR(A, D: DataFrame, S: DataFrame, hyperpar: [], settings: dict, verbose: i
     if verbose == 1:
         stat = pd.Series(map(lambda x: x[1], inner_prods), index=[f"Test n°{i}" for i in range(len(hyperpar))])
         fig = stat.plot(kind="bar", ylabel="Trace Criterion", figsize=(15, 10)).get_figure()
-        fig.savefig(f'{name}_tuning_test_stats.png')
+        fig.savefig(f'{name}_tuning_test_stats_{datetime.now()}.png')
 
     max_t = max(inner_prods, key=lambda i: i[1])
     return res[max_t[0]]

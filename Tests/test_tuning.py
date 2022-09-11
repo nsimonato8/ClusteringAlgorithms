@@ -16,14 +16,14 @@ class TestTuning(unittest.TestCase):
 
     def test_matr_kmeans(self):
         print("MATR TEST - [KMEANS]:\nImporting data...")
-        test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
+        test_data = pd.read_csv("../Data/10k_sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
                                 engine='python')  # Importing the sample data
 
         settings = {'n_init': 15,
                     'max_iter': 1000,
                     'verbose': 0,
                     'algorithm': 'lloyd'}
-        param = [{'n_clusters': i} for i in range(2, 100)]
+        param = [{'n_clusters': i} for i in range(2, 15)]
 
         print("Settings:")
         for s in settings:

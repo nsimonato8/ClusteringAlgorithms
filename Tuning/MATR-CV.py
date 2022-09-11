@@ -10,10 +10,13 @@ The MATR-CV algorithms returns the number of clusters that are contained in the 
 #     -number of repetitions [J]      --> The number of iterations that the algorithm will execute.
 #     -training ratio [y_train]       --> The proportion of the data that will be used for the training of the algorithm.
 #     -trace gap [delta]              --> The margin of error of the number of clusters identified.
+from statistics import median
 
 import numpy as np
 import pandas as pd
-from pandas import DataFrame, Series
+from pandas import DataFrame
+
+from Utils.algebric_op import construct_clustering_matrix, inverse_matrix, trace
 
 
 def nodesplitting(S: DataFrame, n: int, y_train: float):
@@ -31,7 +34,7 @@ def clustertest(S: DataFrame, Z: DataFrame):
     return Z22
 
 
-def matrcv(A, S: DataFrame, r: Series, J: int, y_train: float, delta: float, **settings):
+def matrcv(A, S: DataFrame, r: [], J: int, y_train: float, delta: float, **settings):
     """
     This function returns the number of clusters present in the training data. It is indicated for clustering algorithms
     such as k-means and k-medoids.
@@ -45,16 +48,16 @@ def matrcv(A, S: DataFrame, r: Series, J: int, y_train: float, delta: float, **s
     :return: An integer, the number of clusters present in the data.
     """
     result = []
-    L = []
+
     for j in range(J):
+        L = []
         for t in range(r.size):
             S11, S21, S22 = nodesplitting(S, S.shape[0], y_train)
-            Z11 = A(S11, r.iloc[t], settings)
+            Z11 = A(S11, r[t], settings)
+            Z11 = construct_clustering_matrix(Z11)
             Z22 = clustertest(S21, Z11)
-            Z_i = Z11.T.dot(Z11)
-            Z_i = pd.DataFrame(np.linalg.pinv(Z_i.values), Z_i.columns, Z_i.index)
+            Z_i = inverse_matrix(Z11.T.dot(Z11))
             X22 = Z22.dot(Z_i.dot(Z22.T))
-            L.append((S22.dot(X22), r.iloc[t]))
-            result.append(min(L, key=(lambda x: x[1] >= max(L, key=lambda i: i[0])[0] - delta)))
-    dl = dict(L)
-    return list(dl.keys())[np.median(dl.values())]
+            L.append((t, trace(S22.T.dot(X22))))
+        # result.append()  # r*j = min{rt : lrt,j ≥ maxt lrt,j − ∆}
+    return median(result)

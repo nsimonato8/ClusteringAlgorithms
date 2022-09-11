@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pandas as pd
 from pandas import DataFrame
 from sklearn.metrics import silhouette_score
@@ -23,7 +25,7 @@ def silhouette_tuning(A, D: DataFrame, hyperpar: [], settings: dict, verbose: in
     if verbose == 1:
         stat = pd.Series(map(lambda x: x[1], scores), index=[f"Test n°{i}" for i in range(len(hyperpar))])
         fig = stat.plot(kind="bar", ylabel="Silhouette Score", figsize=(15, 10)).get_figure()
-        fig.savefig('silhouette_tuning_test_stats.png')
+        fig.savefig(f'silhouette_tuning_test_stats_{datetime.now()}.png')
 
     max_t = max(scores, key=lambda i: i[1])
     return res[max_t[0]]

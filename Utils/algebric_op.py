@@ -37,3 +37,10 @@ def trace(mat: DataFrame):
     """
     assert mat.shape[0] == mat.shape[1], "The matrix is not symmetric"
     return sum([mat.iloc[i, i] for i in range(mat.shape[0])])
+
+
+def construct_clustering_matrix(data: DataFrame):
+    Z = pd.DataFrame(np.zeros(shape=(data.shape[0], (data['cluster'].max() + 2))))
+    for i in range(data.shape[0]):
+        Z.iloc[i, data['cluster'].iloc[i] + 1] = 1
+    return Z
