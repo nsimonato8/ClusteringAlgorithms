@@ -49,7 +49,6 @@ def kNN_inner_distance(data: DataFrame, k: int, distance: callable) -> float:
     """
     This function returns the kNN inner distance, as described by Abir Smiti[2020].
 
-    :param p: The referenced instance.
     :param data: The whole dataset
     :param k: The number of neighbours to retrieve
     :param distance: The distance function to use
