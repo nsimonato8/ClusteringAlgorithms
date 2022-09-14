@@ -4,17 +4,13 @@ Data instances obtaining high scores are more likely considered as outliers.
 LDOF factor is calculated by dividing the KNN distance of an object xp by the KNN inner distance of an object xp.
 This file presents an implementation of the LDOF algorithm, as described by Abir Smiti[2020].
 """
-
-# Input: given data set D, natural numbers n and k.
-
-# 1. For each object p in D, retrieve k - nearest neighbors;
-# 2. Compute the outlier factor of each object p, The object with LDOF ≺ LODFlb are directly discarded;
-# 3. Rank the objects according to their LDOF scores;
-
-# Output: top-n objects with highest LDOF scores.
 from pandas import DataFrame, Series
 
 from Utils.algebric_op import similarity_matrix, trace
+
+
+def not_col(x: Series, col: str) -> Series:
+    return x[list(set(x.index) - set(col))]
 
 
 def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> DataFrame:
@@ -27,8 +23,8 @@ def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> D
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours
     """
-    data.loc[:, 'd'] = data.apply(lambda x: distance(p, x))
-    return data.sort_values(axis=0, by="d", ascending=True).loc[0:k, :]
+    data['d'] = data.apply(lambda x: distance(p, not_col(x, "d")), axis=1)
+    return data.sort_values(axis=0, by="d", ascending=True).head(n=k + 1)
 
 
 def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> float:
@@ -41,7 +37,7 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours distance.
     """
-    kNN = p_neighbourhood(p, data, k, distance).loc[lambda x: distance(x, p) > 0, :]
+    kNN = p_neighbourhood(p, data, k, distance)
     return kNN['d'].sum() / k
 
 
@@ -81,5 +77,5 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours inner distance.
     """
-    data['LDOF'] = data.apply(lambda x: LDOF_score(x, data, k, distance))
+    data['LDOF'] = data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1)
     return data.sort_values(axis=0, by="d", ascending=False).loc[0:(n - 1), :]
