@@ -22,7 +22,8 @@ class TestOutliersDetection(unittest.TestCase):
             sys.stdout = f
             print(result.info())
             with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-                print(f"Outliers detected:\n{result.head(n=result.shape[0])}")
+                print(
+                    f"Number of outliers detected: {result.shape[0]}\tTotal number of instances: {test_data.shape[0]}\nResults:\n{result.head(n=result.shape[0])}")
             # Reset the standard output
             sys.stdout = original_stdout
         pass
@@ -37,7 +38,7 @@ class TestOutliersDetection(unittest.TestCase):
         param = {'n_clusters': 5}
         result = kmeans(data=test_data, hyperpar=param, settings=settings)
 
-        CBOD(data=result, k=param['n_clusters'], epsilon=0.07)
+        CBOD(data=result, k=param['n_clusters'], epsilon=0.05)
 
         # Saving the reference of the standard output
         original_stdout = sys.stdout
@@ -45,10 +46,10 @@ class TestOutliersDetection(unittest.TestCase):
             sys.stdout = f
             print(result.loc[result['outlier'] == True, :].info())
             with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-                print(f"Outliers detected:\n{result.head(n=result.shape[0])}")
+                print(
+                    f"Number of outliers detected: {result.loc[result['outlier'] == True, :].shape[0]}\tTotal number of instances: {test_data.shape[0]}\nResults:\n{result.loc[result['outlier'] == True, :].head(n=result.shape[0])}")
             # Reset the standard output
             sys.stdout = original_stdout
-
         pass
 
 
