@@ -1,11 +1,12 @@
 # ClusteringAlgorithms
 
-A collection of demos of clustering algorithms. For now, each implementation is naive. The data manipulation was
-accomplished by using Pandas.
+This repository contains all the Python modules used for the research work of Niccolò Simonato's bachelor degree.
 
 - - -
 
-## DensityBased
+## Clustering
+
+### DensityBased
 
 This module contains the implementation(s) of the Density Based clustering algorithm.
 
@@ -13,15 +14,15 @@ At the moment, the following algorithms are available:
 
 * DB-Scan;
 
-## Hierarchical
+### Hierarchical
 
-Here are contained the implementation(s) of the Hierarchical clustering algorithms.
+This module contains the implementation(s) of the Hierarchical clustering algorithm.
 
-What follows is a list of the available algorithms:
+At the moment, the following algorithms are available:
 
-*
+* HAC;
 
-## KMeansFamily
+### KMeansFamily
 
 Here are contained the implementation(s) of the K-Means-like clustering algorithms.
 
@@ -32,13 +33,21 @@ What follows is a list of the available algorithms:
 
 - - -
 
+## DataPreProcessing
+
+This module contains the scripts used for the Data Preprocessing phase of this project.
+- - -
+
 ## OutliersDetection
 
 The functions contained in this module can be used for the detection of outliers in a given dataset.
 
 The following algorithms are available:
 
-* NL algorithm, as proposed by Knorr et al. [1998]
+* CBOD algorithm, as proposed by Sheng-yi Jiang et al. [2008];
+* LDOF algorithm, as proposed by Abir Smiti [2020];
+
+- - -
 
 ## Tuning
 
@@ -47,7 +56,8 @@ algorithm.
 
 The following methods are available:
 
-* MATR-CV algorithm, as described by Xinjie Fan et al. [2020]
+* MATR algorithm, as described by Xinjie Fan et al. [2020]
+* A simple implementation of the Elbow Method.
 
 - - -
 
@@ -57,11 +67,35 @@ This module contains secondary functions, that are commonly used by all the othe
 
 In particular:
 
-* Distances:
-    * Euclidean Distance;
-    * Cosine Distance.
-* Evaluation functions:
-    * Silhouette index.
-* Information Gain indexes:
-    * Entropy.
-    * Has_Changed.
+### Distances
+
+* Euclidean Distance;
+* Cosine Distance;
+* Minkowski Distance.
+
+### Algebric Operations
+
+* Similarity matrix;
+* Clustering matrix;
+* Trace of a given matrix.
+
+### Clustering Operations
+
+* Cluster distance for the CBOD algorithm;
+* Diff function for the CBOD algorithm;
+* Frequency of a value in a given dataset's feature.
+
+- - -
+
+## Experiments
+
+This module implements the experiments conducted in order to analyze the identified outliers.
+
+The following sections will briefly describe how the tests are implemented.
+
+### DBSCAN-based experiments
+
+### HAC-based experiments
+
+### KMeans/KMedoids-based experiments
+
