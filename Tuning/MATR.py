@@ -17,7 +17,7 @@ from pandas import DataFrame
 from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix
 
 
-def MATR(A, D: DataFrame, S: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR"):
+def MATR(A: callable, D: DataFrame, S: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR"):
     """
     This function returns the ideal value for an hyperparameter lambda, by using the MATR algorithm as described by Xinjie Fan et al. [2020].
     :param name: The name of the test to put on the output file (only if verbose is 1).
