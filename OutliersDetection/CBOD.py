@@ -29,7 +29,7 @@ def outlier_factor(cluster: DataFrame, data: DataFrame, k: int) -> float:
     return sum([cluster_distance_CBOD(cluster, i) * i.shape[0] for i in cluster_set])
 
 
-def CBOD(data: DataFrame, k: int, epsilon: float) -> None:
+def CBOD(data: DataFrame, k: int, epsilon: float) -> ([], []):
     """
     This function labels the instances of the dataset as 'outlier' or 'normal' according to the CBOD algorithm,
     as described by Sheng-yi Jiang et al. [2008]
@@ -40,11 +40,11 @@ def CBOD(data: DataFrame, k: int, epsilon: float) -> None:
     :return: None
     """
     clusters = [data[data['cluster'] == i] for i in range(k)]
-    clusters_repr = [outlier_factor(cluster=clusters[i], data=data, k=k) for i in range(k)]
-    clusters_repr.sort(reverse=True)
+    clusters_repr = [(i, outlier_factor(cluster=clusters[i], data=data, k=k)) for i in range(k)]
+    clusters_repr.sort(reverse=True, key=lambda x: x[1])
     b = 0
     while b < k and (sum(map(lambda x: x.shape[0], clusters[0:b])) / data.shape[0]) > epsilon:
         b += 1
 
     data.loc[:, "outlier"] = data['cluster'].apply(lambda x: True if x <= b else False)
-    pass
+    return clusters_repr

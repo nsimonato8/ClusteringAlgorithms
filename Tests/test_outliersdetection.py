@@ -38,14 +38,15 @@ class TestOutliersDetection(unittest.TestCase):
         param = {'n_clusters': 5}
         result = kmeans(data=test_data, hyperpar=param, settings=settings)
 
-        CBOD(data=result, k=param['n_clusters'], epsilon=0.05)
+        detection_results = CBOD(data=result, k=param['n_clusters'], epsilon=0.05)
 
         # Saving the reference of the standard output
         original_stdout = sys.stdout
-        with open(f'[test_CBOD]log_{2}.txt', 'w') as f:
+        with open(f'[test_CBOD-KMeans]log_{2}.txt', 'w') as f:
             sys.stdout = f
-            print(result.loc[result['outlier'] == True, :].info())
             with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+                for i in detection_results:
+                    print(f"\t[cluster {i[0]}] Outlier Factor: {i[1]}")
                 print(
                     f"Number of outliers detected: {result.loc[result['outlier'] == True, :].shape[0]}\tTotal number of instances: {test_data.shape[0]}\nResults:\n{result.loc[result['outlier'] == True, :].head(n=result.shape[0])}")
             # Reset the standard output
