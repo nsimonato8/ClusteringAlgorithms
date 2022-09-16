@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
-from DataPreProcessing.feature_eng import add_is_priv_port
+from DataPreProcessing.feature_eng import add_is_priv_port, add_ip_lookup
 
 
 def plot_data_distribution(data: DataFrame) -> None:
@@ -77,11 +77,13 @@ def expand_dataset(data: DataFrame) -> None:
     # signaling if the port is privileged
     add_is_priv_port(data, "sp")
     add_is_priv_port(data, "dp")
+    add_ip_lookup(data, ('sa1', 'sa2', 'sa3', 'sa4'))
+    add_ip_lookup(data, ('da1', 'da2', 'da3', 'da4'))
     pass
 
 
 if __name__ == "__main__":
-    file_path = "../Data/10k_sessions.csv"
+    file_path = "../Data/sessions.csv"
     dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
     print("[BEFORE] Structure of the dataset:")
     dataset.info()
@@ -108,4 +110,4 @@ if __name__ == "__main__":
     dataset.info()
     print(dataset.head(n=15))
 
-    dataset.to_csv("../Data/10k_sessions_cleaned.csv", index=False)
+    dataset.to_csv("../Data/sessions_cleaned_01.csv", index=False)

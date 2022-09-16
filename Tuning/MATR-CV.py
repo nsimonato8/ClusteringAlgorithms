@@ -38,6 +38,7 @@ def matrcv(A, S: DataFrame, r: [], J: int, y_train: float, delta: float, **setti
     """
     This function returns the number of clusters present in the training data. It is indicated for clustering algorithms
     such as k-means and k-medoids.
+
     :param A: The clustering algorithm.
     :param S: The nxn similarity matrix of the data.
     :param r: A Pandas Series of the possible value of the number of clusters.

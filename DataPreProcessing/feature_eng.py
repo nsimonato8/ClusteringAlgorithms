@@ -1,6 +1,8 @@
 from ipwhois import IPWhois
 from pandas import DataFrame
 
+from DataPreProcessing.cleaning import label_encoder
+
 
 def format_record_for_logging(rcd: dict) -> str:
     sw = IPWhois(rcd['src_ip'])
@@ -23,11 +25,12 @@ def format_record_for_logging(rcd: dict) -> str:
     return " ".join(data)
 
 
-def add_ip_lookup(data: DataFrame, colname: str) -> None:
+def add_ip_lookup(data: DataFrame, colname: tuple) -> None:
     """
-    This function integrates the input DataFrame with some data from the Whois lookup service
+    This function integrates the input DataFrame with some data from the Whois lookup service.
+
     :param data: the input DataFrame
-    :param colname: the name of the IP address feature to integrate
+    :param colname: the tuple of the IP address split fields to integrate
     :return:
     """
 
@@ -36,13 +39,16 @@ def add_ip_lookup(data: DataFrame, colname: str) -> None:
         return srcwhois['asn_country_code'], srcwhois['asn_description']
 
     data.loc[:, f"{colname}_asn_country_code"] = data[colname].apply(lambda ip: lookup_results(ip)[0])
+    label_encoder(data, f"{colname}_asn_country_code")
     data.loc[:, f"{colname}_asn_description"] = data[colname].apply(lambda ip: lookup_results(ip)[1])
+    label_encoder(data, f"{colname}_asn_description")
     pass
 
 
 def add_is_priv_port(data: DataFrame, colname: str) -> None:
     """
     This functions adds a feature for the TCP ports. If the port number is privileged, it is set to 1.
+
     :param colname: The feature of the TCP port.
     :param data: The input DataFrame.
     :return: None

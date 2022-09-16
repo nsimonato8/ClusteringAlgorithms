@@ -14,21 +14,22 @@ from datetime import datetime
 import pandas as pd
 from pandas import DataFrame
 
-from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix
+from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix, similarity_matrix
 
 
-def MATR(A: callable, D: DataFrame, S: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR"):
+def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR"):
     """
     This function returns the ideal value for an hyperparameter lambda, by using the MATR algorithm as described by Xinjie Fan et al. [2020].
+
     :param name: The name of the test to put on the output file (only if verbose is 1).
     :param verbose: An integer that defines how much input must be print.
     :param settings: The list of candidates for the settings of the hyperparameters.
     :param A: The clustering Algorithm.
     :param D: The dataset, in the form of a DataFrame.
-    :param S: The similarity matrix, in the form of a DataFrame.
     :param hyperpar: The list of candidates for the hyperparameters.
     :return: The ideal combination of values of the hyperparameter lambda.
     """
+    S = similarity_matrix(D, hyperpar['distance'])
     res = []
     inner_prods = []
     T = len(hyperpar)

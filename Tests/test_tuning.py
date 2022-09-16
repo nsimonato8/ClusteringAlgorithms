@@ -23,7 +23,7 @@ class TestTuning(unittest.TestCase):
                     'max_iter': 1000,
                     'verbose': 0,
                     'algorithm': 'lloyd'}
-        param = [{'n_clusters': i} for i in range(2, 15)]
+        param = [{'n_clusters': i, 'distance': euclidean_distance} for i in range(2, 15)]
 
         print("Settings:")
         for s in settings:
@@ -34,9 +34,8 @@ class TestTuning(unittest.TestCase):
                 print(f"\t{p}: {i[p]}")
 
         print("Clustering...")
-        sim = similarity_matrix(test_data, euclidean_distance)
         timestamp = datetime.now()
-        result = MATR(D=test_data, S=sim, A=kmeans, settings=settings, hyperpar=param, verbose=1, name="MATR-KMeans")
+        result = MATR(D=test_data, A=kmeans, settings=settings, hyperpar=param, verbose=1, name="MATR-KMeans")
 
         print(f"\tTime elapsed:\t{datetime.now() - timestamp}")
 
@@ -59,7 +58,8 @@ class TestTuning(unittest.TestCase):
                 param.append({'epsilon': j,
                               'minpts': i,
                               'metric': 'minkowski',
-                              'p': 1})
+                              'p': 1,
+                              'distance': euclidean_distance})
 
         print("Settings:")
         for s in settings:
@@ -72,7 +72,7 @@ class TestTuning(unittest.TestCase):
         print("Clustering...")
         sim = similarity_matrix(test_data, euclidean_distance)
         timestamp = datetime.now()
-        result = MATR(D=test_data, S=sim, A=dbscan, settings=settings, hyperpar=param, verbose=1, name="MATR-DBSCAN")
+        result = MATR(D=test_data, A=dbscan, settings=settings, hyperpar=param, verbose=1, name="MATR-DBSCAN")
 
         print(f"\tTime elapsed:\t{datetime.now() - timestamp}")
 

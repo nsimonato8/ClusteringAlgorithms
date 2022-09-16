@@ -5,7 +5,7 @@ from pandas import DataFrame
 from sklearn.metrics import silhouette_score
 
 
-def silhouette_tuning(A, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0):
+def silhouette_tuning(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0):
     """
     This function returns the ideal value for an hyperparameter lambda, by using the MATR algorithm as described by Xinjie Fan et al. [2020].
     :param verbose: An integer that defines how much input must be print.
@@ -23,7 +23,7 @@ def silhouette_tuning(A, D: DataFrame, hyperpar: [], settings: dict, verbose: in
         X = (t, silhouette_score(X=D.loc[:, D.columns != 'cluster'], labels=D['cluster']))
         scores.append(X)
     if verbose == 1:
-        stat = pd.Series(map(lambda x: x[1], scores), index=[f"Test n°{i}" for i in range(len(hyperpar))])
+        stat = pd.Series(map(lambda x: x[1], scores), index=[f"{i + 1}" for i in range(len(hyperpar))])
         fig = stat.plot(kind="bar", ylabel="Silhouette Score", figsize=(15, 10)).get_figure()
         fig.savefig(f'silhouette_tuning_test_stats_{datetime.now()}.png')
 
