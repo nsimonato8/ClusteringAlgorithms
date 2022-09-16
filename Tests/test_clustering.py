@@ -6,7 +6,7 @@ from sklearn.metrics import silhouette_score
 
 from Clustering.DensityBased.DB import dbscan
 from Clustering.KMeansFamily.kmeansfamily import kmeans, kmedoids
-from DataPreProcessing.Visualization.visualization import visualize_cluster
+from Utils.Visualization.visualization import visualize_cluster
 
 
 class TestClustering(unittest.TestCase):

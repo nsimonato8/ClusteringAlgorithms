@@ -1,7 +1,7 @@
 from pandas import DataFrame
 
-from DataPreProcessing.Visualization.visualization import visualize_cluster
 from DataPreProcessing.analysis import clean_dataset, transform_dataset, expand_dataset
+from Utils.Visualization.visualization import visualize_cluster
 
 
 class general_experiment:

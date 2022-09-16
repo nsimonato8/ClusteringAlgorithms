@@ -3,8 +3,8 @@ import unittest
 import pandas as pd
 
 from Clustering.KMeansFamily.kmeansfamily import kmeans
-from DataPreProcessing.Visualization.visualization import visualize_cluster
 from DataPreProcessing.importance import reduce_dimensionality
+from Utils.Visualization.visualization import visualize_cluster
 
 
 class TestFeatureImportance(unittest.TestCase):
