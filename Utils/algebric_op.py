@@ -1,6 +1,6 @@
+import modin.pandas as pd
 import numpy as np
-import pandas as pd
-from pandas import DataFrame
+from modin.pandas import DataFrame
 from scipy.spatial.distance import pdist, squareform
 
 

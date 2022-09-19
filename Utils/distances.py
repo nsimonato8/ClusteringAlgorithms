@@ -1,7 +1,7 @@
 from math import sqrt
 
 import numpy as np
-from pandas import Series
+from modin.pandas import Series
 from scipy.spatial.distance import euclidean
 
 

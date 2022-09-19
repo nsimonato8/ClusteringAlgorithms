@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pandas import DataFrame
+from modin.pandas import DataFrame
 from sklearn.preprocessing import LabelEncoder
 
 

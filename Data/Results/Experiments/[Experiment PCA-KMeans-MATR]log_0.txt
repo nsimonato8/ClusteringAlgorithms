@@ -1,0 +1,56 @@
+PCA number of dimensions parameter:	range(10, 25)
+KMeans number of cluster candidates:	range(10, 16)
+KMeans settings:	{'n_init': 10, 'max_iter': 500, 'verbose': 0, 'algorithm': 'lloyd', 'distance': <function euclidean_distance at 0x0000017CA2315D80>}
+Time elapsed for MATR computation (all of the datasets):	0:00:45.740777
+Time elapsed for Silhouette Scores plotting:	0:00:00.104834
+Time elapsed for Clusters plotting:	3:02:01.159736
+
+Results:
+---------------
+	Dataset dimensions:	10
+	Number of clusters:	15
+	Silhouette Score:	0.4585623505067964
+	Dataset dimensions:	11
+	Number of clusters:	15
+	Silhouette Score:	0.46353722485765225
+	Dataset dimensions:	12
+	Number of clusters:	15
+	Silhouette Score:	0.46542035111504976
+	Dataset dimensions:	13
+	Number of clusters:	15
+	Silhouette Score:	0.46437730394774224
+	Dataset dimensions:	14
+	Number of clusters:	15
+	Silhouette Score:	0.4642384229201338
+	Dataset dimensions:	15
+	Number of clusters:	15
+	Silhouette Score:	0.4655595089066544
+	Dataset dimensions:	16
+	Number of clusters:	15
+	Silhouette Score:	0.4663778163567926
+	Dataset dimensions:	17
+	Number of clusters:	15
+	Silhouette Score:	0.4645116754948118
+	Dataset dimensions:	18
+	Number of clusters:	15
+	Silhouette Score:	0.4653884234128625
+	Dataset dimensions:	19
+	Number of clusters:	15
+	Silhouette Score:	0.4629091461775268
+	Dataset dimensions:	20
+	Number of clusters:	15
+	Silhouette Score:	0.4632053499513549
+	Dataset dimensions:	21
+	Number of clusters:	15
+	Silhouette Score:	0.46490353548968194
+	Dataset dimensions:	22
+	Number of clusters:	15
+	Silhouette Score:	0.46320521348289334
+	Dataset dimensions:	23
+	Number of clusters:	15
+	Silhouette Score:	0.4632053499846592
+	Dataset dimensions:	24
+	Number of clusters:	15
+	Silhouette Score:	0.4649034189817191
+
+---------------

@@ -1,5 +1,5 @@
 from ipwhois import IPWhois
-from pandas import DataFrame
+from modin.pandas import DataFrame
 
 from DataPreProcessing.cleaning import label_encoder
 

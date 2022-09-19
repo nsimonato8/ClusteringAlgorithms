@@ -1,6 +1,6 @@
 from math import sqrt
 
-from pandas import DataFrame
+from modin.pandas import DataFrame
 
 
 def freq(data: DataFrame, column: str, value) -> float:

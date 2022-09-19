@@ -1,4 +1,4 @@
-from pandas import DataFrame
+from modin.pandas import DataFrame
 
 
 # 1.Begin with n clusters, each containing one object and we will number the clusters 1 through n.

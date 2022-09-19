@@ -10,8 +10,8 @@ The MATR algorithms returns the best hyperparameter lambda, given a certain clus
 #     -number of repetitions [J]      --> The number of iterations that the algorithm will execute.
 #     -trace gap [delta]              --> The margin of error of the number of clusters identified.
 
-import pandas as pd
-from pandas import DataFrame
+import modin.pandas as pd
+from modin.pandas import DataFrame
 
 from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix, similarity_matrix
 
