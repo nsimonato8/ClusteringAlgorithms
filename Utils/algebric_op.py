@@ -4,7 +4,7 @@ from pandas import DataFrame
 from scipy.spatial.distance import pdist, squareform
 
 
-def similarity_matrix(data: DataFrame, similarity: callable):
+def similarity_matrix(data: DataFrame, similarity: callable) -> DataFrame:
     """
     This function calculates the similarity matrix of a given dataset.
 

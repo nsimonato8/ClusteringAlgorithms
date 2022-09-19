@@ -16,11 +16,12 @@ from pandas import DataFrame
 from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix, similarity_matrix
 
 
-def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR",
+def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR", path: str = "",
          output: int = 0):
     """
     This function returns the ideal value for an hyperparameter lambda, by using the MATR algorithm as described by Xinjie Fan et al. [2020].
 
+    :param path: The path where the verbose output is saved.
     :param output: If set to 0, returns the clustering with the best result. If set to 1, returns all the clustering results and the best one.
     :param name: The name of the test to put on the output file (only if verbose is 1).
     :param verbose: An integer that defines how much input must be print.
@@ -41,9 +42,10 @@ def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int =
         X = S.T.dot(Z.dot(inverse_matrix(Z.T.dot(Z)).dot(Z.T)))
         inner_prods.append((t, trace(X)))
     if verbose == 1:
-        stat = pd.Series(map(lambda x: x[1], inner_prods), index=[f"Test n°{i}" for i in range(len(hyperpar))])
+        stat = pd.Series(map(lambda x: x[1], inner_prods),
+                         index=[f"Test for k={hyperpar[i]['n_clusters']}" for i in range(len(hyperpar))])
         fig = stat.plot(kind="bar", ylabel="Trace Criterion", figsize=(15, 10)).get_figure()
-        fig.savefig(f'{name}_tuning_test_stats.png')
+        fig.savefig(f'{path}{name}_tuning_test_stats.png')
 
     max_t = max(inner_prods, key=lambda i: i[1])
     # if output == 1:

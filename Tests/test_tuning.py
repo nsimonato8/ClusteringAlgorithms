@@ -16,14 +16,15 @@ class TestTuning(unittest.TestCase):
 
     def test_matr_kmeans(self):
         print("MATR TEST - [KMEANS]:\nImporting data...")
-        test_data = pd.read_csv("../Data/10k_sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
+        test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
                                 engine='python')  # Importing the sample data
 
         settings = {'n_init': 15,
                     'max_iter': 1000,
                     'verbose': 0,
-                    'algorithm': 'lloyd'}
-        param = [{'n_clusters': i, 'distance': euclidean_distance} for i in range(2, 15)]
+                    'algorithm': 'lloyd',
+                    'distance': euclidean_distance}
+        param = [{'n_clusters': i} for i in range(2, 30)]
 
         print("Settings:")
         for s in settings:
@@ -85,7 +86,7 @@ class TestTuning(unittest.TestCase):
         self.assertGreaterEqual(score, 0.0)
         pass
 
-    def test_elbow(self):
+    def test_elbow_kmeans(self):
         print("Silhouette TEST - [KMEANS]:\nImporting data...")
         test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
                                 engine='python')  # Importing the sample data
@@ -94,7 +95,7 @@ class TestTuning(unittest.TestCase):
                     'max_iter': 500,
                     'verbose': 0,
                     'algorithm': 'lloyd'}
-        param = [{'n_clusters': i} for i in range(2, 100)]
+        param = [{'n_clusters': i} for i in range(2, 30)]
 
         print("Settings:")
         for s in settings:

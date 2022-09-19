@@ -25,7 +25,7 @@ def format_record_for_logging(rcd: dict) -> str:
     return " ".join(data)
 
 
-def add_ip_lookup(data: DataFrame, colname: tuple) -> None:
+def add_ip_lookup(data: DataFrame, colname: str) -> None:
     """
     This function integrates the input DataFrame with some data from the Whois lookup service.
 
@@ -38,9 +38,11 @@ def add_ip_lookup(data: DataFrame, colname: tuple) -> None:
         srcwhois = IPWhois(ip).lookup_rdap()
         return srcwhois['asn_country_code'], srcwhois['asn_description']
 
-    data.loc[:, f"{colname}_asn_country_code"] = data[colname].apply(lambda ip: lookup_results(ip)[0])
+    data.loc[:, f"{colname}_asn_country_code"] = data[colname].apply(
+        lambda ip: "IT" if ip[0:6] == "192.168" else lookup_results(ip)[0])
     label_encoder(data, f"{colname}_asn_country_code")
-    data.loc[:, f"{colname}_asn_description"] = data[colname].apply(lambda ip: lookup_results(ip)[1])
+    data.loc[:, f"{colname}_asn_description"] = data[colname].apply(
+        lambda ip: "IT" if ip[0:6] == "UNIVE, IT" else lookup_results(ip)[1])
     label_encoder(data, f"{colname}_asn_description")
     pass
 

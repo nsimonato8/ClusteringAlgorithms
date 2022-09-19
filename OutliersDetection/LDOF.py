@@ -78,4 +78,7 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     :return: The k-Nearest-Neighbours inner distance.
     """
     data['LDOF'] = data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1)
-    return data.sort_values(axis=0, by="d", ascending=False).loc[0:(n - 1), :]
+    data = data.sort_values(axis=0, by="d", ascending=False)
+    data.drop(["LDOF"], inplace=True)
+    data.loc[:, 'outlier'] = data.apply(lambda x: True if x.name <= n else False)
+    return data
