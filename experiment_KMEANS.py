@@ -22,7 +22,7 @@ from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
 
 ray.shutdown()
-ray.init()
+ray.init(num_cpus=20)
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
