@@ -1,5 +1,5 @@
 import seaborn as sns
-from modin.pandas import DataFrame
+from pandas import DataFrame
 
 
 def visualize_cluster(data: DataFrame, i: int = 0, h: int = 2, cluster_or_outliers: str = 'cluster',
