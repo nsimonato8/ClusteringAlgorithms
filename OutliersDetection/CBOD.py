@@ -8,9 +8,13 @@ Implementation of the CBOD algorithm, as described by Sheng-yi Jiang et al. [200
 #     Search the minimum b , which satisfies sum(from=0, to=b, |C_i|)/|D| >= epsilon, with 0< = epsilon <= 1
 #     Label clusters C_1, C_2, ..., C_b  with ‘outlier’
 #     Label clusters C_b+1, C_b+2, ..., C_k  with ‘normal’
-from pandas import DataFrame
+
+from modin.pandas import DataFrame
 
 from Utils.clusters_op import cluster_distance_CBOD
+
+
+# from pandas import DataFrame
 
 
 def outlier_factor(cluster: DataFrame, data: DataFrame, k: int) -> float:

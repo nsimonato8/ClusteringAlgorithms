@@ -4,9 +4,12 @@ Data instances obtaining high scores are more likely considered as outliers.
 LDOF factor is calculated by dividing the KNN distance of an object xp by the KNN inner distance of an object xp.
 This file presents an implementation of the LDOF algorithm, as described by Abir Smiti[2020].
 """
-from pandas import DataFrame, Series
+from modin.pandas import DataFrame, Series
 
 from Utils.algebric_op import similarity_matrix, trace
+
+
+# from pandas import DataFrame, Series
 
 
 def not_col(x: Series, col: str) -> Series:
@@ -79,6 +82,7 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     """
     data['LDOF'] = data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1)
     data = data.sort_values(axis=0, by="d", ascending=False)
-    data.drop(["LDOF"], inplace=True)
-    data.loc[:, 'outlier'] = data.apply(lambda x: True if x.name <= n else False)
+    data.drop(["LDOF"], axis=1, inplace=True)
+    data.loc[:n, 'outlier'] = True
+    data.loc[n + 1:, 'outlier'] = False
     return data

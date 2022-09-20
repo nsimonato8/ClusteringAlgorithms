@@ -44,7 +44,8 @@ def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int =
     if verbose == 1:
         stat = pd.Series(map(lambda x: x[1], inner_prods),
                          index=[f"Test for k={hyperpar[i]['n_clusters']}" for i in range(len(hyperpar))])
-        fig = stat.plot(kind="bar", ylabel="Trace Criterion", figsize=(15, 10)).get_figure()
+        fig = stat.plot(kind="bar", xlabel="Number of clusters", ylabel="Trace Criterion",
+                        figsize=(15, 10)).get_figure()
         fig.savefig(f'{path}{name}_tuning_test_stats.png')
 
     max_t = max(inner_prods, key=lambda i: i[1])
