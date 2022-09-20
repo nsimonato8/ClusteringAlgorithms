@@ -11,6 +11,7 @@ from datetime import datetime
 import modin.pandas as pd
 import ray
 # import pandas as pd
+from scipy.spatial.distance import euclidean
 from sklearn.metrics import silhouette_score
 
 from Clustering.KMeansFamily.kmeansfamily import kmeans
@@ -42,7 +43,7 @@ settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
                    'verbose': 0,
                    'algorithm': 'lloyd',
-                   'distance': euclidean_distance}
+                   'distance': euclidean}
 
 settings_LDOF = {
     'n': 10,
