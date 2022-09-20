@@ -1,15 +1,7 @@
-# !pip install modin[all]
-# !pip install scikit-learn-extra
-# !pip install ray
-
 import os
-# Importing stuff
 import sys
-# import modin.config as cfg
-# from distributed import Client
 from datetime import datetime
 
-import modin.pandas as pd
 import ray
 # import pandas as pd
 from scipy.spatial.distance import euclidean
@@ -23,9 +15,11 @@ from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
 
 os.environ["MODIN_CPUS"] = "20"
-
+os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
 ray.shutdown()
 ray.init(num_cpus=20)
+
+import modin.pandas as pd
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
