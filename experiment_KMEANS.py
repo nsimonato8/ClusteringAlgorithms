@@ -2,6 +2,7 @@
 # !pip install scikit-learn-extra
 # !pip install ray
 
+import os
 # Importing stuff
 import sys
 # import modin.config as cfg
@@ -20,6 +21,8 @@ from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
+
+os.environ["MODIN_CPUS"] = "20"
 
 ray.shutdown()
 ray.init(num_cpus=20)
