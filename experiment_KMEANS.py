@@ -20,7 +20,6 @@ from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
-from Utils.distances import euclidean_distance
 
 ray.shutdown()
 ray.init()
@@ -100,7 +99,7 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
 timestamp4 = datetime.now()
 res = aux1['8']
-det_ldof = top_n_LDOF(data=res, distance=euclidean_distance, n=settings_LDOF['n'], k=settings_LDOF['k'])
+det_ldof = top_n_LDOF(data=res, distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
 det_ldof.info()
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
