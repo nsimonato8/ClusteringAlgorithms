@@ -38,7 +38,7 @@ EXP_NUM = 3
 settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
                    'verbose': 0,
-                   'algorithm': 'auto',
+                   'algorithm': 'lloyd',
                    'distance': euclidean_distance}
 
 settings_LDOF = {

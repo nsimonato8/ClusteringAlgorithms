@@ -10,8 +10,8 @@
 # 3.Update step:
 #   a.Recalculate means (centroids) for observations assigned to each cluster.
 # 4.The algorithm has converged when the assignments no longer change.
-# from modin.pandas import DataFrame
-from pandas import DataFrame
+from modin.pandas import DataFrame
+# from pandas import DataFrame
 from sklearn.cluster import KMeans
 from sklearn_extra.cluster import KMedoids
 
@@ -28,7 +28,7 @@ def kmeans(data: DataFrame, hyperpar: dict, settings: dict):
                  max_iter=settings['max_iter'],
                  tol=0.0001, verbose=settings['verbose'], random_state=None, copy_x=True,
                  algorithm=settings['algorithm'])
-    data.loc[:, 'cluster'] = fit.fit_predict(data)
+    data['cluster'] = fit.fit_predict(data)
     return data
 
 
@@ -42,5 +42,5 @@ def kmedoids(data: DataFrame, hyperpar: dict, settings: dict):
     """
     fit = KMedoids(n_clusters=hyperpar['n_clusters'], metric=hyperpar['metric'], init=settings['init'],
                    max_iter=settings['max_iter'], random_state=settings['random_state'])
-    data.loc[:, 'cluster'] = fit.fit_predict(data)
+    data['cluster'] = fit.fit_predict(data)
     return data
