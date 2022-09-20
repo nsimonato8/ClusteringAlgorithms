@@ -83,6 +83,6 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     data['LDOF'] = data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1)
     data = data.sort_values(axis=0, by="d", ascending=False)
     data.drop(["LDOF"], axis=1, inplace=True)
-    data[:n, 'outlier'] = True
+    data['outlier'] = True
     data[(n + 1):, 'outlier'] = False
     return data
