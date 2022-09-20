@@ -160,4 +160,5 @@ with open(f'Data/Results/Experiments/[Experiment PCA-HAC-MATR]_main_log_{EXP_NUM
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
     print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
+    print(f"Time elapsed for Dendrogram plotting:\t{timestamp6}")
 sys.stdout = original_stdout
