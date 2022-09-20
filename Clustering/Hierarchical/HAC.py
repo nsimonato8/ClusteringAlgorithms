@@ -22,8 +22,8 @@ def HAC(data: DataFrame, hyperpar: dict, settings: dict):
     :param settings: Dictionary of settings that will be used for performance's optimization.
     :return: Dataframe
     """
-    fit = AgglomerativeClustering(n_clusters=hyperpar['n_clusters'], affinity=hyperpar['distance'],
+    fit = AgglomerativeClustering(n_clusters=hyperpar['n_clusters'], affinity=settings['distance'],
                                   compute_full_tree=settings['compute_full_tree'], linkage=settings['linkage'],
                                   distance_threshold=settings['epsilon'], compute_distances=True)
-    data.loc[:, 'cluster'] = fit.fit_predict(data)
+    data['cluster'] = fit.fit_predict(data)
     return data

@@ -12,14 +12,15 @@ import modin.pandas as pd
 import ray
 # import pandas as pd
 from scipy.spatial.distance import euclidean
+from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics import silhouette_score
 
-from Clustering.KMeansFamily.kmeansfamily import kmeans
+from Clustering.Hierarchical.HAC import HAC
 from DataPreProcessing.importance import reduce_dimensionality
 from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
-from Utils.Visualization.visualization import visualize_cluster
+from Utils.Visualization.visualization import visualize_cluster, plot_dendrogram
 
 ray.shutdown()
 ray.init()
@@ -36,13 +37,12 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 3
+EXP_NUM = 1
 
-settings_KMEANS = {'n_init': 10,
-                   'max_iter': 500,
-                   'verbose': 0,
-                   'algorithm': 'lloyd',
-                   'distance': euclidean}
+settings_HAC = {'compute_full_tree': 'auto',
+                'linkage': 'ward',
+                'distance': euclidean,
+                'epsilon': None}
 
 settings_LDOF = {
     'n': 10,
@@ -59,9 +59,9 @@ param = [{'n_clusters': i} for i in range(11, 17)]
 # %%time
 print(f"[{datetime.now()}]STARTING MATR...")
 timestamp1 = datetime.now()
-aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
+aux1 = pca_data.apply(lambda data: MATR(A=HAC, D=data[0], hyperpar=param, settings=settings_HAC, verbose=1,
                                         path="Data/Results/Experiments/",
-                                        name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans"))
+                                        name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-HAC"))
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
@@ -78,7 +78,7 @@ print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
 result["silhouette"].plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
                           figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+    f'Data/Results/Experiments/PCA-HAC_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -88,11 +88,25 @@ timestamp3 = datetime.now()
 aux1.apply(lambda x: visualize_cluster(data=x,
                                        i=EXP_NUM,
                                        cluster_or_outliers='cluster',
-                                       additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
+                                       additional=f"PCA_{len(x.columns) - 1}_dim-HAC_{x['cluster'].max() + 1}",
                                        path="Data/Results/Experiments/"))
 
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
+
+print(f"[{datetime.now()}]PRINTING CLUSTERING DENDROGRAM TO FILES...")
+# Printing the clusters
+timestamp6 = datetime.now()
+aux1.apply(lambda x: plot_dendrogram(
+    model=AgglomerativeClustering(n_clusters=x['cluster'].max() + 1, affinity=settings_HAC['distance'],
+                                  compute_full_tree=settings_HAC['compute_full_tree'], linkage=settings_HAC['linkage'],
+                                  distance_threshold=settings_HAC['epsilon'], compute_distances=True),
+    i=EXP_NUM,
+    additional=f"PCA_{len(x.columns) - 1}_dim-HAC_{x['cluster'].max() + 1}",
+    path="Data/Results/Experiments/"))
+
+timestamp6 = datetime.now() - timestamp6
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
 
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
@@ -119,26 +133,26 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
+                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-HAC_{det_ldof['cluster'].max() + 1}",
                   path="Data/Results/Experiments/")
 
 # %%time
 visualize_cluster(data=det_cbod[list(set(det_cbod.index) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
+                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-HAC_{det_cbod['cluster'].max() + 1}",
                   path="Data/Results/Experiments/")
 
 # %%time
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/[Experiment PCA-HAC-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
     print(f"PCA number of dimensions parameter:\t{n_dims}")
-    print(f"KMeans number of cluster candidates:\t{range(10, 16)}")
-    print(f"KMeans settings:\t{settings_KMEANS}")
+    print(f"HAC number of cluster candidates:\t{range(10, 16)}")
+    print(f"HAC settings:\t{settings_HAC}")
     print(f"LDOF settings:\t{settings_LDOF}")
     print(f"CBOD settings:\t{settings_CBOD}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
