@@ -92,4 +92,4 @@ venv.bak/
 /TestData
 
 #Data files
-.csv
+#.csv
