@@ -84,5 +84,5 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     data = data.sort_values(axis=0, by="d", ascending=False)
     data.drop(["LDOF"], axis=1, inplace=True)
     data['outlier'] = True
-    data[(n + 1):, 'outlier'] = False
+    data['outlier'].iloc[(n + 1):] = False
     return data
