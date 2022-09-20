@@ -10,7 +10,7 @@
 # 3.Update step:
 #   a.Recalculate means (centroids) for observations assigned to each cluster.
 # 4.The algorithm has converged when the assignments no longer change.
-from pandas import DataFrame
+from modin.pandas import DataFrame
 from sklearn.cluster import KMeans
 from sklearn_extra.cluster import KMedoids
 

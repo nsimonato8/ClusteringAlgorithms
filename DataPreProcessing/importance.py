@@ -1,5 +1,5 @@
-import pandas as pd
-from pandas import DataFrame
+import modin.pandas as pd
+from modin.pandas import DataFrame
 from sklearn.decomposition import PCA
 
 

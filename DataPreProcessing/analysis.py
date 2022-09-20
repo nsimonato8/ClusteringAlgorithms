@@ -1,6 +1,6 @@
-import pandas as pd
+import modin.pandas as pd
 from matplotlib import pyplot as plt
-from pandas import DataFrame
+from modin.pandas import DataFrame
 
 from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
 from DataPreProcessing.feature_eng import add_is_priv_port

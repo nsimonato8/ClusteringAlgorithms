@@ -1,4 +1,4 @@
-from pandas import DataFrame
+from modin.pandas import DataFrame
 from sklearn.cluster import DBSCAN
 
 
