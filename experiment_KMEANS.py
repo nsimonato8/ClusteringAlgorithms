@@ -1,3 +1,4 @@
+import io
 import os
 import sys
 import warnings
@@ -89,7 +90,14 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 timestamp4 = datetime.now()
 res = aux1['8']
 det_ldof = top_n_LDOF(data=res, distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
-det_ldof.info()
+
+buffer = io.StringIO()
+det_ldof.info(buf=buffer)
+s = buffer.getvalue()
+with open("det_ldof_info.txt", "w",
+          encoding="utf-8") as f:
+    f.write(s)
+
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
@@ -100,6 +108,14 @@ timestamp5 = datetime.now()
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
 det_cbod.info()
+
+buffer = io.StringIO()
+det_cbod.info(buf=buffer)
+s = buffer.getvalue()
+with open("det_cbod_info.txt", "w",
+          encoding="utf-8") as f:
+    f.write(s)
+
 timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
