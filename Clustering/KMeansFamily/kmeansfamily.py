@@ -28,7 +28,7 @@ def kmeans(data: pd.DataFrame, hyperpar: dict, settings: dict):
                  max_iter=settings['max_iter'],
                  tol=0.0001, verbose=settings['verbose'], random_state=None, copy_x=True,
                  algorithm=settings['algorithm'])
-    data.loc['cluster'] = pd.Series(fit.fit_predict(data))
+    data = data.assign(cluster=pd.Series(fit.fit_predict(data)))
     return data
 
 
@@ -42,5 +42,5 @@ def kmedoids(data: pd.DataFrame, hyperpar: dict, settings: dict):
     """
     fit = KMedoids(n_clusters=hyperpar['n_clusters'], metric=hyperpar['metric'], init=settings['init'],
                    max_iter=settings['max_iter'], random_state=settings['random_state'])
-    data.loc['cluster'] = pd.Series(fit.fit_predict(data))
+    data = data.assign(cluster=pd.Series(fit.fit_predict(data)))
     return data
