@@ -79,18 +79,6 @@ result["silhouette"].plot(kind="bar", xlabel="Number of dimensions after PCA", y
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
-print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
-# Printing the clusters
-timestamp3 = datetime.now()
-aux1.apply(lambda x: visualize_cluster(data=x,
-                                       i=EXP_NUM,
-                                       cluster_or_outliers='cluster',
-                                       additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
-                                       path="Data/Results/Experiments/"))
-
-timestamp3 = datetime.now() - timestamp3
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
-
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
@@ -127,8 +115,17 @@ with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_
     print(f"Time elapsed for Outlier Detection (LDOF):\t{timestamp4}")
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
-    print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
+    # print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
 sys.stdout = original_stdout
+
+print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
+# Printing the clusters
+timestamp3 = datetime.now()
+aux1.apply(lambda x: visualize_cluster(data=x,
+                                       i=EXP_NUM,
+                                       cluster_or_outliers='cluster',
+                                       additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
+                                       path="Data/Results/Experiments/"))
 
 visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,
@@ -141,5 +138,5 @@ visualize_cluster(data=det_cbod[list(set(det_cbod.index) - {'cluster'})],
                   cluster_or_outliers='outlier',
                   additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
                   path="Data/Results/Experiments/")
-
-# %%time
+timestamp3 = datetime.now() - timestamp3
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
