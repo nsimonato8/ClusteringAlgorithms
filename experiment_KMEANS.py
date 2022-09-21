@@ -1,6 +1,10 @@
 import os
 import sys
+import warnings
 from datetime import datetime
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=UserWarning)
 
 import ray
 # import pandas as pd
