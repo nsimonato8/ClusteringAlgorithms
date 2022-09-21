@@ -112,21 +112,6 @@ timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
-# %%time
-visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
-
-# %%time
-visualize_cluster(data=det_cbod[list(set(det_cbod.index) - {'cluster'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
-
-# %%time
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
@@ -144,3 +129,17 @@ with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
     print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
 sys.stdout = original_stdout
+
+visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
+                  i=EXP_NUM,
+                  cluster_or_outliers='outlier',
+                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/")
+
+visualize_cluster(data=det_cbod[list(set(det_cbod.index) - {'cluster'})],
+                  i=EXP_NUM,
+                  cluster_or_outliers='outlier',
+                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/")
+
+# %%time
