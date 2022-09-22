@@ -42,7 +42,7 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :return: The k-Nearest-Neighbours distance.
     """
     kNN = p_neighbourhood(p, data, k, distance)
-    return kNN['d'].sum() / k
+    return kNN.apply(lambda x: distance(p, x)).sum() / k
 
 
 def kNN_inner_distance(data: DataFrame, k: int, distance: callable) -> float:
