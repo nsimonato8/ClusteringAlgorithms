@@ -5,6 +5,7 @@ from datetime import datetime
 
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import DBSCAN
+from sklearn.metrics import silhouette_score
 from sklearn.model_selection import GridSearchCV
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -50,7 +51,6 @@ settings_DBSCAN = {'eps': [0.5],
                    'n_jobs': [-1]}
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
-param = [{'epsilon': i, 'MinPts': i} for i in range(11, 17)]
 
 print(f"[{datetime.now()}]STARTING GridSearch...")
 timestamp1 = datetime.now()
@@ -60,29 +60,43 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
                      verbose=settings_GridSearch['verbose'],
                      return_train_score=settings_GridSearch['return_train_score'],
                      param_grid=settings_DBSCAN)
+
+
+def fit_predict(unfitted_model: GridSearchCV, X: pd.DataFrame):
+    unfitted_model.fit(X)
+    return unfitted_model.predict(X)
+
+
+pca_labels = pca_data.apply(lambda x: (x, fit_predict(model, x)))
+
+aux1 = pca_data.apply(lambda x: x[0].assign(cluster=x[1]))
+
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
-aux1 = pd.Series()
-aux2 = pca_data.apply(lambda data: data[1])
-aux2.name = 'PCA_dim'
-aux3 = pd.Series()
-# aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+timestamp2 = datetime.now()
+
+aux1.name = 'clustered'
+# aux2 = pca_data.apply(lambda data: data[1])
+# aux2.name = 'PCA_dim'
+aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
 aux3.name = 'silhouette'
 
+timestamp2 = datetime.now() - timestamp2
+
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
-timestamp2 = datetime.now()
+
 aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
           figsize=(35, 30)).get_figure().savefig(
     f'Data/Results/Experiments/PCA-DBSCAN_sil_score{EXP_NUM}.png')
-timestamp2 = datetime.now() - timestamp2
+
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} DBSCAN labels {'=' * 5}")
 
-det_dbscan = None
+det_dbscan = aux1['8'].loc[aux1['8']['cluster'] < 0, :]
 
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
@@ -96,7 +110,6 @@ with open(f'Data/Results/Experiments/[Experiment PCA-DBSCAN-MATR]_main_log_{EXP_
     print(f"DBSCAN number of cluster candidates:\t{range(10, 16)}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
-    print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
     # print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
 sys.stdout = original_stdout
 

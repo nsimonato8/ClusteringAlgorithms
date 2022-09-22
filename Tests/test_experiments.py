@@ -6,6 +6,7 @@ import unittest
 from datetime import datetime
 
 import pandas as pd
+from scipy.spatial.distance import euclidean
 from sklearn.metrics import silhouette_score
 
 from Clustering.KMeansFamily.kmeansfamily import kmeans
@@ -14,6 +15,7 @@ from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
+from Utils.algebric_op import similarity_matrix
 from Utils.distances import euclidean_distance
 
 EXP_NUM = 2
@@ -128,3 +130,14 @@ class TestOutliersDetection(unittest.TestCase):
 
             sys.stdout = original_stdout
         pass
+
+    def test_distances(self):
+        test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
+                                engine='python')
+
+        mat = pd.DataFrame(similarity_matrix(test_data, euclidean).values)
+        mat = pd.melt(mat.assign(index=mat.index), id_vars=['index'])['value']
+
+        mat.plot(kind="box", ylabel="Distances",
+                 figsize=(35, 30)).get_figure().savefig(
+            f'../Distribution_euclidean_similarities.png')
