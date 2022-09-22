@@ -67,11 +67,14 @@ timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
+timestamp3 = datetime.now()
 aux1.name = 'MATR'
 aux2 = pca_data.apply(lambda data: data[1])
 aux2.name = 'PCA_dim'
 aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
 aux3.name = 'silhouette'
+timestamp3 = datetime.now() - timestamp3
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
@@ -128,8 +131,8 @@ with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
     print(f"Time elapsed for Outlier Detection (LDOF):\t{timestamp4}")
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
+    print(f"Time elapsed for Silhouette Scores computations:\t{timestamp3}")
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
-    # print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
 sys.stdout = original_stdout
 
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")

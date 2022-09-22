@@ -1,5 +1,6 @@
 from math import sqrt
 
+import modin.pandas as pd
 from modin.pandas import DataFrame
 
 
@@ -30,9 +31,9 @@ def diff_CBOD(cluster1: DataFrame, cluster2: DataFrame, col: str) -> float:
     freqs1 = cluster1[col].value_counts(normalize=False)
     freqs2 = cluster2[col].value_counts(normalize=False)
     freqss1, freqss2 = freqs1.align(freqs2, join="left", fill_value=0)
-    freqss1 = freqss1.to_frame(name="cluster1")
-    freqss1.loc[:, "cluster2"] = freqss2
-    freqs = freqss1.apply(lambda x: x["cluster1"] * x["cluster2"])
+    freqss = pd.DataFrame()
+    freqss = freqss.assign(cluster1=freqss1, cluster2=freqss2)
+    freqs = freqss.apply(lambda x: x["cluster1"] * x["cluster2"])
     # freqs = [freq(cluster1, col, cluster1[col].iloc[i]) * freq(cluster2, col, cluster1[col].iloc[i]) for i in range(cluster1.shape[0])]
     return 1. - (cluster1.shape[0] * cluster2.shape[0]) ** (-1) * freqs.sum()
 
