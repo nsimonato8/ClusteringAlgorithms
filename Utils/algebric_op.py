@@ -34,7 +34,7 @@ def trace(mat: DataFrame):
     :return: The trace of the input matrix.
     """
     assert mat.shape[0] == mat.shape[1], "The matrix is not symmetric"
-    return sum([mat.iloc[i, i] for i in range(mat.shape[0])])
+    return pd.Series([mat.iloc[i, i] for i in range(mat.shape[0])]).sum()
 
 
 def construct_clustering_matrix(data: DataFrame):

@@ -4,19 +4,17 @@ Data instances obtaining high scores are more likely considered as outliers.
 LDOF factor is calculated by dividing the KNN distance of an object xp by the KNN inner distance of an object xp.
 This file presents an implementation of the LDOF algorithm, as described by Abir Smiti[2020].
 """
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
-warnings.simplefilter(action='ignore', category=UserWarning)
-
+# import warnings
+# warnings.simplefilter(action='ignore', category=FutureWarning)
+# warnings.simplefilter(action='ignore', category=UserWarning)
+import modin.pandas as pd
 from modin.pandas import DataFrame, Series
+from sklearn.neighbors import NearestNeighbors
+
 from Utils.algebric_op import similarity_matrix, trace
 
 
 # from pandas import DataFrame, Series
-
-
-def not_col(x: Series, col: str) -> Series:
-    return x[list(set(x.index) - set(col))]
 
 
 def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> DataFrame:
@@ -29,8 +27,8 @@ def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> D
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours
     """
-    data['d'] = data.apply(lambda x: distance(p, not_col(x, "d")), axis=1)
-    return data.sort_values(axis=0, by="d", ascending=True).head(n=k + 1)
+    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p, n_neighbors=k, return_distance=False)  # n_jobs=-1 uses all the available processors
+    return pd.DataFrame(f)
 
 
 def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> float:
@@ -57,7 +55,7 @@ def kNN_inner_distance(data: DataFrame, k: int, distance: callable) -> float:
     :return: The k-Nearest-Neighbours inner distance.
     """
     sim = similarity_matrix(data, distance)
-    return (sim.values.sum() - trace(sim)) / k / (k - 1)
+    return (sim.values.sum() - trace(sim)) / (2 * k * (k - 1))
 
 
 def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable) -> float:
@@ -83,6 +81,9 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours inner distance.
     """
+    assert k > 0, "The number of neighbours must be >= 1"
+    assert n > 0, "The number of outliers to retrieve must be >= 1"
+
     data['LDOF'] = data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1)
     data = data.sort_values(axis=0, by="d", ascending=False)
     data.drop(["LDOF"], axis=1, inplace=True)

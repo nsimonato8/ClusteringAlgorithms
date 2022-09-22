@@ -9,9 +9,9 @@ Implementation of the CBOD algorithm, as described by Sheng-yi Jiang et al. [200
 #     Label clusters C_1, C_2, ..., C_b  with ‘outlier’
 #     Label clusters C_b+1, C_b+2, ..., C_k  with ‘normal’
 
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
-warnings.simplefilter(action='ignore', category=UserWarning)
+# import warnings
+# warnings.simplefilter(action='ignore', category=FutureWarning)
+# warnings.simplefilter(action='ignore', category=UserWarning)
 
 from modin.pandas import DataFrame
 

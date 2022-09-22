@@ -12,7 +12,6 @@ import modin.pandas as pd
 import ray
 # import pandas as pd
 from scipy.spatial.distance import euclidean
-from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics import silhouette_score
 
 from Clustering.Hierarchical.HAC import HAC
@@ -20,7 +19,7 @@ from DataPreProcessing.importance import reduce_dimensionality
 from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
-from Utils.Visualization.visualization import visualize_cluster, plot_dendrogram
+from Utils.Visualization.visualization import visualize_cluster
 
 ray.shutdown()
 ray.init()
@@ -97,13 +96,14 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 print(f"[{datetime.now()}]PRINTING CLUSTERING DENDROGRAM TO FILES...")
 # Printing the clusters
 timestamp6 = datetime.now()
-aux1.apply(lambda x: plot_dendrogram(
-    model=AgglomerativeClustering(n_clusters=x['cluster'].max() + 1, affinity=settings_HAC['distance'],
-                                  compute_full_tree=settings_HAC['compute_full_tree'], linkage=settings_HAC['linkage'],
-                                  distance_threshold=settings_HAC['epsilon'], compute_distances=True),
-    i=EXP_NUM,
-    additional=f"PCA_{len(x.columns) - 1}_dim-HAC_{x['cluster'].max() + 1}",
-    path="Data/Results/Experiments/"))
+# SEE seaborn.clustermap
+# aux1.apply(lambda x: plot_dendrogram(
+#     model=AgglomerativeClustering(n_clusters=x['cluster'].max() + 1, affinity=settings_HAC['distance'],
+#                                   compute_full_tree=settings_HAC['compute_full_tree'], linkage=settings_HAC['linkage'],
+#                                   distance_threshold=settings_HAC['epsilon'], compute_distances=True),
+#     i=EXP_NUM,
+#     additional=f"PCA_{len(x.columns) - 1}_dim-HAC_{x['cluster'].max() + 1}",
+#     path="Data/Results/Experiments/"))
 
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
