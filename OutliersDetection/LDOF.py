@@ -4,9 +4,9 @@ Data instances obtaining high scores are more likely considered as outliers.
 LDOF factor is calculated by dividing the KNN distance of an object xp by the KNN inner distance of an object xp.
 This file presents an implementation of the LDOF algorithm, as described by Abir Smiti[2020].
 """
-# import warnings
-# warnings.simplefilter(action='ignore', category=FutureWarning)
-# warnings.simplefilter(action='ignore', category=UserWarning)
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=UserWarning)
 import modin.pandas as pd
 from modin.pandas import DataFrame, Series
 from sklearn.neighbors import NearestNeighbors
@@ -71,10 +71,11 @@ def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable) -> float:
     return kNN_distance(p, data, k, distance) / kNN_inner_distance(data, k, distance)
 
 
-def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame:
+def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int = 0) -> DataFrame:
     """
     This function implements the Top-n LDOF algorithm, as described by Abir Smiti[2020].
 
+    :param verbose: The amount of output to visualize (with 0 the warnings are suppressed)
     :param n: The number of outliers to retrieve
     :param data: The whole dataset
     :param k: The number of neighbours to retrieve
@@ -84,9 +85,13 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int) -> DataFrame
     assert k > 0, "The number of neighbours must be >= 1"
     assert n > 0, "The number of outliers to retrieve must be >= 1"
 
+    if verbose < 1:
+        warnings.simplefilter(action='ignore', category=FutureWarning)
+        warnings.simplefilter(action='ignore', category=UserWarning)
+
     data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1))
     data = data.sort_values(axis=0, by="LDOF", ascending=False)
     data.drop(["LDOF"], axis=1, inplace=True)
-    data = data.assign(outlier=[True for _ in range(n)] + [False for _ in range(n+1, data.shape[0])])
+    data = data.assign(outlier=[True for _ in range(n)] + [False for _ in range(n+1, data.shape[0] + 1)])
     # data.loc[(n + 1):, "outlier"] = False
     return data
