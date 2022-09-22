@@ -1,3 +1,4 @@
+import io
 import os
 import sys
 import warnings
@@ -17,7 +18,7 @@ from DataPreProcessing.importance import reduce_dimensionality
 from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
-from Utils.Visualization.visualization import visualize_cluster
+from Utils.Visualization.visualization import visualize_cluster, plot_dendrogram
 
 os.environ["MODIN_CPUS"] = "20"
 os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
@@ -98,14 +99,12 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 print(f"[{datetime.now()}]PRINTING CLUSTERING DENDROGRAM TO FILES...")
 # Printing the clusters
 timestamp6 = datetime.now()
-# SEE seaborn.clustermap
-# aux1.apply(lambda x: plot_dendrogram(
-#     model=AgglomerativeClustering(n_clusters=x['cluster'].max() + 1, affinity=settings_HAC['distance'],
-#                                   compute_full_tree=settings_HAC['compute_full_tree'], linkage=settings_HAC['linkage'],
-#                                   distance_threshold=settings_HAC['epsilon'], compute_distances=True),
-#     i=EXP_NUM,
-#     additional=f"PCA_{len(x.columns) - 1}_dim-HAC_{x['cluster'].max() + 1}",
-#     path="Data/Results/Experiments/"))
+
+aux1.apply(lambda x: plot_dendrogram(
+    data=x,
+    i=EXP_NUM,
+    additional=f"PCA_{len(x.columns) - 1}_dim-HAC_{x['cluster'].max() + 1}",
+    path="Data/Results/Experiments/"))
 
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
@@ -116,17 +115,29 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 timestamp4 = datetime.now()
 res = aux1['8']
 det_ldof = top_n_LDOF(data=res, distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
-det_ldof.info()
+
+buffer = io.StringIO()
+det_ldof.info(buf=buffer)
+s = buffer.getvalue()
+with open("[HAC]det_ldof_info.txt", "w",
+          encoding="utf-8") as f:
+    f.write(s)
+
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
-# %%time
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
-det_cbod.info()
+buffer = io.StringIO()
+det_cbod.info(buf=buffer)
+s = buffer.getvalue()
+with open("[HAC]det_cbod_info.txt", "w",
+          encoding="utf-8") as f:
+    f.write(s)
+
 timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")

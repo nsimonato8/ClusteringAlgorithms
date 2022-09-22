@@ -74,12 +74,10 @@ aux2.name = 'PCA_dim'
 aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
 aux3.name = 'silhouette'
 
-result = pd.concat([aux2, aux3], axis=1, names=["PCA_dim", "silhouette"])
-
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
-result["silhouette"].plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-                          figsize=(35, 30)).get_figure().savefig(
+aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+          figsize=(35, 30)).get_figure().savefig(
     f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
@@ -94,7 +92,7 @@ det_ldof = top_n_LDOF(data=res, distance=euclidean, n=settings_LDOF['n'], k=sett
 buffer = io.StringIO()
 det_ldof.info(buf=buffer)
 s = buffer.getvalue()
-with open("det_ldof_info.txt", "w",
+with open("[KMEANS]det_ldof_info.txt", "w",
           encoding="utf-8") as f:
     f.write(s)
 
@@ -102,17 +100,14 @@ timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
-# %%time
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
-det_cbod.info()
-
 buffer = io.StringIO()
 det_cbod.info(buf=buffer)
 s = buffer.getvalue()
-with open("det_cbod_info.txt", "w",
+with open("[KMEANS]det_cbod_info.txt", "w",
           encoding="utf-8") as f:
     f.write(s)
 
