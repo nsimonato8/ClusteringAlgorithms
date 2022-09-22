@@ -1,28 +1,30 @@
-# !pip install modin[all]
-# !pip install scikit-learn-extra
-# !pip install ray
-
-# Importing stuff
+import os
 import sys
-# import modin.config as cfg
-# from distributed import Client
+import warnings
 from datetime import datetime
 
-import modin.pandas as pd
+from Clustering.Hierarchical.HAC import HAC
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=UserWarning)
+
 import ray
 # import pandas as pd
 from scipy.spatial.distance import euclidean
 from sklearn.metrics import silhouette_score
 
-from Clustering.Hierarchical.HAC import HAC
 from DataPreProcessing.importance import reduce_dimensionality
 from OutliersDetection.CBOD import CBOD
 from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
 
+os.environ["MODIN_CPUS"] = "20"
+os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
 ray.shutdown()
-ray.init()
+ray.init(num_cpus=20)
+
+import modin.pandas as pd
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
