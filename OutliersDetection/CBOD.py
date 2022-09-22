@@ -12,6 +12,7 @@ Implementation of the CBOD algorithm, as described by Sheng-yi Jiang et al. [200
 # import warnings
 # warnings.simplefilter(action='ignore', category=FutureWarning)
 # warnings.simplefilter(action='ignore', category=UserWarning)
+import warnings
 
 from modin.pandas import DataFrame
 
@@ -37,16 +38,22 @@ def outlier_factor(cluster: DataFrame, data: DataFrame, k: int) -> float:
     return sum([cluster_distance_CBOD(cluster, i) * i.shape[0] for i in cluster_set])
 
 
-def CBOD(data: DataFrame, k: int, epsilon: float) -> ([], []):
+def CBOD(data: DataFrame, k: int, epsilon: float, verbose: int = 0) -> DataFrame:
     """
     This function labels the instances of the dataset as 'outlier' or 'normal' according to the CBOD algorithm,
     as described by Sheng-yi Jiang et al. [2008]
 
+    :param verbose: The amount of output to visualize (with 0 the warnings are suppressed)
     :param epsilon: An approximate ratio of the outliers to the whole training dataset.
     :param data: The clustered DataFrame
     :param k: The number of clusters
     :return: None
     """
+
+    if verbose < 1:
+        warnings.simplefilter(action='ignore', category=FutureWarning)
+        warnings.simplefilter(action='ignore', category=UserWarning)
+
     clusters = [data[data['cluster'] == i] for i in range(k)]
     clusters_repr = [(i, outlier_factor(cluster=clusters[i], data=data, k=k)) for i in range(k)]
     clusters_repr.sort(reverse=True, key=lambda x: x[1])
@@ -54,5 +61,5 @@ def CBOD(data: DataFrame, k: int, epsilon: float) -> ([], []):
     while b < k and (sum(map(lambda x: x.shape[0], clusters[0:b])) / data.shape[0]) > epsilon:
         b += 1
 
-    data["outlier"] = data['cluster'].apply(lambda x: True if x <= b else False)
-    return clusters_repr
+    data = data.assign(outlier=data['cluster'].apply(lambda x: True if x <= b else False))
+    return data
