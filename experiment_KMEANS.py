@@ -63,14 +63,14 @@ timestamp1 = datetime.now()
 aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
                                         path="Data/Results/Experiments/",
                                         name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans"))
+aux1.name = 'MATR'
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp3 = datetime.now()
-aux1.name = 'MATR'
-aux2 = pca_data.apply(lambda data: data[1])
-aux2.name = 'PCA_dim'
+# aux2 = pca_data.apply(lambda data: data[1])
+# aux2.name = 'PCA_dim'
 aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
 aux3.name = 'silhouette'
 timestamp3 = datetime.now() - timestamp3

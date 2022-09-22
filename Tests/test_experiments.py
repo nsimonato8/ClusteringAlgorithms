@@ -139,5 +139,5 @@ class TestOutliersDetection(unittest.TestCase):
         mat = pd.melt(mat.assign(index=mat.index), id_vars=['index'])['value']
 
         mat.plot(kind="box", ylabel="Distances",
-                 figsize=(35, 30)).get_figure().savefig(
+                 figsize=(20, 15), ylim=(0, 100000)).get_figure().savefig(
             f'../Distribution_euclidean_similarities.png')

@@ -44,8 +44,8 @@ settings_GridSearch = {'estimator': DBSCAN,
                        'verbose': 3,
                        'return_train_score': True
                        }
-settings_DBSCAN = {'eps': [0.5],
-                   'min_samples': [5],
+settings_DBSCAN = {'eps': [x for x in range(start=10000, stop=60000, step=500)],
+                   'min_samples': [x for x in range(start=0, stop=1000, step=5)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
                    'n_jobs': [-1]}
