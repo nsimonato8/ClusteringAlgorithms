@@ -3,6 +3,10 @@ import sys
 import warnings
 from datetime import datetime
 
+from scipy.spatial.distance import euclidean
+from sklearn.cluster import DBSCAN
+from sklearn.model_selection import GridSearchCV
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -33,14 +37,29 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 EXP_NUM = 3
 
-settings_DBSCAN = {}
+settings_GridSearch = {'estimator': DBSCAN,
+                       'n_jobs': -1,
+                       'refit': True,
+                       'verbose': 3,
+                       'return_train_score': True
+                       }
+settings_DBSCAN = {'eps': [0.5],
+                   'min_samples': [5],
+                   'metric': [euclidean],
+                   'algorithm': ['auto'],
+                   'n_jobs': [-1]}
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
 param = [{'epsilon': i, 'MinPts': i} for i in range(11, 17)]
 
 print(f"[{datetime.now()}]STARTING GridSearch...")
 timestamp1 = datetime.now()
-
+model = GridSearchCV(estimator=settings_GridSearch['estimator'],
+                     n_jobs=settings_GridSearch['n_jobs'],
+                     refit=settings_GridSearch['refit'],
+                     verbose=settings_GridSearch['verbose'],
+                     return_train_score=settings_GridSearch['return_train_score'],
+                     param_grid=settings_DBSCAN)
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
@@ -56,7 +75,7 @@ print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
 aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
           figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+    f'Data/Results/Experiments/PCA-DBSCAN_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -70,12 +89,12 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/[Experiment PCA-DBSCAN-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
     print(f"PCA number of dimensions parameter:\t{n_dims}")
-    print(f"KMeans number of cluster candidates:\t{range(10, 16)}")
-    print(f"KMeans settings:\t{settings_DBSCAN}")
+    print(f"DBSCAN number of cluster candidates:\t{range(10, 16)}")
+    print(f"DBSCAN settings:\t{settings_DBSCAN}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
     # print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
@@ -87,13 +106,13 @@ timestamp3 = datetime.now()
 aux1.apply(lambda x: visualize_cluster(data=x,
                                        i=EXP_NUM,
                                        cluster_or_outliers='cluster',
-                                       additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
+                                       additional=f"PCA_{len(x.columns) - 1}_dim-DBSCAN_{x['cluster'].max() + 1}",
                                        path="Data/Results/Experiments/"))
 
 visualize_cluster(data=det_dbscan[list(set(det_dbscan.index) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_dbscan.columns) - 1}_dim-KMEANS_{det_dbscan['cluster'].max() + 1}",
+                  additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}",
                   path="Data/Results/Experiments/")
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
