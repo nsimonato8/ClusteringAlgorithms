@@ -50,7 +50,7 @@ class TestTuning(unittest.TestCase):
         test_data = pd.read_csv("../Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
                                 engine='python')  # Importing the sample data
 
-        settings = {'n_jobs': 10,
+        settings = {'n_jobs': -1,
                     'algorithm': 'auto'}
         param = []
 

@@ -75,7 +75,7 @@ class TestClustering(unittest.TestCase):
                                 engine='python')  # Importing the sample data
         # test_data.drop(columns="user_id", inplace=True)
 
-        settings = {'n_jobs': 10,
+        settings = {'n_jobs': -1,
                     'algorithm': 'auto'}
         param = {'epsilon': 5,
                  'minpts': 5,
