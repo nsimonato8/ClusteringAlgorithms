@@ -7,18 +7,6 @@ from modin.pandas import DataFrame
 # from pandas import DataFrame
 
 
-def freq(data: DataFrame, column: str, value) -> float:
-    """
-    This functions returns the freqeuncy of value in the column feature of data.
-
-    :param data: The input dataframe
-    :param column: The feature on which to calculate the frequency
-    :param value: The feature of which to calculate the frequency
-    :return: The frequency of value in the column column
-    """
-    return data[data[column] == value].count() / data.shape[0]
-
-
 def diff_CBOD(cluster1: DataFrame, cluster2: DataFrame, col: str) -> float:
     """
     This function returns the difference between two clusters on a given feature, as described by Sheng-yi Jiang et al. [2008]

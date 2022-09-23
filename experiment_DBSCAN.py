@@ -36,13 +36,14 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 3
+EXP_NUM = 0
 
 settings_GridSearch = {'estimator': DBSCAN,
                        'n_jobs': -1,
                        'refit': True,
                        'verbose': 3,
-                       'return_train_score': True
+                       'return_train_score': True,
+                       'scoring': silhouette_score
                        }
 settings_DBSCAN = {'eps': [x for x in range(start=10000, stop=60000, step=500)],
                    'min_samples': [x for x in range(start=0, stop=1000, step=5)],
@@ -59,6 +60,7 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
                      refit=settings_GridSearch['refit'],
                      verbose=settings_GridSearch['verbose'],
                      return_train_score=settings_GridSearch['return_train_score'],
+                     scoring=settings_GridSearch['scoring'],
                      param_grid=settings_DBSCAN)
 
 
@@ -103,13 +105,13 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/[Experiment PCA-DBSCAN-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/[Experiment PCA-DBSCAN-GridSearchCV]_main_log_{EXP_NUM}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
     print(f"PCA number of dimensions parameter:\t{n_dims}")
-    print(f"DBSCAN number of cluster candidates:\t{range(10, 16)}")
+    print(f"GridSearchCV settings:\t{settings_GridSearch}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
-    print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
+    print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
     # print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
 sys.stdout = original_stdout
 

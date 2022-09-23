@@ -14,7 +14,6 @@ from sklearn.metrics import silhouette_score
 from Clustering.KMeansFamily.kmeansfamily import kmeans
 from DataPreProcessing.importance import reduce_dimensionality
 from OutliersDetection.CBOD import CBOD
-from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster
 
@@ -89,7 +88,8 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
 timestamp4 = datetime.now()
 res = aux1['8']
-det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
+det_ldof = None
+# det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
 
 # buffer = io.StringIO()
 # det_ldof.info(buf=buffer)
@@ -137,23 +137,23 @@ sys.stdout = original_stdout
 
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 # Printing the clusters
-timestamp3 = datetime.now()
+timestamp6 = datetime.now()
 aux1.apply(lambda x: visualize_cluster(data=x,
                                        i=EXP_NUM,
                                        cluster_or_outliers='cluster',
                                        additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
                                        path="Data/Results/Experiments/"))
 
-visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
+# visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='outlier',
+#                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
+#                   path="Data/Results/Experiments/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.index) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
                   additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
                   path="Data/Results/Experiments/")
-timestamp3 = datetime.now() - timestamp3
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
+timestamp6 = datetime.now() - timestamp6
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
