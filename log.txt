@@ -1,8 +1,8 @@
-======== Autoscaler status: 2022-09-21 00:37:54.836885 ========
+======== Autoscaler status: 2022-09-22 14:09:00.875091 ========
 Node status
 ---------------------------------------------------------------
 Healthy:
- 1 node_c59126df2378a4df9c53846c3b1f9cf263b8da268f1743102b7531e6
+ 1 node_e95ef25a32cdc84c61b3e5b2bb6b97c6acf82f40b65ac83a7c6a5c0f
 Pending:
  (no pending nodes)
 Recent failures:
@@ -12,8 +12,8 @@ Resources
 ---------------------------------------------------------------
 Usage:
  20.0/20.0 CPU
- 0.00/58.670 GiB memory
- 0.15/29.136 GiB object_store_memory
+ 0.00/58.662 GiB memory
+ 0.09/29.132 GiB object_store_memory
 
 Demands:
- {'CPU': 1.0}: 10+ pending tasks/actors
+ {'CPU': 1.0}: 68+ pending tasks/actors
