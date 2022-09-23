@@ -34,7 +34,7 @@ def outlier_factor(cluster: DataFrame, data: DataFrame, k: int) -> float:
     """
 
     cluster_set = pd.Series([data[data['cluster'] == i] for i in range(k)])
-    cluster_set = cluster_set[lambda x: not x.equals(cluster)]
+    cluster_set = cluster_set.loc[lambda x: not x.equals(cluster)]
 
     # sum([cluster_distance_CBOD(cluster, i) * i.shape[0] for i in cluster_set])
 

@@ -1,3 +1,4 @@
+import modin.pandas as pd
 from modin.pandas import DataFrame
 
 
@@ -25,5 +26,5 @@ def HAC(data: DataFrame, hyperpar: dict, settings: dict):
     fit = AgglomerativeClustering(n_clusters=hyperpar['n_clusters'], affinity=settings['distance'],
                                   compute_full_tree=settings['compute_full_tree'], linkage=settings['linkage'],
                                   distance_threshold=settings['epsilon'], compute_distances=True)
-    data['cluster'] = fit.fit_predict(data)
+    data = data.assign(cluster=pd.Series(fit.fit_predict(data)))
     return data
