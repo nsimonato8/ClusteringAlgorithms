@@ -148,7 +148,7 @@ aux1.apply(lambda x: visualize_cluster(data=x,
 visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
+                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
                   path="Data/Results/Experiments/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
