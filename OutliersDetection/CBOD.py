@@ -14,6 +14,7 @@ Implementation of the CBOD algorithm, as described by Sheng-yi Jiang et al. [200
 # warnings.simplefilter(action='ignore', category=UserWarning)
 import warnings
 
+import modin.pandas as pd
 from modin.pandas import DataFrame
 
 from Utils.clusters_op import cluster_distance_CBOD
@@ -32,10 +33,12 @@ def outlier_factor(cluster: DataFrame, data: DataFrame, k: int) -> float:
     :return: The outlier factor OF, as described by Sheng-yi Jiang et al. [2008]
     """
 
-    cluster_set = [data[data['cluster'] == i] for i in range(k)]
-    cluster_set = filter(lambda x: not x.equals(cluster), cluster_set)
+    cluster_set = pd.Series([data[data['cluster'] == i] for i in range(k)])
+    cluster_set = cluster_set[lambda x: not x.equals(cluster)]
 
-    return sum([cluster_distance_CBOD(cluster, i) * i.shape[0] for i in cluster_set])
+    # sum([cluster_distance_CBOD(cluster, i) * i.shape[0] for i in cluster_set])
+
+    return cluster_set.apply(lambda i: i.shape[0] * cluster_distance_CBOD(cluster, i)).sum()
 
 
 def CBOD(data: DataFrame, k: int, epsilon: float, verbose: int = 0) -> DataFrame:
