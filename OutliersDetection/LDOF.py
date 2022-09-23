@@ -92,6 +92,6 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
     data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1))
     data = data.sort_values(axis=0, by="LDOF", ascending=False)
     data.drop(["LDOF"], axis=1, inplace=True)
-    data = data.assign(outlier=[True for _ in range(n)] + [False for _ in range(n+1, data.shape[0] + 1)])
+    data = data.assign(outlier=pd.Series([True for _ in range(n)] + [False for _ in range(n+1, data.shape[0] + 1)]))
     # data.loc[(n + 1):, "outlier"] = False
     return data
