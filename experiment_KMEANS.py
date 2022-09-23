@@ -3,6 +3,10 @@ import sys
 import warnings
 from datetime import datetime
 
+from sklearn.metrics import silhouette_score
+
+from OutliersDetection.LDOF import top_n_LDOF
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -49,7 +53,7 @@ settings_LDOF = {
 }
 
 settings_CBOD = {
-    'epsilon': 0.005
+    'epsilon': 0.0005
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
@@ -66,18 +70,18 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp3 = datetime.now()
-# aux2 = pca_data.apply(lambda data: data[1])
-# aux2.name = 'PCA_dim'
-# aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-# aux3.name = 'silhouette'
+aux2 = pca_data.apply(lambda data: data[1])
+aux2.name = 'PCA_dim'
+aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+aux3.name = 'silhouette'
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
-# aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-#           figsize=(35, 30)).get_figure().savefig(
-#     f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+          figsize=(35, 30)).get_figure().savefig(
+    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -86,8 +90,7 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
 timestamp4 = datetime.now()
 res = aux1['8']
-det_ldof = None
-# det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
+det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
 
 # buffer = io.StringIO()
 # det_ldof.info(buf=buffer)
@@ -142,13 +145,13 @@ aux1.apply(lambda x: visualize_cluster(data=x,
                                        additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
                                        path="Data/Results/Experiments/"))
 
-# visualize_cluster(data=det_ldof[list(set(det_ldof.index) - {'cluster'} - {'LDOF'})],
-#                   i=EXP_NUM,
-#                   cluster_or_outliers='outlier',
-#                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
-#                   path="Data/Results/Experiments/")
+visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
+                  i=EXP_NUM,
+                  cluster_or_outliers='outlier',
+                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-KMEANS_{det_ldof['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/")
 
-visualize_cluster(data=det_cbod[list(set(det_cbod.index) - {'cluster'})],
+visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
                   additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
