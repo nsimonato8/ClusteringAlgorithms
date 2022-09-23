@@ -9,7 +9,6 @@ warnings.simplefilter(action='ignore', category=UserWarning)
 import ray
 # import pandas as pd
 from scipy.spatial.distance import euclidean
-from sklearn.metrics import silhouette_score
 
 from Clustering.KMeansFamily.kmeansfamily import kmeans
 from DataPreProcessing.importance import reduce_dimensionality
@@ -56,7 +55,6 @@ settings_CBOD = {
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
 param = [{'n_clusters': i} for i in range(11, 17)]
 
-# %%time
 print(f"[{datetime.now()}]STARTING MATR...")
 timestamp1 = datetime.now()
 aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
@@ -70,16 +68,16 @@ print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp3 = datetime.now()
 # aux2 = pca_data.apply(lambda data: data[1])
 # aux2.name = 'PCA_dim'
-aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-aux3.name = 'silhouette'
+# aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+# aux3.name = 'silhouette'
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
-aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-          figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+# aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+#           figsize=(35, 30)).get_figure().savefig(
+#     f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
