@@ -42,5 +42,7 @@ def kmedoids(data: pd.DataFrame, hyperpar: dict, settings: dict):
     """
     fit = KMedoids(n_clusters=hyperpar['n_clusters'], metric=hyperpar['metric'], init=settings['init'],
                    max_iter=settings['max_iter'], random_state=settings['random_state'])
+    print(f"[PRE - CLUSTERING]{data.columns}")
     data = data.assign(cluster=pd.Series(fit.fit_predict(data)))
+    print(f"[POST - CLUSTERING]{data.columns}")
     return data

@@ -20,13 +20,11 @@ from Utils.algebric_op import inverse_matrix, trace, construct_clustering_matrix
 # from pandas import DataFrame
 
 
-def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR", path: str = "",
-         output: int = 0):
+def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR", path: str = ""):
     """
     This function returns the ideal value for an hyperparameter lambda, by using the MATR algorithm as described by Xinjie Fan et al. [2020].
 
     :param path: The path where the verbose output is saved.
-    :param output: If set to 0, returns the clustering with the best result. If set to 1, returns all the clustering results and the best one.
     :param name: The name of the test to put on the output file (only if verbose is 1).
     :param verbose: An integer that defines how much input must be print.
     :param settings: The list of candidates for the settings of the hyperparameters.
@@ -53,7 +51,4 @@ def MATR(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int =
         fig.savefig(f'{path}{name}_tuning_test_stats.png')
 
     max_t = max(inner_prods, key=lambda i: i[1])
-    # if output == 1:
-    #     return res, res[max_t[0]]
-    # else:
     return res[max_t[0]]
