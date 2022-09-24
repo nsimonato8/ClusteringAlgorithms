@@ -22,7 +22,7 @@ def plot_dendrogram(data: DataFrame, i: int = 0, additional: str = "", path: str
 
     :param i: A number to add at the end of the filename.
     :param data: The clustered DataFrame (with HAC).
-    :param additional: The name of the file to plot
+    :param additional: The name of the file to plot.
     :param path: The path where the plot will be saved.
     :param kwargs: Additional arguments for the plot.
     :return: None
