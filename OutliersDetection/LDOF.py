@@ -72,7 +72,11 @@ def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable, sim: Data
     :param sim: The similarity matrix
     :return: The k-Nearest-Neighbours inner distance.
     """
-    return kNN_distance(p, data, k, distance) / kNN_inner_distance(sim, k)
+    dist = kNN_distance(p, data, k, distance)
+    inner_dist = kNN_inner_distance(sim, k)
+    print(f"[kNN_distance]{dist}\t[kNN_inner_distance]{inner_dist}")
+    # return kNN_distance(p, data, k, distance) / kNN_inner_distance(sim, k)
+    return dist / inner_dist
 
 
 def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int = 0) -> DataFrame:
