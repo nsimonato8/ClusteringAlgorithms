@@ -6,7 +6,7 @@ def visualize_cluster(data: DataFrame, i: int = 0, h: int = 2, cluster_or_outlie
                       additional: str = "", path: str = ""):
     sns.set_theme(style="white", palette=None)
 
-    sns_plot = sns.pairplot(p, hue=cluster_or_outliers, height=h)
+    sns_plot = sns.pairplot(data, hue=cluster_or_outliers, height=h)
 
     if additional != "":
         additional = "[" + additional + "]"
@@ -29,4 +29,4 @@ def plot_dendrogram(data: DataFrame, i: int = 0, additional: str = "", path: str
     plt = sns.clustermap(data, method='eucidean', figsize=(30, 30), row_cluster=True)
     # plt.title(f"[Experiment {i}]HAC clustering")
     # plt.xlabel("Number of points in node (or index of point if no parenthesis).")
-    plt.savefig(f"{path}/{additional}_hierachical_clusters{i}.png")
+    plt.savefig(f"{path}-{additional}_hierachical_clusters{i}.png")
