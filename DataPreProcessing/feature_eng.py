@@ -45,21 +45,21 @@ def add_ip_lookup(data: DataFrame, colname: str) -> None:
             return True
         return False
 
-    def label_lookup_results(ip: str) -> str:
+    def label_lookup_results(ip: str) -> (str,str):
         try:
             res = lookup_results(ip)
         except IPDefinedError:
-            res = "IT|Private Network"
+            res = "IT", "Private Network"
         except HTTPLookupError:
-            res = "Unknown|Unknown"
+            res = "Unknown", "Unknown"
         return res
 
     data.loc[:, "lookup"] = data[colname].apply(lambda ip: label_lookup_results(ip))
 
-    data.loc[:, f"{colname}_asn_country_code"] = data["lookup"].apply(lambda ip: ip.split("|")[0])
+    data.loc[:, f"{colname}_asn_country_code"] = data["lookup"].apply(lambda ip: ip[0])
     label_encoder(data, f"{colname}_asn_country_code")
 
-    data.loc[:, f"{colname}_asn_description"] = data[colname].apply(lambda ip: ip.split("|")[1])
+    data.loc[:, f"{colname}_asn_description"] = data[colname].apply(lambda ip: ip[1])
     label_encoder(data, f"{colname}_asn_description")
     pass
 
