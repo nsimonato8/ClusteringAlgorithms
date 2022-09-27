@@ -6,8 +6,6 @@ from datetime import datetime
 
 from sklearn.metrics import silhouette_score
 
-from OutliersDetection.LDOF import top_n_LDOF
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -97,31 +95,22 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 timestamp4 = datetime.now()
 # res = aux1['8']
 res = aux1
-det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
-                      k=settings_LDOF['k'], verbose=1)
-
-try:
-    buffer = io.StringIO()
-    det_ldof.info(buf=buffer)
-    s = buffer.getvalue()
-    with open("[KMEANS]det_ldof_info.txt", "w",
-              encoding="utf-8") as f:
-        f.write(s)
-except KeyError as err:
-    print("det_ldof.info does not work")
+# det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
+#                       k=settings_LDOF['k'], verbose=1)
+#
+# try:
+#     buffer = io.StringIO()
+#     det_ldof.info(buf=buffer)
+#     s = buffer.getvalue()
+#     with open("[KMEANS]det_ldof_info.txt", "w",
+#               encoding="utf-8") as f:
+#         f.write(s)
+# except KeyError as err:
+#     print("det_ldof.info does not work")
 
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
-
-# ----KEYERROR TEST
-print(f"[START]\n{'-' * 5}KeyError test{'-' * 5}")
-try:
-    print(res['cluster'].info())
-except KeyError as err:
-    print("res['cluster'] does not exist")  # tb=sys.exc_info()[2]))
-print(f"{'-' * 5}KeyError test{'-' * 5}\n[END]")
-# ----KEYERROR TEST
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
@@ -168,11 +157,11 @@ visualize_cluster(data=res,
                   additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
                   path="Data/Results/Experiments/")
 
-visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
-                  path="Data/Results/Experiments/")
+# visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='outlier',
+#                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
+#                   path="Data/Results/Experiments/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
