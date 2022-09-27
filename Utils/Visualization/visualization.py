@@ -1,12 +1,17 @@
+import pandas as ppd
 import seaborn as sns
 from modin.pandas import DataFrame
 
 
 def visualize_cluster(data: DataFrame, i: int = 0, h: int = 2, cluster_or_outliers: str = 'cluster',
-                      additional: str = "", path: str = ""):
+                      additional: str = "", path: str = "") -> None:
     sns.set_theme(style="white", palette=None)
 
-    sns_plot = sns.pairplot(data, hue=cluster_or_outliers, height=h)
+    data.to_csv(path=f"{path}{additional}_saved.csv")
+
+    pandas_data = ppd.read_csv(f"{path}{additional}_saved.csv")
+
+    sns_plot = sns.pairplot(pandas_data, hue=cluster_or_outliers, height=h)
 
     if additional != "":
         additional = "[" + additional + "]"
