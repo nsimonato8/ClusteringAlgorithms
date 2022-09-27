@@ -89,33 +89,33 @@ def expand_dataset(data: DataFrame) -> None:
     pass
 
 
-if __name__ == "__main__":
-    file_path = "../Data/sessions.csv"
-    dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
-    print("[BEFORE] Structure of the dataset:")
-    dataset.info()
+# if __name__ == "__main__":
+file_path = "../Data/sessions.csv"
+dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
+print("[BEFORE] Structure of the dataset:")
+dataset.info()
 
-    clean_dataset(dataset)
+clean_dataset(dataset)
 
-    print("[AFTER CLEANING] Structure of the dataset:")
+print("[AFTER CLEANING] Structure of the dataset:")
 
-    expand_dataset(dataset)
+expand_dataset(dataset)
 
-    print("[AFTER EXPANDING] Structure of the dataset:")
+print("[AFTER EXPANDING] Structure of the dataset:")
 
-    dataset.info()
-    print(dataset.head(n=15))
+dataset.info()
+print(dataset.head(n=15))
 
-    transform_dataset(dataset)
+transform_dataset(dataset)
 
-    print("[AFTER TRANSFORMING] Structure of the dataset:")
-    dataset.info()
-    print(dataset.head(n=15))
+print("[AFTER TRANSFORMING] Structure of the dataset:")
+dataset.info()
+print(dataset.head(n=15))
 
-    to_print = ["sp", "dp"]  # , "stos", "dtos", "fwd", "ipkt", "opkt", "ibyt", "obyt", "pr"]
+to_print = ["sp", "dp"]  # , "stos", "dtos", "fwd", "ipkt", "opkt", "ibyt", "obyt", "pr"]
 
-    plot_data_distribution(dataset[to_print])
+plot_data_distribution(dataset[to_print])
 
-    print(dataset.head(n=15))
+print(dataset.head(n=15))
 
-    dataset.to_csv("../Data/sessions_cleaned_1.csv", index=False)
+dataset.to_csv("../Data/sessions_cleaned_1.csv", index=False)
