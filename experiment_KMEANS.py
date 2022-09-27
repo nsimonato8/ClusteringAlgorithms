@@ -1,3 +1,4 @@
+import io
 import os
 import sys
 import warnings
@@ -70,10 +71,10 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp3 = datetime.now()
-# aux2 = pca_data.apply(lambda data: data[1])
-# aux2.name = 'PCA_dim'
+
 aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
 aux3.name = 'silhouette'
+
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
@@ -90,29 +91,45 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
 timestamp4 = datetime.now()
 res = aux1['8']
-det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
+det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
+                      k=settings_LDOF['k'])
 
-# buffer = io.StringIO()
-# det_ldof.info(buf=buffer)
-# s = buffer.getvalue()
-# with open("[KMEANS]det_ldof_info.txt", "w",
-#           encoding="utf-8") as f:
-#     f.write(s)
+try:
+    buffer = io.StringIO()
+    det_ldof.info(buf=buffer)
+    s = buffer.getvalue()
+    with open("[KMEANS]det_ldof_info.txt", "w",
+              encoding="utf-8") as f:
+        f.write(s)
+except KeyError as err:
+    print(err.with_traceback(tb=sys.exc_info()[2]))
 
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
+# ----KEYERROR TEST
+print(f"[START]\n{'-' * 5}KeyError test{'-' * 5}")
+try:
+    print(res['cluster'].info())
+except KeyError as err:
+    print(err.with_traceback(tb=sys.exc_info()[2]))
+print(f"{'-' * 5}KeyError test{'-' * 5}\n[END]")
+# ----KEYERROR TEST
+
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
-# buffer = io.StringIO()
-# det_cbod.info(buf=buffer)
-# s = buffer.getvalue()
-# with open("[KMEANS]det_cbod_info.txt", "w",
-#           encoding="utf-8") as f:
-#     f.write(s)
+try:
+    buffer = io.StringIO()
+    det_cbod.info(buf=buffer)
+    s = buffer.getvalue()
+    with open("[KMEANS]det_cbod_info.txt", "w",
+              encoding="utf-8") as f:
+        f.write(s)
+except KeyError as err:
+    print(err.with_traceback(tb=sys.exc_info()[2]))
 
 timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
@@ -139,11 +156,11 @@ sys.stdout = original_stdout
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 # Printing the clusters
 timestamp6 = datetime.now()
-aux1.apply(lambda x: visualize_cluster(data=x,
-                                       i=EXP_NUM,
-                                       cluster_or_outliers='cluster',
-                                       additional=f"PCA_{len(x.columns) - 1}_dim-KMEANS_{x['cluster'].max() + 1}",
-                                       path="Data/Results/Experiments/"))
+visualize_cluster(data=res,
+                  i=EXP_NUM,
+                  cluster_or_outliers='cluster',
+                  additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/")
 
 visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,

@@ -72,6 +72,7 @@ def fit_predict(unfitted_model: GridSearchCV, X: pd.DataFrame):
 pca_labels = pca_data.apply(lambda x: (x, fit_predict(model, x)))
 
 aux1 = pca_data.apply(lambda x: x[0].assign(cluster=x[1]))
+aux1.name = 'clustered'
 
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
@@ -79,7 +80,7 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp2 = datetime.now()
 
-aux1.name = 'clustered'
+
 # aux2 = pca_data.apply(lambda data: data[1])
 # aux2.name = 'PCA_dim'
 aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
