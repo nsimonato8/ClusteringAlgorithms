@@ -9,10 +9,11 @@ Implementation of the CBOD algorithm, as described by Sheng-yi Jiang et al. [200
 #     Label clusters C_1, C_2, ..., C_b  with ‘outlier’
 #     Label clusters C_b+1, C_b+2, ..., C_k  with ‘normal’
 
+import warnings
 # import warnings
 # warnings.simplefilter(action='ignore', category=FutureWarning)
 # warnings.simplefilter(action='ignore', category=UserWarning)
-import warnings
+from datetime import datetime
 
 from modin.pandas import DataFrame
 
@@ -50,7 +51,7 @@ def CBOD(data: DataFrame, k: int, epsilon: float, verbose: int = 0) -> DataFrame
     :return: None
     """
 
-    if verbose < 1:
+    if verbose in [0, 1]:
         warnings.simplefilter(action='ignore', category=FutureWarning)
         warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -61,7 +62,9 @@ def CBOD(data: DataFrame, k: int, epsilon: float, verbose: int = 0) -> DataFrame
     while b < k and (sum(map(lambda x: x.shape[0], clusters[0:b])) / data.shape[0]) > epsilon:
         b += 1
 
-    print(data.get(["cluster"], default="cluster field is missing"))
+    print(f"[{datetime.now()}]\n{data.get(['cluster'], default='cluster field is missing')}\n") if verbose == 1 else 0
+    
     data = data.assign(outlier=data['cluster'].apply(lambda x: 1 if x <= b else 0))
-    print(data.get(["outlier"], default="outlier field is missing"))
-    return data
+    
+    print(f"[{datetime.now()}]\n{data.get(['outlier'], default='outlier field is missing')}\n") if verbose == 1 else 0
+    return data 
