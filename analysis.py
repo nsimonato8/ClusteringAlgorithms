@@ -2,8 +2,8 @@ import os
 
 from matplotlib import pyplot as plt
 
-from cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
-from feature_eng import add_is_priv_port, add_ip_lookup
+from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
+from DataPreProcessing.feature_eng import add_is_priv_port, add_ip_lookup
 
 os.environ["MODIN_CPUS"] = "20"
 os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
@@ -92,7 +92,7 @@ def expand_dataset(data: DataFrame) -> None:
 
 
 # if __name__ == "__main__":
-file_path = "../Data/sessions.csv"
+file_path = "Data/sessions.csv"
 dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
 print("[BEFORE] Structure of the dataset:")
 dataset.info()
@@ -120,4 +120,6 @@ plot_data_distribution(dataset[to_print])
 
 print(dataset.head(n=15))
 
-dataset.to_csv("../Data/sessions_cleaned_1.csv", index=False)
+new_file_path = "Data/sessions_cleaned_1.csv"
+
+dataset.to_csv(new_file_path, index=False)
