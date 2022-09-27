@@ -5,6 +5,7 @@ LDOF factor is calculated by dividing the KNN distance of an object xp by the KN
 This file presents an implementation of the LDOF algorithm, as described by Abir Smiti[2020].
 """
 import warnings
+from datetime import datetime
 
 import numpy as np
 
@@ -99,15 +100,15 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
     sim = similarity_matrix(data, distance)
     data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance, sim), axis=1))
 
-    print(data["LDOF"].describe()) if verbose == 1 else 0
+    print(f"[{datetime.now()}]{data['LDOF'].describe()}") if verbose == 1 else 0
 
     data.sort_values(by="LDOF", ascending=False, inplace=True)
     data.drop(["LDOF"], axis=1, inplace=True)
 
-    print(data.get("LDOF", default="LDOF is correctly dropped")) if verbose == 1 else 0
+    print(f"[{datetime.now()}]{data.get('LDOF', default='LDOF is correctly dropped')}") if verbose == 1 else 0
 
     data = data.assign(outlier=pd.Series([1 for _ in range(n)] + [0 for _ in range(n+1, data.shape[0] + 1)]))
 
-    print(data.get("outlier", default="outlier is missing")) if verbose == 1 else 0
+    print(f"[{datetime.now()}]{data.get('outlier', default='outlier is missing')}") if verbose == 1 else 0
 
     return data
