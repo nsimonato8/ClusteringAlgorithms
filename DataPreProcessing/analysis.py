@@ -1,7 +1,9 @@
+import os
+
 from matplotlib import pyplot as plt
 
-from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
-from DataPreProcessing.feature_eng import add_is_priv_port, add_ip_lookup
+from cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
+from feature_eng import add_is_priv_port, add_ip_lookup
 
 os.environ["MODIN_CPUS"] = "20"
 os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
