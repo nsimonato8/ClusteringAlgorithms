@@ -7,11 +7,11 @@ PCA number of dimensions parameter:	8      8
 14    14
 dtype: int64
 KMeans number of cluster candidates:	range(10, 16)
-KMeans settings:	{'n_init': 10, 'max_iter': 500, 'verbose': 0, 'algorithm': 'lloyd', 'distance': <function euclidean at 0x7fb6d3965ee0>}
+KMeans settings:	{'n_init': 10, 'max_iter': 500, 'verbose': 0, 'algorithm': 'lloyd', 'distance': <function euclidean at 0x7f02c5133ee0>}
 LDOF settings:	{'n': 10, 'k': 10}
 CBOD settings:	{'epsilon': 0.0005}
-Time elapsed for MATR computation (all of the datasets):	0:01:11.639590
-Time elapsed for Outlier Detection (LDOF):	0:00:00.000002
-Time elapsed for Outlier Detection (CBOD):	0:03:15.026318
-Time elapsed for Silhouette Scores computations:	0:00:00.055363
-Time elapsed for Silhouette Scores plotting:	0:00:00.000003
+Time elapsed for MATR computation (all of the datasets):	0:01:12.412267
+Time elapsed for Outlier Detection (LDOF):	0:14:27.706999
+Time elapsed for Outlier Detection (CBOD):	0:03:19.847586
+Time elapsed for Silhouette Scores computations:	0:08:47.058531
+Time elapsed for Silhouette Scores plotting:	0:00:01.364784
