@@ -108,7 +108,7 @@ try:
               encoding="utf-8") as f:
         f.write(s)
 except KeyError as err:
-    print(err.with_traceback(tb=sys.exc_info()[2]))
+    print(err.with_traceback())
 
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
