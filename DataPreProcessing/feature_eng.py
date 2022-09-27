@@ -1,4 +1,4 @@
-from ipwhois import IPWhois
+from ipwhois import IPWhois, IPDefinedError
 from modin.pandas import DataFrame
 
 from DataPreProcessing.cleaning import label_encoder
@@ -38,11 +38,18 @@ def add_ip_lookup(data: DataFrame, colname: str) -> None:
         srcwhois = IPWhois(ip).lookup_rdap()
         return srcwhois['asn_country_code'], srcwhois['asn_description']
 
+    def is_private_ip(ip: str):
+        try:
+            lookup_results(ip)
+        except IPDefinedError:
+            return True
+        return False
+
     data.loc[:, f"{colname}_asn_country_code"] = data[colname].apply(
-        lambda ip: "IT" if ip[0:6] == "192.168" else lookup_results(ip)[0])
+        lambda ip: "IT" if is_private_ip(ip) else lookup_results(ip)[0])
     label_encoder(data, f"{colname}_asn_country_code")
     data.loc[:, f"{colname}_asn_description"] = data[colname].apply(
-        lambda ip: "IT" if ip[0:6] == "UNIVE, IT" else lookup_results(ip)[1])
+        lambda ip: "IT" if is_private_ip(ip) else lookup_results(ip)[1])
     label_encoder(data, f"{colname}_asn_description")
     pass
 

@@ -1,9 +1,16 @@
-import modin.pandas as pd
 from matplotlib import pyplot as plt
-from modin.pandas import DataFrame
 
 from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
 from DataPreProcessing.feature_eng import add_is_priv_port, add_ip_lookup
+
+os.environ["MODIN_CPUS"] = "20"
+os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
+
+import ray
+ray.init(num_cpus=20)
+
+import modin.pandas as pd
+from modin.pandas import DataFrame
 
 
 def plot_data_distribution(data: DataFrame) -> None:
@@ -111,4 +118,4 @@ if __name__ == "__main__":
 
     print(dataset.head(n=15))
 
-    dataset.to_csv("../Data/sessions_cleaned.csv", index=False)
+    dataset.to_csv("../Data/sessions_cleaned_1.csv", index=False)
