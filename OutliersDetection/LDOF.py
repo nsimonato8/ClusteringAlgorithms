@@ -42,7 +42,7 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :return: The k-Nearest-Neighbours distance.
     """
     kNN = p_neighbourhood(p, data, k, distance)
-    return kNN.sum() / k
+    return kNN.values.sum() / k
 
 
 def kNN_inner_distance(sim: DataFrame, k: int) -> float:
@@ -91,7 +91,7 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
     sim = similarity_matrix(data, distance)
     data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance, sim)))
     print(data["LDOF"].describe())
-    data.sort_values(axis=0, by="LDOF", ascending=False, inplace=True)
+    data.sort_values(by="LDOF", ascending=False, inplace=True)
     data.drop(["LDOF"], axis=1, inplace=True)
     print(data.get(["LDOF"], default="LDOF is correctly dropped"))
     data = data.assign(outlier=pd.Series([1 for _ in range(n)] + [0 for _ in range(n+1, data.shape[0] + 1)]))
