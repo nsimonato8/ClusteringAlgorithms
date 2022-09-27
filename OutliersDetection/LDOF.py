@@ -28,7 +28,7 @@ def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> S
     :return: The k-Nearest-Neighbours
     """
     print(f"\t[p]\n{p.info()}")
-    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p.to_frame(), n_neighbors=k, return_distance=True)  # n_jobs=-1 uses all the available processors
+    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p, n_neighbors=k, return_distance=True)  # n_jobs=-1 uses all the available processors
     return pd.Series(f)  # .apply(lambda x: x[0])
 
 
