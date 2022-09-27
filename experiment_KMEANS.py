@@ -53,7 +53,7 @@ settings_LDOF = {
 }
 
 settings_CBOD = {
-    'epsilon': 0.00005
+    'epsilon': 0.000005
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
@@ -80,9 +80,9 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
-aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-          figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+# aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+#           figsize=(35, 30)).get_figure().savefig(
+#     f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -92,18 +92,18 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 timestamp4 = datetime.now()
 
 res = aux1['8']
-det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
-                      k=settings_LDOF['k'], verbose=1)
+# det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
+#                       k=settings_LDOF['k'], verbose=1)
 
-try:
-    buffer = io.StringIO()
-    det_ldof.info(buf=buffer)
-    s = buffer.getvalue()
-    with open("[KMEANS]det_ldof_info.txt", "w",
-              encoding="utf-8") as f:
-        f.write(s)
-except KeyError as err:
-    print("det_ldof.info does not work")
+# try:
+#     buffer = io.StringIO()
+#     det_ldof.info(buf=buffer)
+#     s = buffer.getvalue()
+#     with open("[KMEANS]det_ldof_info.txt", "w",
+#               encoding="utf-8") as f:
+#         f.write(s)
+# except KeyError as err:
+#     print("det_ldof.info does not work")
 
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
@@ -133,7 +133,7 @@ original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
-    print(f"PCA number of dimensions parameter:\t{n_dims}")
+    print(f"PCA number of dimensions parameter:\n{n_dims}\n")
     print(f"KMeans number of cluster candidates:\t{range(10, 16)}")
     print(f"KMeans settings:\t{settings_KMEANS}")
     print(f"LDOF settings:\t{settings_LDOF}")
@@ -148,20 +148,17 @@ sys.stdout = original_stdout
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 # Printing the clusters
 timestamp6 = datetime.now()
-visualize_cluster(data=res,
-                  i=EXP_NUM,
-                  cluster_or_outliers='cluster',
-                  additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
-
-visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
-                  path="Data/Results/Experiments/")
-
-print(f"[{datetime.now()}]\n{det_cbod.get('cluster', default='cluster field is missing')}\n")
-print(f"[{datetime.now()}]\n{det_cbod.get('outlier', default='outlier field is missing')}\n")
+# visualize_cluster(data=res,
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='cluster',
+#                   additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
+#                   path="Data/Results/Experiments/")
+#
+# visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='outlier',
+#                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
+#                   path="Data/Results/Experiments/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
