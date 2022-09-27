@@ -114,7 +114,7 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
-det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
+det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'], verbose=1)
 
 try:
     buffer = io.StringIO()
