@@ -30,8 +30,7 @@ import modin.pandas as pd
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
-test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
-                        engine='python')
+test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3)  # , engine='python')
 
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
@@ -92,7 +91,7 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 timestamp4 = datetime.now()
 res = aux1['8']
 det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
-                      k=settings_LDOF['k'])
+                      k=settings_LDOF['k'], verbose=1)
 
 try:
     buffer = io.StringIO()

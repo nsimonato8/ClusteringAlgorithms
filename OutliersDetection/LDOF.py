@@ -27,8 +27,8 @@ def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> S
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours
     """
-    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p.to_frame(), n_neighbors=k, return_distance=True)  # n_jobs=-1 uses all the available processors
-    return pd.Series(f)
+    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p, n_neighbors=k, return_distance=True)  # n_jobs=-1 uses all the available processors
+    return pd.Series(f)  # .apply(lambda x: x[0])
 
 
 def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> float:
@@ -84,16 +84,22 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
     assert k > 0, "The number of neighbours must be >= 1"
     assert n > 0, "The number of outliers to retrieve must be >= 1"
 
-    if verbose < 1:
+    if verbose in [0, 1]:
         warnings.simplefilter(action='ignore', category=FutureWarning)
         warnings.simplefilter(action='ignore', category=UserWarning)
 
     sim = similarity_matrix(data, distance)
     data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance, sim)))
-    print(data["LDOF"].describe())
+
+    print(data["LDOF"].describe()) if verbose == 1 else 0
+
     data.sort_values(by="LDOF", ascending=False, inplace=True)
     data.drop(["LDOF"], axis=1, inplace=True)
-    print(data.get(["LDOF"], default="LDOF is correctly dropped"))
+
+    print(data.get(["LDOF"], default="LDOF is correctly dropped")) if verbose == 1 else 0
+
     data = data.assign(outlier=pd.Series([1 for _ in range(n)] + [0 for _ in range(n+1, data.shape[0] + 1)]))
-    print(data.get(["outlier"], default="outlier is missing"))
+
+    print(data.get(["outlier"], default="outlier is missing")) if verbose == 1 else 0
+
     return data
