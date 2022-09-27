@@ -114,7 +114,7 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
-det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'], verbose=1)
+det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
 try:
     buffer = io.StringIO()
@@ -162,6 +162,9 @@ visualize_cluster(data=res,
 #                   cluster_or_outliers='outlier',
 #                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
 #                   path="Data/Results/Experiments/")
+
+print(f"[{datetime.now()}]\n{det_cbod.get('cluster', default='cluster field is missing')}\n")
+print(f"[{datetime.now()}]\n{det_cbod.get('outlier', default='outlier field is missing')}\n")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
