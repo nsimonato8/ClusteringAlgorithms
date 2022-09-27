@@ -18,10 +18,10 @@ def diff_CBOD(cluster1: DataFrame, cluster2: DataFrame, col: str) -> float:
     """
     freqs1 = cluster1[col].value_counts(normalize=False)
     freqs2 = cluster2[col].value_counts(normalize=False)
-    print(f"\t{freqs1.head(n=5)}\n\t{freqs2.head(n=5)}\n\t")
+    # print(f"\t{freqs1.head(n=5)}\n\t{freqs2.head(n=5)}\n\t")
     freqss1, freqss2 = freqs1.align(freqs2, join="left", fill_value=0, axis=0)
     freqss = pd.DataFrame([freqss1, freqss2], columns=["cluster1", "cluster2"]).fillna(value=0)
-    print(f"{freqss.head(n=5)}")
+    # print(f"{freqss.head(n=5)}")
     freqs = freqss["cluster1"] * freqss["cluster2"]
     # freqs = [freq(cluster1, col, cluster1[col].iloc[i]) * freq(cluster2, col, cluster1[col].iloc[i]) for i in range(cluster1.shape[0])]
     return 1. - (cluster1.shape[0] * cluster2.shape[0]) ** (-1) * freqs.sum()
