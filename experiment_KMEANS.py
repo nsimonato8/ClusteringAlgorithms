@@ -27,6 +27,7 @@ ray.shutdown()
 ray.init(num_cpus=20)
 
 import modin.pandas as pd
+master_timestamp = datetime.now()
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
@@ -167,3 +168,6 @@ visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   path="Data/Results/Experiments/")
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
+master_timestamp = datetime.now() - master_timestamp
+
+print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")
