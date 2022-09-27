@@ -31,8 +31,7 @@ def p_neighbourhood(p: DataFrame, data: DataFrame, k: int, distance: callable) -
     :return: The k-Nearest-Neighbours
     """
     # print(f"\t[p]\n{p.info()}")
-    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p, n_neighbors=k, return_distance=True)  # n_jobs=-1 uses all the available processors
-    return pd.Series(f)  # .apply(lambda x: x[0])
+    return NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p, n_neighbors=k, return_distance=True)[1]  # n_jobs=-1 uses all the available processors
 
 
 def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> float:
@@ -72,11 +71,11 @@ def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable, sim: Data
     :param sim: The similarity matrix
     :return: The k-Nearest-Neighbours inner distance.
     """
-    dist = kNN_distance(p, data, k, distance)
-    inner_dist = kNN_inner_distance(sim, k)
-    print(f"[kNN_distance]{dist}\t[kNN_inner_distance]{inner_dist}")
-    # return kNN_distance(p, data, k, distance) / kNN_inner_distance(sim, k)
-    return dist / inner_dist
+    # dist = kNN_distance(p, data, k, distance)
+    # inner_dist = kNN_inner_distance(sim, k)
+    # print(f"[kNN_distance]{dist}\t[kNN_inner_distance]{inner_dist}")
+    # return dist / inner_dist
+    return kNN_distance(p, data, k, distance) / kNN_inner_distance(sim, k)
 
 
 def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int = 0) -> DataFrame:
