@@ -89,7 +89,7 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
         warnings.simplefilter(action='ignore', category=UserWarning)
 
     sim = similarity_matrix(data, distance)
-    data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance, sim)))
+    data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance, sim), axis=1))
 
     print(data["LDOF"].describe()) if verbose == 1 else 0
 
