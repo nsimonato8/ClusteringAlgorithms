@@ -61,5 +61,5 @@ def CBOD(data: DataFrame, k: int, epsilon: float, verbose: int = 0) -> DataFrame
     while b < k and (sum(map(lambda x: x.shape[0], clusters[0:b])) / data.shape[0]) > epsilon:
         b += 1
 
-    data = data.assign(outlier=data['cluster'].apply(lambda x: True if x <= b else False))
+    data = data.assign(outlier=data['cluster'].apply(lambda x: 1 if x <= b else 0))
     return data

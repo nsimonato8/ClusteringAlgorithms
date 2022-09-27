@@ -70,8 +70,8 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp3 = datetime.now()
-aux2 = pca_data.apply(lambda data: data[1])
-aux2.name = 'PCA_dim'
+# aux2 = pca_data.apply(lambda data: data[1])
+# aux2.name = 'PCA_dim'
 aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
 aux3.name = 'silhouette'
 timestamp3 = datetime.now() - timestamp3
