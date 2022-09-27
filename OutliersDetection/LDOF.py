@@ -104,10 +104,10 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
     data.sort_values(by="LDOF", ascending=False, inplace=True)
     data.drop(["LDOF"], axis=1, inplace=True)
 
-    print(data.get(["LDOF"], default="LDOF is correctly dropped")) if verbose == 1 else 0
+    print(data.get("LDOF", default="LDOF is correctly dropped")) if verbose == 1 else 0
 
     data = data.assign(outlier=pd.Series([1 for _ in range(n)] + [0 for _ in range(n+1, data.shape[0] + 1)]))
 
-    print(data.get(["outlier"], default="outlier is missing")) if verbose == 1 else 0
+    print(data.get("outlier", default="outlier is missing")) if verbose == 1 else 0
 
     return data
