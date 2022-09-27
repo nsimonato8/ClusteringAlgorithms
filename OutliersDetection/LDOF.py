@@ -17,7 +17,7 @@ from Utils.algebric_op import similarity_matrix, trace
 # from pandas import DataFrame, Series
 
 
-def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> DataFrame:
+def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> Series:
     """
     This function retrieves the k nearest neighbours of the p instance, contained in the data DataFrame.
 
@@ -27,8 +27,8 @@ def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> D
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours
     """
-    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p.to_frame().T, n_neighbors=k, return_distance=False)  # n_jobs=-1 uses all the available processors
-    return pd.DataFrame(f)
+    f = NearestNeighbors(n_neighbors=k, algorithm='auto', metric=distance, n_jobs=-1).fit(data).kneighbors(X=p.to_frame().T, n_neighbors=k, return_distance=True)  # n_jobs=-1 uses all the available processors
+    return pd.Series(f)
 
 
 def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> float:
@@ -42,23 +42,21 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :return: The k-Nearest-Neighbours distance.
     """
     kNN = p_neighbourhood(p, data, k, distance)
-    return kNN.apply(lambda x: distance(p, x)).sum() / k
+    return kNN.sum() / k
 
 
-def kNN_inner_distance(data: DataFrame, k: int, distance: callable) -> float:
+def kNN_inner_distance(sim: DataFrame, k: int) -> float:
     """
     This function returns the kNN inner distance, as described by Abir Smiti[2020].
 
-    :param data: The whole dataset
+    :param sim: The similarity matrix
     :param k: The number of neighbours to retrieve
-    :param distance: The distance function to use
     :return: The k-Nearest-Neighbours inner distance.
     """
-    sim = similarity_matrix(data, distance)
     return (sim.values.sum() - trace(sim)) / (2 * k * (k - 1))
 
 
-def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable) -> float:
+def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable, sim: DataFrame) -> float:
     """
     This function returns the LDOF score of a given instance, as described by Abir Smiti[2020].
 
@@ -66,9 +64,10 @@ def LDOF_score(p: Series, data: DataFrame, k: int, distance: callable) -> float:
     :param data: The whole dataset
     :param k: The number of neighbours to retrieve
     :param distance: The distance function to use
+    :param sim: The similarity matrix
     :return: The k-Nearest-Neighbours inner distance.
     """
-    return kNN_distance(p, data, k, distance) / kNN_inner_distance(data, k, distance)
+    return kNN_distance(p, data, k, distance) / kNN_inner_distance(sim, k)
 
 
 def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int = 0) -> DataFrame:
@@ -89,7 +88,10 @@ def top_n_LDOF(data: DataFrame, distance: callable, n: int, k: int, verbose: int
         warnings.simplefilter(action='ignore', category=FutureWarning)
         warnings.simplefilter(action='ignore', category=UserWarning)
 
-    data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance), axis=1))
+    sim = similarity_matrix(data, distance)
+    data = data.assign(LDOF=data.apply(lambda x: LDOF_score(x, data, k, distance, sim), axis=1))
+    print(data["LDOF"].info())
     data = data.sort_values(axis=0, by="LDOF", ascending=False)
     data.drop(["LDOF"], axis=1, inplace=True)
+    print(data.get(["LDOF"], default="LDOF is correctly dropped"))
     return data.assign(outlier=pd.Series([1 for _ in range(n)] + [0 for _ in range(n+1, data.shape[0] + 1)]))

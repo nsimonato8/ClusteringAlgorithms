@@ -113,7 +113,7 @@ print(f"[START]\n{'-' * 5}KeyError test{'-' * 5}")
 try:
     print(res['cluster'].info())
 except KeyError as err:
-    print(err.with_traceback(tb=sys.exc_info()[2]))
+    print(err.with_traceback())  # tb=sys.exc_info()[2]))
 print(f"{'-' * 5}KeyError test{'-' * 5}\n[END]")
 # ----KEYERROR TEST
 
@@ -129,7 +129,7 @@ try:
               encoding="utf-8") as f:
         f.write(s)
 except KeyError as err:
-    print(err.with_traceback(tb=sys.exc_info()[2]))
+    print(err.with_traceback())  # tb=sys.exc_info()[2]))
 
 timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
