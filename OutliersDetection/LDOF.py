@@ -5,6 +5,9 @@ LDOF factor is calculated by dividing the KNN distance of an object xp by the KN
 This file presents an implementation of the LDOF algorithm, as described by Abir Smiti[2020].
 """
 import warnings
+
+import numpy as np
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 import modin.pandas as pd
@@ -42,7 +45,7 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours distance.
     """
-    kNN = p_neighbourhood(p.to_frame(name=p.name), data, k, distance)
+    kNN = p_neighbourhood(pd.DataFrame(np.reshape(p.values, (1, data.shape[1]))), data, k, distance)
     return kNN.values.sum() / k
 
 
