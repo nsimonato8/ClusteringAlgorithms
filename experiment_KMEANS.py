@@ -61,27 +61,33 @@ param = [{'n_clusters': i} for i in range(11, 17)]
 
 print(f"[{datetime.now()}]STARTING MATR...")
 timestamp1 = datetime.now()
-aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
-                                        path="Data/Results/Experiments/",
-                                        name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans"))
-aux1.name = 'MATR'
+# aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
+#                                         path="Data/Results/Experiments/",
+#                                         name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans"))
+# aux1.name = 'MATR'
+aux1 = MATR(A=kmeans, D=pca_data['8'], hyperpar=param, settings=settings_KMEANS, verbose=1,
+            path="Data/Results/Experiments/",
+            name=f"[{EXP_NUM}]Experiment - PCA_{pca_data['8']}_dim-KMeans")
+
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp3 = datetime.now()
 
-aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-aux3.name = 'silhouette'
+# aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+# aux3.name = 'silhouette'
+
+aux3 = silhouette_score(X=aux1[list(set(aux1.columns) - {'cluster'})], labels=aux1['cluster'])
 
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
-aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-          figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+# aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+#           figsize=(35, 30)).get_figure().savefig(
+#     f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -89,7 +95,8 @@ print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
 timestamp4 = datetime.now()
-res = aux1['8']
+# res = aux1['8']
+res = aux1
 det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
                       k=settings_LDOF['k'], verbose=1)
 
