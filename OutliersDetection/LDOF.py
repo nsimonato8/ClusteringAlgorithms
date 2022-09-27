@@ -17,7 +17,7 @@ from Utils.algebric_op import similarity_matrix, trace
 # from pandas import DataFrame, Series
 
 
-def p_neighbourhood(p: Series, data: DataFrame, k: int, distance: callable) -> Series:
+def p_neighbourhood(p: DataFrame, data: DataFrame, k: int, distance: callable) -> Series:
     """
     This function retrieves the k nearest neighbours of the p instance, contained in the data DataFrame.
 
@@ -42,7 +42,7 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :param distance: The distance function to use
     :return: The k-Nearest-Neighbours distance.
     """
-    kNN = p_neighbourhood(p, data, k, distance)
+    kNN = p_neighbourhood(p.to_frame(name=p.name), data, k, distance)
     return kNN.values.sum() / k
 
 
