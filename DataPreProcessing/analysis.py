@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from modin.pandas import DataFrame
 
 from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
-from DataPreProcessing.feature_eng import add_is_priv_port
+from DataPreProcessing.feature_eng import add_is_priv_port, add_ip_lookup
 
 
 def plot_data_distribution(data: DataFrame) -> None:
@@ -77,8 +77,8 @@ def expand_dataset(data: DataFrame) -> None:
     # signaling if the port is privileged
     add_is_priv_port(data, "sp")
     add_is_priv_port(data, "dp")
-    # add_ip_lookup(data, "sa")
-    # add_ip_lookup(data, "da")
+    add_ip_lookup(data, "sa")
+    add_ip_lookup(data, "da")
     pass
 
 
@@ -111,4 +111,4 @@ if __name__ == "__main__":
 
     print(dataset.head(n=15))
 
-    dataset.to_csv("../Data/sessions_cleaned_01.csv", index=False)
+    dataset.to_csv("../Data/sessions_cleaned.csv", index=False)
