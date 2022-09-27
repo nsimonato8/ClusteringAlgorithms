@@ -46,6 +46,7 @@ def kNN_distance(p: Series, data: DataFrame, k: int, distance: callable) -> floa
     :return: The k-Nearest-Neighbours distance.
     """
     kNN = p_neighbourhood(pd.DataFrame(np.reshape(p.values, (1, data.shape[1]))), data, k, distance)
+    print(f"{kNN.values.sum()}")
     return kNN.values.sum() / k
 
 
