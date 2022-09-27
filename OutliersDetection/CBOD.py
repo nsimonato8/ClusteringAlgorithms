@@ -62,9 +62,9 @@ def CBOD(data: DataFrame, k: int, epsilon: float, verbose: int = 0) -> DataFrame
     while b < k and (sum(map(lambda x: x.shape[0], clusters[0:b])) / data.shape[0]) > epsilon:
         b += 1
 
-    print(f"[{datetime.now()}]\n{data.get(['cluster'], default='cluster field is missing')}\n") if verbose == 1 else 0
+    print(f"[{datetime.now()}]\n{data.get('cluster', default='cluster field is missing')}\n") if verbose == 1 else 0
     
     data = data.assign(outlier=data['cluster'].apply(lambda x: 1 if x <= b else 0))
     
-    print(f"[{datetime.now()}]\n{data.get(['outlier'], default='outlier field is missing')}\n") if verbose == 1 else 0
+    print(f"[{datetime.now()}]\n{data.get('outlier', default='outlier field is missing')}\n") if verbose == 1 else 0
     return data 
