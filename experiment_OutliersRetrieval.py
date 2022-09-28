@@ -45,7 +45,7 @@ print(f"\t[{datetime.now()}]Printing Log[1]...")
 original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_LDOF.txt', 'w') as f:
     sys.stdout = f
-    with pd1.option_context('expand_frame_repr'):
+    with pd1.option_context('expand_frame_repr', True):
         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
         print(kmeans_outliers_LDOF.head(n=kmeans_outliers_LDOF.shape[0]))
         print(f"{'=' * 5} ------------ {'=' * 5}")
