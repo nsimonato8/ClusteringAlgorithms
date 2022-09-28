@@ -45,7 +45,7 @@ print(f"\t[{datetime.now()}]Printing Log[1]...")
 original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_LDOF.txt', 'w') as f:
     sys.stdout = f
-    with pd1.option_context('expand_frame_repr', False):
+    with pd1.option_context('display.max_rows', None, 'display.max_columns', None):
         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
         print(kmeans_outliers_LDOF.head(n=kmeans_outliers_LDOF.shape[0]))
         print(f"{'=' * 5} ------------ {'=' * 5}")
@@ -57,7 +57,7 @@ print(f"\t[{datetime.now()}]Printing Log[2]...")
 original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_CBOD.txt', 'w') as f:
     sys.stdout = f
-    with pd1.option_context('expand_frame_repr', False):
+    with pd1.option_context('display.max_rows', None, 'display.max_columns', None):
         print(f"{'=' * 5} CBOD RESULTS {'=' * 5}")
         print(kmeans_outliers_CBOD.head(n=kmeans_outliers_CBOD.shape[0]))
         print(f"{'=' * 5} ------------ {'=' * 5}")
@@ -102,7 +102,7 @@ print(f"\t[{datetime.now()}]Printing Log[1]...")
 original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/OutliersRetrieval/HAC_outliers_LDOF.txt', 'w') as f:
     sys.stdout = f
-    with pd1.option_context('expand_frame_repr', False):
+    with pd1.option_context('display.max_rows', None, 'display.max_columns', None):
         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
         print(HAC_outliers_LDOF.head(n=HAC_outliers_LDOF.shape[0]))
         print(f"{'=' * 5} ------------ {'=' * 5}")
@@ -114,7 +114,7 @@ print(f"\t[{datetime.now()}]Printing Log[2]...")
 original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/OutliersRetrieval/HAC_outliers_CBOD.txt', 'w') as f:
     sys.stdout = f
-    with pd1.option_context('expand_frame_repr', False):
+    with pd1.option_context('display.max_rows', None, 'display.max_columns', None):
         print(f"{'=' * 5} CBOD RESULTS {'=' * 5}")
         print(HAC_outliers_CBOD.head(n=HAC_outliers_CBOD.shape[0]))
         print(f"{'=' * 5} ------------ {'=' * 5}")
@@ -154,7 +154,7 @@ sys.stdout = original_stdout
 # original_stdout = sys.stdout
 # with open(f'Data/Results/DBSCAN_outliers_filtering.txt', 'w') as f:
 #     sys.stdout = f
-#     with pd1.option_context('expand_frame_repr', False):
+#     with pd1.option_context('display.max_rows', None, 'display.max_columns', None):
 #         print(f"{'=' * 5} DBSCAN RESULTS {'=' * 5}")
 #         print(DBSCAN_outliers_filtering.head(n=DBSCAN_outliers_filtering.shape[0]))
 #         print(f"{'=' * 5} ------------ {'=' * 5}")
