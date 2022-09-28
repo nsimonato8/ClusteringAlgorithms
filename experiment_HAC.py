@@ -26,7 +26,7 @@ import modin.pandas as pd
 
 master_timestamp = datetime.now()
 
-FILENAME = ""
+FILENAME = "10k_"
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")

@@ -22,11 +22,14 @@ ray.init(num_cpus=20)
 
 import modin.pandas as pd
 
+FILENAME = "10k"
+
 master_timestamp = datetime.now()
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
-test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3)  # , engine='python')
+test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
+                        skipfooter=3)  # , engine='python')
 
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
@@ -36,7 +39,6 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 EXP_NUM = 0
-FILENAME = ""
 
 settings_LDOF = {
     'n': 10,
