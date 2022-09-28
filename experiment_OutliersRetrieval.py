@@ -87,12 +87,15 @@ print(f"[{datetime.now()}]Retrieving outliers from HAC...")
 # Read .csv with outliers data
 print(f"\t[{datetime.now()}]Reading Outliers data...")
 HAC_data_LDOF = pd.read_csv(main_path + "HAC/HAC_Outliers_LDOF.csv")
+HAC_data_LDOF_filtered = HAC_data_LDOF.loc[HAC_data_LDOF['outlier'] == 1]
+
 HAC_data_CBOD = pd.read_csv(main_path + "HAC/HAC_Outliers_CBOD.csv")
+HAC_data_CBOD_filtered = HAC_data_CBOD.loc[HAC_data_CBOD['outlier'] == 1]
 
 # .loc in test_data
 print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
-HAC_outliers_LDOF = test_data.loc[HAC_data_LDOF.index]
-HAC_outliers_CBOD = test_data.loc[HAC_data_CBOD.index]
+HAC_outliers_LDOF = test_data.loc[HAC_data_LDOF_filtered.index]
+HAC_outliers_CBOD = test_data.loc[HAC_data_CBOD_filtered.index]
 
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log[1]...")
