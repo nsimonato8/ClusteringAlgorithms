@@ -32,12 +32,15 @@ print(f"[{datetime.now()}]Retrieving outliers from KMEANS...")
 # Read .csv with outliers data
 print(f"\t[{datetime.now()}]Reading Outliers data...")
 kmeans_data_LDOF = pd.read_csv(main_path + "KMEANS/KMEANS_Outliers_LDOF.csv")
+kmeans_data_LDOF_filtered = kmeans_data_LDOF.loc[kmeans_data_LDOF['outlier'] == 1]
+
 kmeans_data_CBOD = pd.read_csv(main_path + "KMEANS/KMEANS_Outliers_CBOD.csv")
+kmeans_data_CBOD_filtered = kmeans_data_CBOD.loc[kmeans_data_CBOD['outlier'] == 1]
 
 # .loc in test_data
 print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
-kmeans_outliers_LDOF = test_data.loc[kmeans_data_LDOF.index]
-kmeans_outliers_CBOD = test_data.loc[kmeans_data_CBOD.index]
+kmeans_outliers_LDOF = test_data.loc[kmeans_data_LDOF_filtered.index]
+kmeans_outliers_CBOD = test_data.loc[kmeans_data_CBOD_filtered.index]
 
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log[1]...")
