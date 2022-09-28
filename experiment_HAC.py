@@ -154,7 +154,7 @@ sys.stdout = original_stdout
 print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
 timestamp7 = datetime.now()
 
-path_results = "Data/Results/Experiments/KMEANS/"
+path_results = "Data/Results/Experiments/HAC/"
 
 det_ldof.to_csv(path_results + "HAC_Outliers_LDOF.csv")
 

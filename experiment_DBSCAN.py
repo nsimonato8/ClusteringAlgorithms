@@ -135,7 +135,7 @@ sys.stdout = original_stdout
 print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
 timestamp7 = datetime.now()
 
-path_results = "Data/Results/Experiments/KMEANS/"
+path_results = "Data/Results/Experiments/DBSCAN/"
 
 det_dbscan.to_csv(path_results + "DBSCAN_Outliers_Filtering.csv")
 
