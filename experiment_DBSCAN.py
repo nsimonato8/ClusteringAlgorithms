@@ -23,6 +23,7 @@ ray.shutdown()
 ray.init(num_cpus=20)
 
 import modin.pandas as pd
+
 master_timestamp = datetime.now()
 
 # Importing Data
@@ -104,11 +105,11 @@ print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 # Printing the clusters
 timestamp3 = datetime.now()
 
-aux1.apply(lambda x: visualize_cluster(data=x,
-                                       i=EXP_NUM,
-                                       cluster_or_outliers='cluster',
-                                       additional=f"PCA_{len(x.columns) - 1}_dim-DBSCAN_{x['cluster'].max() + 1}",
-                                       path="Data/Results/Experiments/DBSCAN/"))
+visualize_cluster(data=aux1['8'],
+                  i=EXP_NUM,
+                  cluster_or_outliers='cluster',
+                  additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/DBSCAN/")
 
 visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
                   i=EXP_NUM,
