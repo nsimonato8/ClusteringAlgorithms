@@ -23,11 +23,11 @@ ray.shutdown()
 ray.init(num_cpus=20)
 
 import modin.pandas as pd
+master_timestamp = datetime.now()
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
-test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,
-                        engine='python')
+test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3)  # engine='python'
 
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
@@ -80,17 +80,14 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp2 = datetime.now()
 
-
-# aux2 = pca_data.apply(lambda data: data[1])
-# aux2.name = 'PCA_dim'
-aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-aux3.name = 'silhouette'
+aux2 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+aux2.name = 'silhouette'
 
 timestamp2 = datetime.now() - timestamp2
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 
-aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+aux2.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
           figsize=(35, 30)).get_figure().savefig(
     f'Data/Results/Experiments/PCA-DBSCAN_sil_score{EXP_NUM}.png')
 
@@ -103,6 +100,25 @@ det_dbscan = aux1['8'].loc[aux1['8']['cluster'] < 0, :]
 
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
+print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
+# Printing the clusters
+timestamp3 = datetime.now()
+
+aux1.apply(lambda x: visualize_cluster(data=x,
+                                       i=EXP_NUM,
+                                       cluster_or_outliers='cluster',
+                                       additional=f"PCA_{len(x.columns) - 1}_dim-DBSCAN_{x['cluster'].max() + 1}",
+                                       path="Data/Results/Experiments/"))
+
+visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'} - {'LDOF'})],
+                  i=EXP_NUM,
+                  cluster_or_outliers='outlier',
+                  additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/")
+
+timestamp3 = datetime.now() - timestamp3
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
+
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
@@ -113,22 +129,8 @@ with open(f'Data/Results/Experiments/[Experiment PCA-DBSCAN-GridSearchCV]_main_l
     print(f"GridSearchCV settings:\t{settings_GridSearch}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
     print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
-    # print(f"Time elapsed for Clusters plotting:\t{timestamp3}")
+    print(f"Time elapsed for Plotting:\t{timestamp3}")
 sys.stdout = original_stdout
 
-print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
-# Printing the clusters
-timestamp3 = datetime.now()
-aux1.apply(lambda x: visualize_cluster(data=x,
-                                       i=EXP_NUM,
-                                       cluster_or_outliers='cluster',
-                                       additional=f"PCA_{len(x.columns) - 1}_dim-DBSCAN_{x['cluster'].max() + 1}",
-                                       path="Data/Results/Experiments/"))
-
-visualize_cluster(data=det_dbscan[list(set(det_dbscan.index) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
-timestamp3 = datetime.now() - timestamp3
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
+master_timestamp = datetime.now() - master_timestamp
+print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")

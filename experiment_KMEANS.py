@@ -1,4 +1,3 @@
-import io
 import os
 import sys
 import warnings
@@ -81,9 +80,9 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
-# aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-#           figsize=(35, 30)).get_figure().savefig(
-#     f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+          figsize=(35, 30)).get_figure().savefig(
+    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -93,18 +92,8 @@ print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 timestamp4 = datetime.now()
 
 res = aux1['8']
-# det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
-#                       k=settings_LDOF['k'], verbose=1)
-
-# try:
-#     buffer = io.StringIO()
-#     det_ldof.info(buf=buffer)
-#     s = buffer.getvalue()
-#     with open("[KMEANS]det_ldof_info.txt", "w",
-#               encoding="utf-8") as f:
-#         f.write(s)
-# except KeyError as err:
-#     print("det_ldof.info does not work")
+det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
+                      k=settings_LDOF['k'], verbose=1)
 
 timestamp4 = datetime.now() - timestamp4
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
@@ -114,15 +103,6 @@ print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
-try:
-    buffer = io.StringIO()
-    det_cbod.info(buf=buffer)
-    s = buffer.getvalue()
-    with open("[KMEANS]det_cbod_info.txt", "w",
-              encoding="utf-8") as f:
-        f.write(s)
-except KeyError as err:
-    print("det_cbod.info does not work")  # tb=sys.exc_info()[2]))
 
 timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
@@ -149,17 +129,18 @@ sys.stdout = original_stdout
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 # Printing the clusters
 timestamp6 = datetime.now()
-# visualize_cluster(data=res,
-#                   i=EXP_NUM,
-#                   cluster_or_outliers='cluster',
-#                   additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
-#                   path="Data/Results/Experiments/")
-#
-# visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
-#                   i=EXP_NUM,
-#                   cluster_or_outliers='outlier',
-#                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
-#                   path="Data/Results/Experiments/")
+
+visualize_cluster(data=res,
+                  i=EXP_NUM,
+                  cluster_or_outliers='cluster',
+                  additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/")
+
+visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
+                  i=EXP_NUM,
+                  cluster_or_outliers='outlier',
+                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
+                  path="Data/Results/Experiments/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
@@ -168,6 +149,6 @@ visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   path="Data/Results/Experiments/")
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
-master_timestamp = datetime.now() - master_timestamp
 
+master_timestamp = datetime.now() - master_timestamp
 print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")

@@ -19,7 +19,7 @@ def visualize_cluster(data: DataFrame, i: int = 0, h: int = 2, cluster_or_outlie
     pass
 
 
-def plot_dendrogram(data: DataFrame, i: int = 0, additional: str = "", path: str = "", **kwargs):
+def plot_dendrogram(data: DataFrame, i: int = 0, additional: str = "", path: str = ""):
     """
     Plots the Dendrogram of an HAC clustering result.
 
@@ -27,7 +27,6 @@ def plot_dendrogram(data: DataFrame, i: int = 0, additional: str = "", path: str
     :param data: The clustered DataFrame (with HAC).
     :param additional: The name of the file to plot.
     :param path: The path where the plot will be saved.
-    :param kwargs: Additional arguments for the plot.
     :return: None
     """
     sns.set_theme(color_codes=True)
