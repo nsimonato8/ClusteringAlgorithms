@@ -105,12 +105,14 @@ print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 # Printing the clusters
 timestamp3 = datetime.now()
 
+print(f"\t[{datetime.now()}]\tCLUSTER PLOT...")
 visualize_cluster(data=aux1['8'],
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
                   additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}",
                   path="Data/Results/Experiments/DBSCAN/")
 
+print(f"\t[{datetime.now()}]\tOUTLIER PLOT...")
 visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
