@@ -42,7 +42,7 @@ EXP_NUM = 1
 
 settings_HAC = {'compute_full_tree': 'auto',
                 'linkage': 'ward',
-                'distance': euclidean,
+                'distance': 'euclidean',
                 'epsilon': None}
 
 settings_LDOF = {
