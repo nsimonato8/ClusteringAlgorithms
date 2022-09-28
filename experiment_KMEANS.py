@@ -53,7 +53,7 @@ settings_LDOF = {
 }
 
 settings_CBOD = {
-    'epsilon': 0.0000005
+    'epsilon': 0.005
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")

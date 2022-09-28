@@ -61,19 +61,19 @@ with open(f'Data/Results/KMeans_outliers_CBOD.txt', 'w') as f:
 sys.stdout = original_stdout
 
 # Print test_data pairplot
-kmeans_outliers_LDOF = test_data.assign(outlier=kmeans_data_LDOF['outlier'], cluster=kmeans_data_LDOF['cluster'])
+kmeans_outliers_LDOF = test_data.assign(outlier=kmeans_data_LDOF['outlier'])
 visualize_cluster(data=kmeans_outliers_LDOF[list(set(kmeans_outliers_LDOF.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(kmeans_outliers_LDOF.columns) - 1}_dim-DBSCAN_{kmeans_outliers_LDOF['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/DBSCAN/")
+                  additional=f"[KMEANS]PCA_{len(kmeans_outliers_LDOF.columns) - 1}_dim-KMEANS",
+                  path="Data/Results/Experiments/OutliersRetrieval/")
 
 kmeans_outliers_CBOD = test_data.assign(outlier=kmeans_data_CBOD['outlier'], cluster=kmeans_data_CBOD['cluster'])
 visualize_cluster(data=kmeans_outliers_CBOD[list(set(kmeans_outliers_CBOD.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(kmeans_outliers_CBOD.columns) - 1}_dim-DBSCAN_{kmeans_outliers_CBOD['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/DBSCAN/")
+                  additional=f"[KMEANS]PCA_{len(kmeans_outliers_CBOD.columns) - 1}_dim-KMEANS_{kmeans_outliers_CBOD['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/OutliersRetrieval/")
 
 # ---------- HAC ----------
 print(f"[{datetime.now()}]Retrieving outliers from HAC...")
@@ -109,19 +109,19 @@ with open(f'Data/Results/HAC_outliers_CBOD.txt', 'w') as f:
 sys.stdout = original_stdout
 
 # Print test_data pairplot
-HAC_outliers_LDOF = test_data.assign(outlier=HAC_data_LDOF['outlier'], cluster=HAC_data_LDOF['cluster'])
+HAC_outliers_LDOF = test_data.assign(outlier=HAC_data_LDOF['outlier'])
 visualize_cluster(data=HAC_outliers_LDOF[list(set(HAC_outliers_LDOF.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(HAC_outliers_LDOF.columns) - 1}_dim-DBSCAN_{HAC_outliers_LDOF['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/DBSCAN/")
+                  additional=f"[HAC]PCA_{len(HAC_outliers_LDOF.columns) - 1}_dim-HAC",
+                  path="Data/Results/Experiments/OutliersRetrieval/")
 
 HAC_outliers_CBOD = test_data.assign(outlier=HAC_data_CBOD['outlier'], cluster=HAC_data_CBOD['cluster'])
 visualize_cluster(data=HAC_outliers_CBOD[list(set(HAC_outliers_CBOD.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(HAC_outliers_CBOD.columns) - 1}_dim-DBSCAN_{HAC_outliers_CBOD['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/DBSCAN/")
+                  additional=f"[HAC]PCA_{len(HAC_outliers_CBOD.columns) - 1}_dim-HAC_{HAC_outliers_CBOD['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/OutliersRetrieval/")
 
 # # ---------- DBSCAN ----------
 # print(f"[{datetime.now()}]Retrieving outliers from DBSCAN...")
@@ -150,7 +150,7 @@ visualize_cluster(data=HAC_outliers_CBOD[list(set(HAC_outliers_CBOD.columns) - {
 #                   i=EXP_NUM,
 #                   cluster_or_outliers='outlier',
 #                   additional=f"[DBSCAN]PCA_{len(DBSCAN_outliers_filtering.columns) - 1}_dim-DBSCAN_{DBSCAN_outliers_filtering['cluster'].max() + 1}",
-#                   path="Data/Results/Experiments/DBSCAN/")
+#                   path="Data/Results/Experiments/OutliersRetrieval/")
 
 master_timestamp = datetime.now() - master_timestamp
 print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")
