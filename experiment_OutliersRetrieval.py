@@ -25,12 +25,15 @@ test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=T
 
 # Main settings
 EXP_NUM = 0
+FILENAME = ""
+
+FILENAME = ""
 main_path = "Data/Results/Experiments/"
 
 # ---------- LDOF ----------
 print(f"[{datetime.now()}]Retrieving outliers from LDOF...")
 
-data_LDOF = pd.read_csv(main_path + "LDOF/Outliers.csv")
+data_LDOF = pd.read_csv(main_path + "LDOF/Outliers{FILENAME}.csv")
 data_LDOF_filtered = data_LDOF.loc[data_LDOF['outlier'] == 1]
 
 # Print test_data pairplot
@@ -42,7 +45,7 @@ kmeans_outliers_LDOF = test_data.loc[data_LDOF_filtered.index]
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log[1]...")
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/OutliersRetrieval/Outliers_LDOF.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/Outliers_LDOF{FILENAME}.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
@@ -56,7 +59,7 @@ print(f"\t[{datetime.now()}]Printing PairPlot LDOF...")
 visualize_cluster(data=outliers_LDOF[list(set(outliers_LDOF.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(outliers_LDOF.columns) - 1}_dim",
+                  additional=f"[LDOF]PCA_{len(outliers_LDOF.columns) - 1}_dim{FILENAME}",
                   path="Data/Results/Experiments/OutliersRetrieval/")
 
 # ---------- KMEANS ----------
@@ -73,7 +76,7 @@ kmeans_outliers_CBOD = test_data.loc[kmeans_data_CBOD_filtered.index]
 
 print(f"\t[{datetime.now()}]Printing Log...")
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_CBOD.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_CBOD{FILENAME}.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
         print(f"{'=' * 5} CBOD RESULTS {'=' * 5}")
@@ -96,7 +99,7 @@ print(f"[{datetime.now()}]Retrieving outliers from HAC...")
 # Read .csv with outliers data
 print(f"\t[{datetime.now()}]Reading Outliers data...")
 
-HAC_data_CBOD = pd.read_csv(main_path + "HAC/HAC_Outliers_CBOD.csv")
+HAC_data_CBOD = pd.read_csv(main_path + f"HAC/HAC_Outliers_CBOD{FILENAME}.csv")
 HAC_data_CBOD_filtered = HAC_data_CBOD.loc[HAC_data_CBOD['outlier'] == 1]
 
 # .loc in test_data
@@ -105,7 +108,7 @@ HAC_outliers_CBOD = test_data.loc[HAC_data_CBOD_filtered.index]
 
 print(f"\t[{datetime.now()}]Printing Log[2]...")
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/OutliersRetrieval/HAC_outliers_CBOD.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/HAC_outliers_CBOD{FILENAME}.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
         print(f"{'=' * 5} CBOD RESULTS {'=' * 5}")
@@ -120,7 +123,7 @@ HAC_outliers_CBOD = test_data.assign(outlier=HAC_data_CBOD['outlier'], cluster=H
 visualize_cluster(data=HAC_outliers_CBOD[list(set(HAC_outliers_CBOD.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[HAC]PCA_{len(HAC_outliers_CBOD.columns) - 1}_dim-HAC_{HAC_outliers_CBOD['cluster'].max() + 1}",
+                  additional=f"[HAC]PCA_{len(HAC_outliers_CBOD.columns) - 1}_dim-HAC_{HAC_outliers_CBOD['cluster'].max() + 1}{FILENAME}",
                   path="Data/Results/Experiments/OutliersRetrieval/")
 
 # # ---------- DBSCAN ----------

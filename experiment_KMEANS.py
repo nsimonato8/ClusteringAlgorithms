@@ -24,11 +24,15 @@ ray.shutdown()
 ray.init(num_cpus=20)
 
 import modin.pandas as pd
+
 master_timestamp = datetime.now()
+
+FILENAME = ""
 
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
-test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3)  # , engine='python')
+test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
+                        skipfooter=3)  # , engine='python')
 
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
@@ -61,7 +65,7 @@ print(f"[{datetime.now()}]STARTING MATR...")
 timestamp1 = datetime.now()
 aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
                                         path="Data/Results/Experiments/KMEANS/",
-                                        name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans"))
+                                        name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans{FILENAME}"))
 aux1.name = 'MATR'
 
 timestamp1 = datetime.now() - timestamp1
@@ -80,7 +84,7 @@ print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
 aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
           figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/KMEANS/PCA-KMeans_sil_score{EXP_NUM}.png')
+    f'Data/Results/Experiments/KMEANS/PCA-KMeans_sil_score{EXP_NUM}{FILENAME}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -98,7 +102,7 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}{FILENAME}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
     print(f"PCA number of dimensions parameter:\n{n_dims}\n")
@@ -118,13 +122,13 @@ timestamp6 = datetime.now()
 visualize_cluster(data=res,
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
-                  additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
+                  additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}{FILENAME}",
                   path="Data/Results/Experiments/KMEANS/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
+                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}{FILENAME}",
                   path="Data/Results/Experiments/KMEANS/")
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
@@ -134,7 +138,7 @@ timestamp7 = datetime.now()
 
 path_results = "Data/Results/Experiments/KMEANS/"
 
-det_cbod.to_csv(path_results + "KMEANS_Outliers_CBOD.csv")
+det_cbod.to_csv(path_results + f"KMEANS_Outliers_CBOD{FILENAME}.csv")
 
 timestamp7 = datetime.now() - timestamp7
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")

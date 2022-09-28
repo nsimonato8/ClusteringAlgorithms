@@ -38,6 +38,7 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 EXP_NUM = 0
+FILENAME = ""
 
 settings_GridSearch = {'estimator': DBSCAN,
                        'n_jobs': -1,

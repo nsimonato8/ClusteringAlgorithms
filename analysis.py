@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 from DataPreProcessing.cleaning import date_to_features, ip_address_to_features, label_encoder, flag_to_features
-from DataPreProcessing.feature_eng import add_is_priv_port, add_ip_lookup
+from DataPreProcessing.feature_eng import add_is_priv_port
 
 
 # os.environ["MODIN_CPUS"] = "20"
@@ -87,40 +87,40 @@ def expand_dataset(data: DataFrame) -> None:
     # signaling if the port is privileged
     add_is_priv_port(data, "sp")
     add_is_priv_port(data, "dp")
-    add_ip_lookup(data, "sa")
-    add_ip_lookup(data, "da")
+    # add_ip_lookup(data, "sa")
+    # add_ip_lookup(data, "da")
     pass
 
 
-# if __name__ == "__main__":
-file_path = "Data/sessions.csv"
-dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
-print("[BEFORE] Structure of the dataset:")
-dataset.info()
+if __name__ == "__main__":
+    file_path = "Data/10k_sessions.csv"
+    dataset = pd.read_csv(filepath_or_buffer=file_path, sep=",", skipinitialspace=True, skipfooter=3, engine='python')
+    print("[BEFORE] Structure of the dataset:")
+    dataset.info()
 
-clean_dataset(dataset)
+    clean_dataset(dataset)
 
-print("[AFTER CLEANING] Structure of the dataset:")
+    print("[AFTER CLEANING] Structure of the dataset:")
 
-expand_dataset(dataset)
+    expand_dataset(dataset)
 
-print("[AFTER EXPANDING] Structure of the dataset:")
+    print("[AFTER EXPANDING] Structure of the dataset:")
 
-dataset.info()
-print(dataset.head(n=15))
+    dataset.info()
+    print(dataset.head(n=15))
 
-transform_dataset(dataset)
+    transform_dataset(dataset)
 
-print("[AFTER TRANSFORMING] Structure of the dataset:")
-dataset.info()
-print(dataset.head(n=15))
+    print("[AFTER TRANSFORMING] Structure of the dataset:")
+    dataset.info()
+    print(dataset.head(n=15))
 
-to_print = ["sp", "dp"]  # , "stos", "dtos", "fwd", "ipkt", "opkt", "ibyt", "obyt", "pr"]
+    to_print = ["sp", "dp"]  # , "stos", "dtos", "fwd", "ipkt", "opkt", "ibyt", "obyt", "pr"]
 
-plot_data_distribution(dataset[to_print])
+    # plot_data_distribution(dataset[to_print])
 
-print(dataset.head(n=15))
+    print(dataset.head(n=15))
 
-new_file_path = "Data/sessions_cleaned_1.csv"
+    new_file_path = "Data/10k_sessions_cleaned.csv"
 
-dataset.to_csv(new_file_path)
+    dataset.to_csv(new_file_path)

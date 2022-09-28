@@ -36,6 +36,7 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 EXP_NUM = 0
+FILENAME = ""
 
 settings_LDOF = {
     'n': 10,
@@ -62,7 +63,7 @@ timestamp6 = datetime.now()
 visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
+                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim{FILENAME}",
                   path="Data/Results/Experiments/KMEANS/")
 
 timestamp6 = datetime.now() - timestamp6
@@ -73,7 +74,7 @@ path_results = "Data/Results/Experiments/LDOF/"
 det_ldof.to_csv(path_results + "Outliers_LDOF.csv")
 
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}{FILENAME}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
     print(f"PCA number of dimensions parameter:\n{n_dims}\n")
