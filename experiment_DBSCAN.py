@@ -89,7 +89,7 @@ print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 
 aux2.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
           figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-DBSCAN_sil_score{EXP_NUM}.png')
+    f'Data/Results/Experiments/DBSCAN/PCA-DBSCAN_sil_score{EXP_NUM}.png')
 
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -108,29 +108,36 @@ aux1.apply(lambda x: visualize_cluster(data=x,
                                        i=EXP_NUM,
                                        cluster_or_outliers='cluster',
                                        additional=f"PCA_{len(x.columns) - 1}_dim-DBSCAN_{x['cluster'].max() + 1}",
-                                       path="Data/Results/Experiments/"))
+                                       path="Data/Results/Experiments/DBSCAN/"))
 
-visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'} - {'LDOF'})],
+visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
                   additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
+                  path="Data/Results/Experiments/DBSCAN/")
 
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
-# Printing log file
-# Saving the reference of the standard output
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/[Experiment PCA-DBSCAN-GridSearchCV]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]_main_log_{EXP_NUM}.txt', 'w') as f:
     sys.stdout = f
-    # Reset the standard output
     print(f"PCA number of dimensions parameter:\t{n_dims}")
     print(f"GridSearchCV settings:\t{settings_GridSearch}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
     print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
     print(f"Time elapsed for Plotting:\t{timestamp3}")
 sys.stdout = original_stdout
+
+print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
+timestamp7 = datetime.now()
+
+path_results = "Data/Results/Experiments/KMEANS/"
+
+det_dbscan.to_csv(path_results + "DBSCAN_Outliers_Filtering.csv")
+
+timestamp7 = datetime.now() - timestamp7
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")
 
 master_timestamp = datetime.now() - master_timestamp
 print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")

@@ -62,7 +62,7 @@ param = [{'n_clusters': i} for i in range(11, 17)]
 print(f"[{datetime.now()}]STARTING MATR...")
 timestamp1 = datetime.now()
 aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
-                                        path="Data/Results/Experiments/",
+                                        path="Data/Results/Experiments/KMEANS/",
                                         name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans"))
 aux1.name = 'MATR'
 
@@ -82,7 +82,7 @@ print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 timestamp2 = datetime.now()
 aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
           figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/PCA-KMeans_sil_score{EXP_NUM}.png')
+    f'Data/Results/Experiments/KMEANS/PCA-KMeans_sil_score{EXP_NUM}.png')
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
@@ -111,7 +111,7 @@ print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 # Printing log file
 # Saving the reference of the standard output
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_log_{EXP_NUM}.txt', 'w') as f:
     sys.stdout = f
     # Reset the standard output
     print(f"PCA number of dimensions parameter:\n{n_dims}\n")
@@ -134,21 +134,33 @@ visualize_cluster(data=res,
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
                   additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
+                  path="Data/Results/Experiments/KMEANS/")
 
 visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
                   additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
-                  path="Data/Results/Experiments/")
+                  path="Data/Results/Experiments/KMEANS/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
                   additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/")
+                  path="Data/Results/Experiments/KMEANS/")
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
+
+print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
+timestamp7 = datetime.now()
+
+path_results = "Data/Results/Experiments/KMEANS/"
+
+det_ldof.to_csv(path_results + "KMEANS_Outliers_LDOF.csv")
+
+det_cbod.to_csv(path_results + "KMEANS_Outliers_CBOD.csv")
+
+timestamp7 = datetime.now() - timestamp7
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")
 
 master_timestamp = datetime.now() - master_timestamp
 print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")
