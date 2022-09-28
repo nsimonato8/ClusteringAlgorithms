@@ -123,4 +123,4 @@ print(dataset.head(n=15))
 
 new_file_path = "Data/sessions_cleaned_1.csv"
 
-dataset.to_csv(new_file_path, index=False)
+dataset.to_csv(new_file_path)

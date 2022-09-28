@@ -7,7 +7,7 @@ def visualize_cluster(data: DataFrame, i: int = 0, h: int = 2, cluster_or_outlie
                       additional: str = "", path: str = "") -> None:
     sns.set_theme(style="white", palette=None)
 
-    data.to_csv(f"{path}{additional}_saved.csv", index=False)
+    data.to_csv(f"{path}{additional}_saved.csv")
 
     pandas_data = ppd.read_csv(f"{path}{additional}_saved.csv")
 
