@@ -80,16 +80,16 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
 timestamp2 = datetime.now()
 
-aux2 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-aux2.name = 'silhouette'
+# aux2 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+# aux2.name = 'silhouette'
 
 timestamp2 = datetime.now() - timestamp2
 
 print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
 
-aux2.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-          figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/DBSCAN/PCA-DBSCAN_sil_score{EXP_NUM}.png')
+# aux2.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+#           figsize=(35, 30)).get_figure().savefig(
+#     f'Data/Results/Experiments/DBSCAN/PCA-DBSCAN_sil_score{EXP_NUM}.png')
 
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
