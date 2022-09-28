@@ -10,8 +10,8 @@ HAC number of cluster candidates:	range(10, 16)
 HAC settings:	{'compute_full_tree': 'auto', 'linkage': 'ward', 'distance': 'euclidean', 'epsilon': None}
 LDOF settings:	{'n': 10, 'k': 10}
 CBOD settings:	{'epsilon': 0.005}
-Time elapsed for MATR computation (all of the datasets):	0:01:07.772115
-Time elapsed for Outlier Detection (LDOF):	0:14:48.865685
-Time elapsed for Outlier Detection (CBOD):	0:03:30.144267
-Time elapsed for Silhouette Scores plotting:	0:00:00.539064
-Time elapsed for Plots plotting:	0:01:02.655205
+Time elapsed for MATR computation (all of the datasets):	0:01:06.232069
+Time elapsed for Outlier Detection (LDOF):	0:14:54.910865
+Time elapsed for Outlier Detection (CBOD):	0:03:27.800459
+Time elapsed for Silhouette Scores plotting:	0:00:00.558158
+Time elapsed for Plots plotting:	0:01:02.915650
