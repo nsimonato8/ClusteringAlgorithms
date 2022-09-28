@@ -42,7 +42,7 @@ kmeans_outliers_CBOD = test_data.loc[kmeans_data_CBOD.index]
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log[1]...")
 original_stdout = sys.stdout
-with open(f'Data/Results/OutliersRetrieval/KMeans_outliers_LDOF.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_LDOF.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False):
         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
@@ -54,7 +54,7 @@ sys.stdout = original_stdout
 
 print(f"\t[{datetime.now()}]Printing Log[2]...")
 original_stdout = sys.stdout
-with open(f'Data/Results/OutliersRetrieval/KMeans_outliers_CBOD.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/KMeans_outliers_CBOD.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False):
         print(f"{'=' * 5} CBOD RESULTS {'=' * 5}")
@@ -96,7 +96,7 @@ HAC_outliers_CBOD = test_data.loc[HAC_data_CBOD.index]
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log[1]...")
 original_stdout = sys.stdout
-with open(f'Data/Results/OutliersRetrieval/HAC_outliers_LDOF.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/HAC_outliers_LDOF.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False):
         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
@@ -108,7 +108,7 @@ sys.stdout = original_stdout
 
 print(f"\t[{datetime.now()}]Printing Log[2]...")
 original_stdout = sys.stdout
-with open(f'Data/Results/OutliersRetrieval/HAC_outliers_CBOD.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/HAC_outliers_CBOD.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False):
         print(f"{'=' * 5} CBOD RESULTS {'=' * 5}")
