@@ -42,7 +42,7 @@ settings_LDOF = {
     'k': 10
 }
 
-res = pca_data['8']
+res = pca_data['8'][0]
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
 # Outlier detection JUST 8 DIMENSIONS
