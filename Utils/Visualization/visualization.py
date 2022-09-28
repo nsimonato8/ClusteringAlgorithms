@@ -30,7 +30,7 @@ def plot_dendrogram(data: DataFrame, i: int = 0, additional: str = "", path: str
     :return: None
     """
     sns.set_theme(color_codes=True)
-    plt = sns.clustermap(data, method='eucidean', figsize=(30, 30), row_cluster=True)
+    plt = sns.clustermap(data, method='euclidean', figsize=(30, 30), row_cluster=True)
     # plt.title(f"[Experiment {i}]HAC clustering")
     # plt.xlabel("Number of points in node (or index of point if no parenthesis).")
     plt.savefig(f"{path}-{additional}_hierachical_clusters{i}.png")
