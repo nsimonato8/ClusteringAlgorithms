@@ -5,8 +5,6 @@ from datetime import datetime
 
 from sklearn.metrics import silhouette_score
 
-from OutliersDetection.LDOF import top_n_LDOF
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -86,18 +84,7 @@ aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouett
 timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
-print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
-print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
-# Outlier detection JUST 8 DIMENSIONS
-timestamp4 = datetime.now()
-
 res = aux1['8']
-det_ldof = top_n_LDOF(data=res[list(set(res.columns) - {'cluster'})], distance=euclidean, n=settings_LDOF['n'],
-                      k=settings_LDOF['k'], verbose=1)
-
-timestamp4 = datetime.now() - timestamp4
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
-print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
@@ -117,10 +104,8 @@ with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_lo
     print(f"PCA number of dimensions parameter:\n{n_dims}\n")
     print(f"KMeans number of cluster candidates:\t{range(10, 16)}")
     print(f"KMeans settings:\t{settings_KMEANS}")
-    print(f"LDOF settings:\t{settings_LDOF}")
     print(f"CBOD settings:\t{settings_CBOD}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
-    print(f"Time elapsed for Outlier Detection (LDOF):\t{timestamp4}")
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
     print(f"Time elapsed for Silhouette Scores computations:\t{timestamp3}")
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
@@ -136,12 +121,6 @@ visualize_cluster(data=res,
                   additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
                   path="Data/Results/Experiments/KMEANS/")
 
-visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim",
-                  path="Data/Results/Experiments/KMEANS/")
-
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
@@ -154,8 +133,6 @@ print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
 timestamp7 = datetime.now()
 
 path_results = "Data/Results/Experiments/KMEANS/"
-
-det_ldof.to_csv(path_results + "KMEANS_Outliers_LDOF.csv")
 
 det_cbod.to_csv(path_results + "KMEANS_Outliers_CBOD.csv")
 

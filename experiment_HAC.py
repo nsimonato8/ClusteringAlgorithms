@@ -10,12 +10,10 @@ warnings.simplefilter(action='ignore', category=UserWarning)
 
 import ray
 # import pandas as pd
-from scipy.spatial.distance import euclidean
 from sklearn.metrics import silhouette_score
 
 from DataPreProcessing.importance import reduce_dimensionality
 from OutliersDetection.CBOD import CBOD
-from OutliersDetection.LDOF import top_n_LDOF
 from Tuning.MATR import MATR
 from Utils.Visualization.visualization import visualize_cluster, plot_dendrogram
 
@@ -84,15 +82,7 @@ timestamp2 = datetime.now() - timestamp2
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
-print(f"[{datetime.now()}]{'=' * 5} LDOF {'=' * 5}")
-# Outlier detection JUST 8 DIMENSIONS
-timestamp4 = datetime.now()
 res = aux1['8']
-det_ldof = top_n_LDOF(data=res, distance=euclidean, n=settings_LDOF['n'], k=settings_LDOF['k'])
-
-timestamp4 = datetime.now() - timestamp4
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp4}...")
-print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
@@ -118,12 +108,6 @@ visualize_cluster(data=res,
                   additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}",
                   path="Data/Results/Experiments/HAC/")
 
-visualize_cluster(data=det_ldof[list(set(det_ldof.columns) - {'cluster'} - {'LDOF'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(det_ldof.columns) - 1}_dim-HAC_{det_ldof['cluster'].max() + 1}",
-                  path="Data/Results/Experiments/HAC/")
-
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
@@ -145,7 +129,6 @@ with open(f'Data/Results/Experiments/HAC/[Experiment PCA-HAC-MATR]_main_log_{EXP
     print(f"LDOF settings:\t{settings_LDOF}")
     print(f"CBOD settings:\t{settings_CBOD}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
-    print(f"Time elapsed for Outlier Detection (LDOF):\t{timestamp4}")
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
     print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
     print(f"Time elapsed for Plots plotting:\t{timestamp6}")
@@ -155,8 +138,6 @@ print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
 timestamp7 = datetime.now()
 
 path_results = "Data/Results/Experiments/HAC/"
-
-det_ldof.to_csv(path_results + "HAC_Outliers_LDOF.csv")
 
 det_cbod.to_csv(path_results + "HAC_Outliers_CBOD.csv")
 
