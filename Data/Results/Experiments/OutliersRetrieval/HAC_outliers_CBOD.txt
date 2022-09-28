@@ -1,7 +1,7 @@
 ===== CBOD RESULTS =====
-     sp     dp     pr  fwd  stos  ipkt   ibyt      opkt  obyt  sas  das  da1  da2  da3  da4  flg_ACK  flg_PSH  flg_RST  flg_SYN  flg_FIN  sp_is_privileged  dp_is_privileged
-391    443  54744   1    0     0    707    863522     0     0    0    0  157  138  185  247        1        1        0        1        0                 1                 0
-476    443  52808   1    0     0    927   1366986     0     0    0    0  157  138   20  140        1        1        1        1        1                 1                 0
+     sp     dp     pr  fwd  stos  ipkt   ibyt      opkt  da4  flg_ACK  \
+391    443  54744   1    0     0    707    863522     0  247        1   
+476    443  52808   1    0     0    927   1366986     0  140        1   
 
 [2 rows x 46 columns]
 ===== ------------ =====
