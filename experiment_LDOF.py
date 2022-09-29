@@ -22,7 +22,7 @@ ray.init(num_cpus=20)
 
 import modin.pandas as pd
 
-FILENAME = "10k"
+FILENAME = "10k_"
 
 master_timestamp = datetime.now()
 
