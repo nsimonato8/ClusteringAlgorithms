@@ -30,37 +30,37 @@ FILENAME = ""
 FILENAME = ""
 main_path = "Data/Results/Experiments/"
 
-# ---------- LDOF ----------
-print(f"[{datetime.now()}]Retrieving outliers from LDOF...")
-
-data_LDOF = pd.read_csv(main_path + "LDOF/Outliers{FILENAME}.csv")
-data_LDOF_filtered = data_LDOF.loc[data_LDOF['outlier'] == 1]
-
-# Print test_data pairplot
-print(f"\t[{datetime.now()}]Printing PairPlot LDOF...")
-outliers_LDOF = test_data.assign(outlier=data_LDOF['outlier'])
-
-kmeans_outliers_LDOF = test_data.loc[data_LDOF_filtered.index]
-
-# Print log with outliers in .txt
-print(f"\t[{datetime.now()}]Printing Log[1]...")
-original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/OutliersRetrieval/Outliers_LDOF{FILENAME}.txt', 'w') as f:
-    sys.stdout = f
-    with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
-        print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
-        print(kmeans_outliers_LDOF.head(n=kmeans_outliers_LDOF.shape[0]))
-        print(f"{'=' * 5} ------------ {'=' * 5}")
-        pass
-    pass
-sys.stdout = original_stdout
-
-print(f"\t[{datetime.now()}]Printing PairPlot LDOF...")
-visualize_cluster(data=outliers_LDOF[list(set(outliers_LDOF.columns) - {'cluster'})],
-                  i=EXP_NUM,
-                  cluster_or_outliers='outlier',
-                  additional=f"[LDOF]PCA_{len(outliers_LDOF.columns) - 1}_dim{FILENAME}",
-                  path="Data/Results/Experiments/OutliersRetrieval/")
+# # ---------- LDOF ----------
+# print(f"[{datetime.now()}]Retrieving outliers from LDOF...")
+#
+# data_LDOF = pd.read_csv(main_path + "LDOF/Outliers{FILENAME}.csv")
+# data_LDOF_filtered = data_LDOF.loc[data_LDOF['outlier'] == 1]
+#
+# # Print test_data pairplot
+# print(f"\t[{datetime.now()}]Printing PairPlot LDOF...")
+# outliers_LDOF = test_data.assign(outlier=data_LDOF['outlier'])
+#
+# kmeans_outliers_LDOF = test_data.loc[data_LDOF_filtered.index]
+#
+# # Print log with outliers in .txt
+# print(f"\t[{datetime.now()}]Printing Log[1]...")
+# original_stdout = sys.stdout
+# with open(f'Data/Results/Experiments/OutliersRetrieval/Outliers_LDOF{FILENAME}.txt', 'w') as f:
+#     sys.stdout = f
+#     with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
+#         print(f"{'=' * 5} LDOF RESULTS {'=' * 5}")
+#         print(kmeans_outliers_LDOF.head(n=kmeans_outliers_LDOF.shape[0]))
+#         print(f"{'=' * 5} ------------ {'=' * 5}")
+#         pass
+#     pass
+# sys.stdout = original_stdout
+#
+# print(f"\t[{datetime.now()}]Printing PairPlot LDOF...")
+# visualize_cluster(data=outliers_LDOF[list(set(outliers_LDOF.columns) - {'cluster'})],
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='outlier',
+#                   additional=f"[LDOF]PCA_{len(outliers_LDOF.columns) - 1}_dim{FILENAME}",
+#                   path="Data/Results/Experiments/OutliersRetrieval/")
 
 # ---------- KMEANS ----------
 print(f"[{datetime.now()}]Retrieving outliers from KMEANS...")
