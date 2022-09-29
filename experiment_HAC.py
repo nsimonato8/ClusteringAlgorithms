@@ -47,11 +47,6 @@ settings_HAC = {'compute_full_tree': 'auto',
                 'distance': 'euclidean',
                 'epsilon': None}
 
-settings_LDOF = {
-    'n': 10,
-    'k': 10
-}
-
 settings_CBOD = {
     'epsilon': 0.005
 }
@@ -129,11 +124,10 @@ with open(f'Data/Results/Experiments/HAC/[Experiment PCA-HAC-MATR]_main_log_{EXP
     print(f"PCA number of dimensions parameter:\t{n_dims}")
     print(f"HAC number of cluster candidates:\t{range(10, 16)}")
     print(f"HAC settings:\t{settings_HAC}")
-    print(f"LDOF settings:\t{settings_LDOF}")
     print(f"CBOD settings:\t{settings_CBOD}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
-    print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
+    # print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
     print(f"Time elapsed for Plots plotting:\t{timestamp6}")
 sys.stdout = original_stdout
 
