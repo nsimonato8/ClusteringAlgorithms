@@ -3,8 +3,6 @@ import sys
 import warnings
 from datetime import datetime
 
-from sklearn.metrics import silhouette_score
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -71,29 +69,28 @@ aux1.name = 'MATR'
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
-print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
-timestamp3 = datetime.now()
-
-aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-aux3.name = 'silhouette'
-
-timestamp3 = datetime.now() - timestamp3
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
-
-print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
-timestamp2 = datetime.now()
-aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-          figsize=(35, 30)).get_figure().savefig(
-    f'Data/Results/Experiments/KMEANS/PCA-KMeans_sil_score{EXP_NUM}{FILENAME}.png')
-timestamp2 = datetime.now() - timestamp2
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
+# print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
+# timestamp3 = datetime.now()
+#
+# aux3 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
+# aux3.name = 'silhouette'
+#
+# timestamp3 = datetime.now() - timestamp3
+# print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
+#
+# print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
+# timestamp2 = datetime.now()
+# aux3.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
+#           figsize=(35, 30)).get_figure().savefig(
+#     f'Data/Results/Experiments/KMEANS/PCA-KMeans_sil_score{EXP_NUM}{FILENAME}.png')
+# timestamp2 = datetime.now() - timestamp2
+# print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
 res = aux1['8']
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
-
 
 timestamp5 = datetime.now() - timestamp5
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
