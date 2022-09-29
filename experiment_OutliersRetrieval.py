@@ -70,7 +70,7 @@ kmeans_data_CBOD_filtered = kmeans_data_CBOD.loc[kmeans_data_CBOD['outlier'] == 
 # .loc in test_data
 print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
 print(f"---\n{kmeans_data_CBOD_filtered.index}")
-print(f"{test_data.loc['1609', :]}\n---")
+print(f"{test_data.index}\n---")
 kmeans_outliers_CBOD = test_data.loc[kmeans_data_CBOD_filtered.index]
 
 print(f"\t[{datetime.now()}]Printing Log...")
