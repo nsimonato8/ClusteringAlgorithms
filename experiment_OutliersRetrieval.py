@@ -25,9 +25,8 @@ test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=T
 
 # Main settings
 EXP_NUM = 0
-FILENAME = ""
+FILENAME = "10k_"
 
-FILENAME = ""
 main_path = "Data/Results/Experiments/"
 
 # # ---------- LDOF ----------
