@@ -1,0 +1,16 @@
+PCA number of dimensions parameter:	8      8
+9      9
+10    10
+11    11
+12    12
+13    13
+14    14
+dtype: int64
+HAC number of cluster candidates:	range(10, 16)
+HAC settings:	{'compute_full_tree': 'auto', 'linkage': 'ward', 'distance': 'euclidean', 'epsilon': None}
+LDOF settings:	{'n': 10, 'k': 10}
+CBOD settings:	{'epsilon': 0.005}
+Time elapsed for MATR computation (all of the datasets):	0:12:38.891149
+Time elapsed for Outlier Detection (CBOD):	0:03:44.904755
+Time elapsed for Silhouette Scores plotting:	0:00:00.530449
+Time elapsed for Plots plotting:	0:02:03.577444
