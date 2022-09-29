@@ -16,14 +16,16 @@ ray.init(num_cpus=20)
 
 import modin.pandas as pd
 
+FILENAME = "10k_"
+
 master_timestamp = datetime.now()
 
 print(f"[{datetime.now()}]IMPORTING DATA...")
-test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3)  # engine='python'
+test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
+                        skipfooter=3)  # engine='python'
 
 # Main settings
 EXP_NUM = 0
-FILENAME = "10k_"
 
 main_path = "Data/Results/Experiments/"
 
