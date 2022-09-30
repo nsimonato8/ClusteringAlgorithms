@@ -108,8 +108,8 @@ with open(f'Data/Results/Experiments/KMEANS/[Experiment PCA-KMeans-MATR]_main_lo
     print(f"CBOD settings:\t{settings_CBOD}")
     print(f"Time elapsed for MATR computation (all of the datasets):\t{timestamp1}")
     print(f"Time elapsed for Outlier Detection (CBOD):\t{timestamp5}")
-    print(f"Time elapsed for Silhouette Scores computations:\t{timestamp3}")
-    print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
+    # print(f"Time elapsed for Silhouette Scores computations:\t{timestamp3}")
+    # print(f"Time elapsed for Silhouette Scores plotting:\t{timestamp2}")
 sys.stdout = original_stdout
 
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
