@@ -41,8 +41,8 @@ print(f"[{datetime.now()}]GENERATING SETTINGS...")
 EXP_NUM = 0
 
 settings_LDOF = {
-    'n': 10,
-    'k': 10
+    'n': 100,
+    'k': 25
 }
 
 res = pca_data['8'][0]
