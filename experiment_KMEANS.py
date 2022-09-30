@@ -39,7 +39,7 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 3
+EXP_NUM = 4
 
 settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
@@ -47,13 +47,8 @@ settings_KMEANS = {'n_init': 10,
                    'algorithm': 'lloyd',
                    'distance': euclidean}
 
-settings_LDOF = {
-    'n': 10,
-    'k': 10
-}
-
 settings_CBOD = {
-    'epsilon': 0.05
+    'epsilon': 0.000005
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
@@ -135,7 +130,7 @@ timestamp7 = datetime.now()
 
 path_results = "Data/Results/Experiments/KMEANS/"
 
-det_cbod.to_csv(path_results + f"KMEANS_Outliers_CBOD{FILENAME}.csv")
+det_cbod.to_csv(path_results + f"KMEANS_Outliers_CBOD{FILENAME}{EXP_NUM}.csv")
 
 timestamp7 = datetime.now() - timestamp7
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")
