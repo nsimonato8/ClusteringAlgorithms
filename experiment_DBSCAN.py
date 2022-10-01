@@ -9,6 +9,7 @@ from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
 from sklearn.model_selection import GridSearchCV
 
+from DataPreProcessing.importance import reduce_dimensionality
 from Utils.Visualization.visualization import visualize_cluster
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -32,11 +33,6 @@ FILENAME = "10k_"
 print(f"[{datetime.now()}]IMPORTING DATA...")
 test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
                         skipfooter=3)  # engine='python'
-
-print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
-# n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
-#
-# pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_final_features=n_dim), n_dim))
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
@@ -66,41 +62,19 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
                      scoring=settings_GridSearch['scoring'],
                      param_grid=settings_DBSCAN)
 
+data_aux = reduce_dimensionality(data=test_data, n_final_features=8)
+model.fit(data_aux)
 
-def fit_predict(unfitted_model: GridSearchCV, X: pd.DataFrame):
-    unfitted_model.fit(X)
-    return unfitted_model.predict(X)
+print(f"\tModel Parameters:\t{model.get_params()}")
 
-
-# pca_labels = pca_data.apply(lambda x: (x, fit_predict(model, x)))
-#
-# aux1 = pca_data.apply(lambda x: x[0].assign(cluster=x[1]))
-aux1 = test_data.apply(lambda x: (x, fit_predict(model, x)))
-aux1.name = 'clustered'
+aux1 = data_aux.assign(cluster=data_aux.apply(lambda x: (x, model.predict(x))))
 
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
-print(f"[{datetime.now()}]CALCULATING SILHOUETTE SCORES...")
-timestamp2 = datetime.now()
-
-# aux2 = aux1.apply(lambda data: silhouette_score(X=data[list(set(data.columns) - {'cluster'})], labels=data['cluster']))
-# aux2.name = 'silhouette'
-
-timestamp2 = datetime.now() - timestamp2
-
-print(f"[{datetime.now()}]PRINTING SILHOUETTE SCORES TO FILE...")
-
-# aux2.plot(kind="bar", xlabel="Number of dimensions after PCA", ylabel="Silhouette Score",
-#           figsize=(35, 30)).get_figure().savefig(
-#     f'Data/Results/Experiments/DBSCAN/PCA-DBSCAN_sil_score{EXP_NUM}.png')
-
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
-
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} DBSCAN labels {'=' * 5}")
 
-# det_dbscan = aux1['8'].assign(outlier=aux1['8']['cluster'].apply(lambda x: 1 if x < 0 else 0))
 det_dbscan = aux1.assign(outlier=aux1['cluster'].apply(lambda x: 1 if x < 0 else 0))
 
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
@@ -110,11 +84,6 @@ print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 timestamp3 = datetime.now()
 
 print(f"\t[{datetime.now()}]\tCLUSTER PLOT...")
-# visualize_cluster(data=aux1['8'],
-#                   i=EXP_NUM,
-#                   cluster_or_outliers='cluster',
-#                   additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
-#                   path="Data/Results/Experiments/DBSCAN/")
 visualize_cluster(data=aux1,
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
@@ -122,11 +91,6 @@ visualize_cluster(data=aux1,
                   path="Data/Results/Experiments/DBSCAN/")
 
 print(f"\t[{datetime.now()}]\tOUTLIER PLOT...")
-# visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
-#                   i=EXP_NUM,
-#                   cluster_or_outliers='outlier',
-#                   additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
-#                   path="Data/Results/Experiments/DBSCAN/")
 visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
@@ -140,9 +104,9 @@ original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]{FILENAME}_main_log_{EXP_NUM}.txt',
           'w') as f:
     sys.stdout = f
-    # print(f"PCA number of dimensions parameter:\t{n_dims}")
     print(f"GridSearchCV settings:\t{settings_GridSearch}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
+    print(f"Selected model parameters:\t{model.get_params()}")
     print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
     print(f"Time elapsed for Plotting:\t{timestamp3}")
 sys.stdout = original_stdout
