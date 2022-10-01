@@ -98,7 +98,7 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} DBSCAN labels {'=' * 5}")
 
-det_dbscan = aux1['8'].loc[aux1['8']['cluster'] < 0, :]
+det_dbscan = aux1['8'].assign(outlier=aux1['8']['cluster'].apply(lambda x: 1 if x < 0 else 0))
 
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
@@ -110,21 +110,22 @@ print(f"\t[{datetime.now()}]\tCLUSTER PLOT...")
 visualize_cluster(data=aux1['8'],
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
-                  additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}",
+                  additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
                   path="Data/Results/Experiments/DBSCAN/")
 
 print(f"\t[{datetime.now()}]\tOUTLIER PLOT...")
 visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}",
+                  additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
                   path="Data/Results/Experiments/DBSCAN/")
 
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
 original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]_main_log_{EXP_NUM}.txt', 'w') as f:
+with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]{FILENAME}_main_log_{EXP_NUM}.txt',
+          'w') as f:
     sys.stdout = f
     print(f"PCA number of dimensions parameter:\t{n_dims}")
     print(f"GridSearchCV settings:\t{settings_GridSearch}")
@@ -138,7 +139,7 @@ timestamp7 = datetime.now()
 
 path_results = "Data/Results/Experiments/DBSCAN/"
 
-det_dbscan.to_csv(path_results + "DBSCAN_Outliers_Filtering.csv")
+det_dbscan.to_csv(path_results + f"DBSCAN_Outliers_Filtering{FILENAME}{EXP_NUM}.csv")
 
 timestamp7 = datetime.now() - timestamp7
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")
