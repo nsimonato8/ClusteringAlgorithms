@@ -39,7 +39,7 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 4
+EXP_NUM = 5
 
 settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
@@ -120,7 +120,7 @@ visualize_cluster(data=res,
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}{FILENAME}",
+                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}{FILENAME}_{EXP_NUM}",
                   path="Data/Results/Experiments/KMEANS/")
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
