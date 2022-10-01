@@ -20,16 +20,17 @@ print("EPSILON TEST - [DBSCAN]:\nImporting data...")
 test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True,
                         skipfooter=3)  # Importing the sample data
 n_bins = 500
+x_lim = (0, 0.1)
 
 print("Calculating distances [TEST_DATA]")
 distances = pd.Series(np.matrix.flatten(similarity_matrix(test_data, euclidean).to_numpy())).drop_duplicates()
 print("plot(...)")
 distances.plot(kind="hist", xlabel="Distance values", ylabel="Frequence",
-               figsize=(35, 30), bins=n_bins).get_figure().savefig(f'Elbow_euclidean_similarities.png')
+               figsize=(35, 30), bins=n_bins, xlim=x_lim).get_figure().savefig(f'Elbow_euclidean_similarities.png')
 
 print("Calculating distances [8_DIM_DATA]")
 distances = pd.Series(np.matrix.flatten(similarity_matrix(reduce_dimensionality(data=test_data, n_final_features=8),
                                                           euclidean).to_numpy())).drop_duplicates()
 print("plot(...)")
 distances.plot(kind="hist", xlabel="Distance values", ylabel="Frequence",
-               figsize=(35, 30), bins=n_bins).get_figure().savefig(f'Elbow_euclidean_similarities_8dim.png')
+               figsize=(35, 30), bins=n_bins, xlim=x_lim).get_figure().savefig(f'Elbow_euclidean_similarities_8dim.png')
