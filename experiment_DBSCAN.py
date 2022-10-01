@@ -15,7 +15,6 @@ warnings.simplefilter(action='ignore', category=UserWarning)
 import ray
 # import pandas as pd
 
-from DataPreProcessing.importance import reduce_dimensionality
 from Utils.Visualization.visualization import visualize_cluster
 
 os.environ["MODIN_CPUS"] = "20"
@@ -26,7 +25,7 @@ ray.init(num_cpus=20)
 import modin.pandas as pd
 
 master_timestamp = datetime.now()
-EXP_NUM = 3
+EXP_NUM = 4
 FILENAME = ""
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
@@ -34,9 +33,9 @@ test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipini
                         skipfooter=3)  # engine='python'
 
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
-n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
-
-pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_final_features=n_dim), n_dim))
+# n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
+#
+# pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_final_features=n_dim), n_dim))
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
@@ -72,9 +71,10 @@ def fit_predict(unfitted_model: GridSearchCV, X: pd.DataFrame):
     return unfitted_model.predict(X)
 
 
-pca_labels = pca_data.apply(lambda x: (x, fit_predict(model, x)))
-
-aux1 = pca_data.apply(lambda x: x[0].assign(cluster=x[1]))
+# pca_labels = pca_data.apply(lambda x: (x, fit_predict(model, x)))
+#
+# aux1 = pca_data.apply(lambda x: x[0].assign(cluster=x[1]))
+aux1 = test_data.apply(lambda x: (x, fit_predict(model, x)))
 aux1.name = 'clustered'
 
 timestamp1 = datetime.now() - timestamp1
@@ -99,7 +99,8 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} DBSCAN labels {'=' * 5}")
 
-det_dbscan = aux1['8'].assign(outlier=aux1['8']['cluster'].apply(lambda x: 1 if x < 0 else 0))
+# det_dbscan = aux1['8'].assign(outlier=aux1['8']['cluster'].apply(lambda x: 1 if x < 0 else 0))
+det_dbscan = aux1.assign(outlier=aux1['cluster'].apply(lambda x: 1 if x < 0 else 0))
 
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
@@ -108,13 +109,23 @@ print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
 timestamp3 = datetime.now()
 
 print(f"\t[{datetime.now()}]\tCLUSTER PLOT...")
-visualize_cluster(data=aux1['8'],
+# visualize_cluster(data=aux1['8'],
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='cluster',
+#                   additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
+#                   path="Data/Results/Experiments/DBSCAN/")
+visualize_cluster(data=aux1,
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
-                  additional=f"PCA_{len(aux1['8'].columns) - 1}_dim-DBSCAN_{aux1['8']['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
+                  additional=f"PCA_{len(aux1.columns) - 1}_dim-DBSCAN_{aux1['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
                   path="Data/Results/Experiments/DBSCAN/")
 
 print(f"\t[{datetime.now()}]\tOUTLIER PLOT...")
+# visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
+#                   i=EXP_NUM,
+#                   cluster_or_outliers='outlier',
+#                   additional=f"[DBSCAN]PCA_{len(det_dbscan.columns) - 1}_dim-DBSCAN_{det_dbscan['cluster'].max() + 1}_{FILENAME}{EXP_NUM}",
+#                   path="Data/Results/Experiments/DBSCAN/")
 visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
@@ -128,7 +139,7 @@ original_stdout = sys.stdout
 with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]{FILENAME}_main_log_{EXP_NUM}.txt',
           'w') as f:
     sys.stdout = f
-    print(f"PCA number of dimensions parameter:\t{n_dims}")
+    # print(f"PCA number of dimensions parameter:\t{n_dims}")
     print(f"GridSearchCV settings:\t{settings_GridSearch}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
     print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
