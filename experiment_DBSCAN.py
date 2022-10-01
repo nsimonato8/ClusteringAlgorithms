@@ -26,7 +26,7 @@ ray.init(num_cpus=20)
 import modin.pandas as pd
 
 master_timestamp = datetime.now()
-EXP_NUM = 2
+EXP_NUM = 3
 FILENAME = ""
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
@@ -48,7 +48,7 @@ settings_GridSearch = {'estimator': DBSCAN,
                        'return_train_score': True,
                        'scoring': silhouette_score
                        }
-settings_DBSCAN = {'eps': [x for x in np.arange(0., 60000., 0.1)],
+settings_DBSCAN = {'eps': [x for x in np.arange(0., 10., 0.001)],
                    'min_samples': [x for x in range(0, 1000, 1)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
