@@ -3,6 +3,7 @@ import sys
 import warnings
 from datetime import datetime
 
+import numpy as np
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
@@ -25,7 +26,7 @@ ray.init(num_cpus=20)
 import modin.pandas as pd
 
 master_timestamp = datetime.now()
-EXP_NUM = 1
+EXP_NUM = 2
 FILENAME = ""
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
@@ -47,7 +48,7 @@ settings_GridSearch = {'estimator': DBSCAN,
                        'return_train_score': True,
                        'scoring': silhouette_score
                        }
-settings_DBSCAN = {'eps': [x for x in range(0, 60000, 1)],
+settings_DBSCAN = {'eps': [x for x in np.arange(0., 60000., 0.1)],
                    'min_samples': [x for x in range(0, 1000, 1)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
