@@ -23,12 +23,12 @@ test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=T
 print("Calculating distances [TEST_DATA]")
 distances = pd.Series(np.matrix.flatten(similarity_matrix(test_data, euclidean).to_numpy())).drop_duplicates()
 print("plot(...)")
-distances.plot(kind="bar", xlabel="Distance values", ylabel="Frequence",
+distances.plot(kind="hist", xlabel="Distance values", ylabel="Frequence",
                figsize=(35, 30)).get_figure().savefig(f'Elbow_euclidean_similarities.png')
 
 print("Calculating distances [8_DIM_DATA]")
 distances = pd.Series(np.matrix.flatten(similarity_matrix(reduce_dimensionality(data=test_data, n_final_features=8),
                                                           euclidean).to_numpy())).drop_duplicates()
 print("plot(...)")
-distances.plot(kind="bar", xlabel="Distance values", ylabel="Frequence",
+distances.plot(kind="hist", xlabel="Distance values", ylabel="Frequence",
                figsize=(35, 30)).get_figure().savefig(f'Elbow_euclidean_similarities_8dim.png')
