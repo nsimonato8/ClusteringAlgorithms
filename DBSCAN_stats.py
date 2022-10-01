@@ -1,8 +1,19 @@
+import os
+
 import numpy as np
-import pandas as pd
+import ray
 from scipy.spatial.distance import euclidean
 
 from Utils.algebric_op import similarity_matrix
+
+# import pandas as pd
+
+os.environ["MODIN_CPUS"] = "20"
+os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
+ray.shutdown()
+ray.init(num_cpus=20)
+
+import modin.pandas as pd
 
 print("EPSILON TEST - [DBSCAN]:\nImporting data...")
 test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3,

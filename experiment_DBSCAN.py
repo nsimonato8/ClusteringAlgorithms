@@ -9,13 +9,14 @@ from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
 from sklearn.model_selection import GridSearchCV
 
+from Utils.Visualization.visualization import visualize_cluster
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
 import ray
-# import pandas as pd
 
-from Utils.Visualization.visualization import visualize_cluster
+# import pandas as pd
 
 os.environ["MODIN_CPUS"] = "20"
 os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
