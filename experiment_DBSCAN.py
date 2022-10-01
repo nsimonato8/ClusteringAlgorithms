@@ -139,7 +139,7 @@ timestamp7 = datetime.now()
 
 path_results = "Data/Results/Experiments/DBSCAN/"
 
-det_dbscan.to_csv(path_results + f"DBSCAN_Outliers_Filtering{FILENAME}{EXP_NUM}.csv")
+det_dbscan.loc[det_dbscan['outlier'] == 1].to_csv(path_results + f"DBSCAN_Outliers_Filtering{FILENAME}{EXP_NUM}.csv")
 
 timestamp7 = datetime.now() - timestamp7
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")
