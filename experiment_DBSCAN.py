@@ -40,7 +40,7 @@ print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 
-settings_GridSearch = {'estimator': DBSCAN,
+settings_GridSearch = {'estimator': DBSCAN(),
                        'n_jobs': -1,
                        'refit': True,
                        'verbose': 3,
