@@ -25,10 +25,12 @@ ray.init(num_cpus=20)
 import modin.pandas as pd
 
 master_timestamp = datetime.now()
-
+EXP_NUM = 0
+FILENAME = ""
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
-test_data = pd.read_csv("Data/sessions_cleaned.csv", sep=",", skipinitialspace=True, skipfooter=3)  # engine='python'
+test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
+                        skipfooter=3)  # engine='python'
 
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
@@ -37,8 +39,6 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 0
-FILENAME = ""
 
 settings_GridSearch = {'estimator': DBSCAN,
                        'n_jobs': -1,
@@ -47,7 +47,7 @@ settings_GridSearch = {'estimator': DBSCAN,
                        'return_train_score': True,
                        'scoring': silhouette_score
                        }
-settings_DBSCAN = {'eps': [x for x in range(10000, 60000, 500)],
+settings_DBSCAN = {'eps': [x for x in range(0, 60000, 500)],
                    'min_samples': [x for x in range(0, 1000, 5)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
