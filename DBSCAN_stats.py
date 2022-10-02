@@ -21,7 +21,7 @@ FILENAME = "10k_"
 print("EPSILON TEST - [DBSCAN]:\nImporting data...")
 test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
                         skipfooter=3)  # Importing the sample data
-n_bins = None
+n_bins = 20
 x_lim = (2 * (10 ** 6), 2.5 * (10 ** 6))
 
 # print("Calculating distances [TEST_DATA]")
