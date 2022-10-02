@@ -146,6 +146,8 @@ print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
 DBSCAN_outliers_filtering = test_data.loc[DBSCAN_data_filtering.index]
 DBSCAN_data = DBSCAN_data.assign(outlier=DBSCAN_data['cluster'].apply(lambda x: 0 if x == 0 else 1))
 
+DBSCAN_data.drop(["Unnamed: 0", "Unnamed: 0.1"], inplace=True)
+
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log...")
 original_stdout = sys.stdout
