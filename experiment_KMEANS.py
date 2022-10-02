@@ -39,7 +39,7 @@ pca_data = reduce_dimensionality(data=test_data, n_final_features=8)
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 7
+EXP_NUM = 8
 
 settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
