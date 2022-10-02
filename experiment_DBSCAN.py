@@ -6,7 +6,6 @@ from datetime import datetime
 import numpy as np
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import DBSCAN
-from sklearn.metrics import silhouette_score
 from sklearn.model_selection import GridSearchCV
 
 from DataPreProcessing.importance import reduce_dimensionality
@@ -42,7 +41,7 @@ settings_GridSearch = {'estimator': DBSCAN(),
                        'refit': True,
                        'verbose': 3,
                        'return_train_score': True,
-                       'scoring': silhouette_score,
+                       'scoring': 'adjusted_mutual_info_score',
                        'cv': 3,
                        }
 settings_DBSCAN = {'eps': [x for x in np.arange(2.34 * (10 ** 6), 2.36 * (10 ** 6), 1000.)],
@@ -64,12 +63,20 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
                      param_grid=settings_DBSCAN)
 
 data_aux = reduce_dimensionality(data=test_data, n_final_features=8)
-model.fit(data_aux)
 
+best_dbscan_settings = model.best_params_
+
+timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 print(f"\tModel Parameters:\t{model.best_params_}")
 
-aux1 = data_aux.assign(cluster=model.fit_predict(X=data_aux))
+print(f"[{datetime.now()}]ASSIGNING DBSCAN LABELS...")
+
+selected_model = DBSCAN(eps=best_dbscan_settings['eps'],
+                        min_samples=best_dbscan_settings['min_samples'],
+                        n_jobs=-1,
+                        algorithm=best_dbscan_settings['algorithm'])
+aux1 = data_aux.assign(cluster=selected_model.fit_predict(X=data_aux))
 
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
