@@ -1,0 +1,7 @@
+GridSearchCV settings:	{'estimator': DBSCAN(), 'refit': True, 'verbose': 3, 'return_train_score': True, 'scoring': 'adjusted_mutual_info_score', 'cv': 3}
+DBSCAN settings:	{'eps': [2340000.0, 2341000.0, 2342000.0, 2343000.0, 2344000.0, 2345000.0, 2346000.0, 2347000.0, 2348000.0, 2349000.0, 2350000.0, 2351000.0, 2352000.0, 2353000.0, 2354000.0, 2355000.0, 2356000.0, 2357000.0, 2358000.0, 2359000.0], 'min_samples': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39], 'metric': [<function euclidean at 0x7ffa7881b160>], 'algorithm': ['auto'], 'n_jobs': [-1]}
+Selected model parameters:	{'algorithm': 'auto', 'eps': 2340000.0, 'metric': <function euclidean at 0x7ffa7881b160>, 'min_samples': 1, 'n_jobs': -1}
+Time elapsed for GridSearchCV computation (8 DIM):	2022-10-02 17:33:36.369643
+Time elapsed for DBSCAN labeling:	2022-10-02 18:12:27.481986
+Time elapsed for Plotting:	0:02:00.511981
+Total Time:	0:40:54.843695
