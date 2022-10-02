@@ -82,7 +82,7 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 # timestamp2 = datetime.now() - timestamp2
 # print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 
-res = aux1['8']
+res = aux1
 
 print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
 timestamp5 = datetime.now()
