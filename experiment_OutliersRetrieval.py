@@ -3,6 +3,8 @@ import sys
 import warnings
 from datetime import datetime
 
+from Utils.Visualization.visualization import visualize_cluster
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -126,37 +128,36 @@ print(f"\t[{datetime.now()}]Printing PairPlot CBOD...")
 #                   path="Data/Results/Experiments/OutliersRetrieval/")
 
 # # ---------- DBSCAN ----------
-# print(f"[{datetime.now()}]Retrieving outliers from DBSCAN...")
-# # Read .csv with outliers data
-# print(f"\t[{datetime.now()}]Reading Outliers data...")
-# DBSCAN_data_filtering = pd.read_csv(main_path + "DBSCAN/DBSCAN_Outliers.csv")
-#
-# # .loc in test_data
-# print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
-# DBSCAN_outliers_filtering = test_data.loc[DBSCAN_data_filtering.index]
-#
-# # Print log with outliers in .txt
-# print(f"\t[{datetime.now()}]Printing Log...")
-# original_stdout = sys.stdout
-# with open(f'Data/Results/DBSCAN_outliers_filtering.txt', 'w') as f:
-#     sys.stdout = f
-#     with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
-#         print(f"{'=' * 5} DBSCAN RESULTS {'=' * 5}")
-#         print(DBSCAN_outliers_filtering.head(n=DBSCAN_outliers_filtering.shape[0]))
-#         print(f"{'=' * 5} ------------ {'=' * 5}")
-#         pass
-#     pass
-# sys.stdout = original_stdout
-#
-# # Print test_data pairplot
-# print(f"\t[{datetime.now()}]Printing PairPlot Filtering...")
-# DBSCAN_outliers_filtering = test_data.assign(outlier=DBSCAN_data_filtering['outlier'],
-#                                              cluster=DBSCAN_data_filtering['cluster'])
-# visualize_cluster(data=DBSCAN_outliers_filtering[list(set(DBSCAN_outliers_filtering.columns) - {'cluster'})],
-#                   i=EXP_NUM,
-#                   cluster_or_outliers='outlier',
-#                   additional=f"[DBSCAN]PCA_{len(DBSCAN_outliers_filtering.columns) - 1}_dim-DBSCAN_{DBSCAN_outliers_filtering['cluster'].max() + 1}",
-#                   path="Data/Results/Experiments/OutliersRetrieval/")
+print(f"[{datetime.now()}]Retrieving outliers from DBSCAN...")
+# Read .csv with outliers data
+print(f"\t[{datetime.now()}]Reading Outliers data...")
+DBSCAN_data = pd.read_csv(main_path + "DBSCAN/DBSCAN_Outliers.csv")
+DBSCAN_data_filtering = DBSCAN_data.loc[DBSCAN_data['outlier'] == 1]
+
+# .loc in test_data
+print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
+DBSCAN_outliers_filtering = test_data.loc[DBSCAN_data_filtering.index]
+
+# Print log with outliers in .txt
+print(f"\t[{datetime.now()}]Printing Log...")
+original_stdout = sys.stdout
+with open(f'Data/Results/DBSCAN_outliers_filtering.txt', 'w') as f:
+    sys.stdout = f
+    with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
+        print(f"{'=' * 5} DBSCAN RESULTS {'=' * 5}")
+        print(DBSCAN_outliers_filtering.head(n=DBSCAN_outliers_filtering.shape[0]))
+        print(f"{'=' * 5} ------------ {'=' * 5}")
+        pass
+    pass
+sys.stdout = original_stdout
+
+# Print test_data pairplot
+print(f"\t[{datetime.now()}]Printing PairPlot Filtering...")
+visualize_cluster(data=DBSCAN_outliers_filtering[list(set(DBSCAN_data.columns) - {'cluster'})],
+                  i=EXP_NUM,
+                  cluster_or_outliers='outlier',
+                  additional=f"[DBSCAN]PCA_{len(DBSCAN_outliers_filtering.columns) - 1}_dim-DBSCAN_{DBSCAN_outliers_filtering['cluster'].max() + 1}",
+                  path="Data/Results/Experiments/OutliersRetrieval/")
 
 master_timestamp = datetime.now() - master_timestamp
 print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")

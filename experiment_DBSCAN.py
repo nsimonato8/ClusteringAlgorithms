@@ -43,7 +43,8 @@ settings_GridSearch = {'estimator': DBSCAN(),
                        'verbose': 3,
                        'return_train_score': True,
                        'scoring': silhouette_score,
-                       'cv': 3
+                       'cv': 3,
+                       'n_jobs': 10
                        }
 settings_DBSCAN = {'eps': [x for x in np.arange(2.34 * (10 ** 6), 2.36 * (10 ** 6), 100.)],
                    'min_samples': [x for x in range(1, 100, 1)],
@@ -57,6 +58,7 @@ print(f"[{datetime.now()}]STARTING GridSearch...")
 timestamp1 = datetime.now()
 model = GridSearchCV(estimator=settings_GridSearch['estimator'],
                      refit=settings_GridSearch['refit'],
+                     n_jobs=settings_GridSearch['n_jobs'],
                      verbose=settings_GridSearch['verbose'],
                      return_train_score=settings_GridSearch['return_train_score'],
                      scoring=settings_GridSearch['scoring'],
