@@ -39,7 +39,7 @@ test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipini
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 
 settings_GridSearch = {'estimator': DBSCAN(),
-                       'n_jobs': -1,
+                       'n_jobs': 15,
                        'refit': True,
                        'verbose': 3,
                        'return_train_score': True,
