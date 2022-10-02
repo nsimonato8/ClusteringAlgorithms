@@ -132,7 +132,7 @@ print(f"[{datetime.now()}]Retrieving outliers from DBSCAN...")
 # Read .csv with outliers data
 print(f"\t[{datetime.now()}]Reading Outliers data...")
 DBSCAN_data = pd.read_csv(main_path + "DBSCAN/DBSCAN_Outliers_Filtering10k_7.csv", skipinitialspace=True)
-DBSCAN_data_filtering = DBSCAN_data.loc[DBSCAN_data['cluster'] != 1]
+DBSCAN_data_filtering = DBSCAN_data.loc[DBSCAN_data['cluster'] != 0]
 
 # print(f"\t[{datetime.now()}]Calculating stats...")
 # for i in range(6):
