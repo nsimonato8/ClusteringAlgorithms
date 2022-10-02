@@ -46,7 +46,7 @@ settings_GridSearch = {'estimator': DBSCAN(),
                        'cv': 3,
                        }
 settings_DBSCAN = {'eps': [x for x in np.arange(2.34 * (10 ** 6), 2.36 * (10 ** 6), 1000.)],
-                   'min_samples': [x for x in range(1, 40, 1)],
+                   'min_samples': [x for x in range(1, 40, 2)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
                    'n_jobs': [-1]}
