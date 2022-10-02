@@ -48,7 +48,7 @@ settings_KMEANS = {'n_init': 10,
                    'distance': euclidean}
 
 settings_CBOD = {
-    'epsilon': 0.1
+    'epsilon': 0.01
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
