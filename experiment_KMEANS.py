@@ -39,7 +39,7 @@ pca_data = reduce_dimensionality(data=test_data, n_final_features=8)
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 8
+EXP_NUM = 9
 
 settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
@@ -48,7 +48,7 @@ settings_KMEANS = {'n_init': 10,
                    'distance': euclidean}
 
 settings_CBOD = {
-    'epsilon': 10 ** -16
+    'epsilon': 0.005
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
@@ -115,13 +115,13 @@ timestamp6 = datetime.now()
 visualize_cluster(data=res,
                   i=EXP_NUM,
                   cluster_or_outliers='cluster',
-                  additional=f"PCA_{len(res.columns) - 1}_dim-KMEANS_{res['cluster'].max() + 1}{FILENAME}",
+                  additional=f"PCA_{len(res.columns) - 2}_dim-KMEANS_{res['cluster'].max() + 1}{FILENAME}",
                   path="Data/Results/Experiments/KMEANS/")
 
 visualize_cluster(data=det_cbod[list(set(det_cbod.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 1}_dim-KMEANS_{det_cbod['cluster'].max() + 1}{FILENAME}_{EXP_NUM}",
+                  additional=f"[CBOD]PCA_{len(det_cbod.columns) - 2}_dim-KMEANS_{det_cbod['cluster'].max() + 1}{FILENAME}",
                   path="Data/Results/Experiments/KMEANS/")
 timestamp6 = datetime.now() - timestamp6
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp6}...")
