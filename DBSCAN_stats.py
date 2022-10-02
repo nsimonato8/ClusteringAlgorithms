@@ -21,8 +21,8 @@ FILENAME = "10k_"
 print("EPSILON TEST - [DBSCAN]:\nImporting data...")
 test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipinitialspace=True,
                         skipfooter=3)  # Importing the sample data
-n_bins = 100
-x_lim = (0.2 * (10 ** 7), 0.25 * (10 ** 7))
+n_bins = None
+x_lim = (2 * (10 ** 6), 2.5 * (10 ** 6))
 
 # print("Calculating distances [TEST_DATA]")
 # distances = pd.Series(np.matrix.flatten(similarity_matrix(test_data, euclidean).to_numpy())).drop_duplicates()
