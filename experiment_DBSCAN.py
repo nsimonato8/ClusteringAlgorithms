@@ -21,6 +21,7 @@ import ray
 
 os.environ["MODIN_CPUS"] = "20"
 os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
+# os.environ["MODIN_MEMORY"] =
 ray.shutdown()
 ray.init(num_cpus=20)
 
