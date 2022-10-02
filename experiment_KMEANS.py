@@ -39,7 +39,7 @@ pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_f
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
-EXP_NUM = 5
+EXP_NUM = 6
 
 settings_KMEANS = {'n_init': 10,
                    'max_iter': 500,
@@ -48,7 +48,7 @@ settings_KMEANS = {'n_init': 10,
                    'distance': euclidean}
 
 settings_CBOD = {
-    'epsilon': 0.00000000005
+    'epsilon': 0.1
 }
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
