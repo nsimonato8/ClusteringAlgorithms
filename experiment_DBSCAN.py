@@ -28,7 +28,7 @@ ray.init(num_cpus=20)
 import modin.pandas as pd
 
 master_timestamp = datetime.now()
-EXP_NUM = 6
+EXP_NUM = 7
 FILENAME = "10k_"
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
