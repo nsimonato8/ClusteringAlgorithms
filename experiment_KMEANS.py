@@ -35,7 +35,7 @@ test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipini
 print(f"[{datetime.now()}]REDUCING DIMENSIONALITY...")
 n_dims = pd.Series([i for i in range(8, 15)], index=[str(i) for i in range(8, 15)])
 
-pca_data = n_dims.apply(lambda n_dim: (reduce_dimensionality(data=test_data, n_final_features=n_dim), n_dim))
+pca_data = reduce_dimensionality(data=test_data, n_final_features=8)
 
 # Settings
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
@@ -56,9 +56,10 @@ param = [{'n_clusters': i} for i in range(11, 17)]
 
 print(f"[{datetime.now()}]STARTING MATR...")
 timestamp1 = datetime.now()
-aux1 = pca_data.apply(lambda data: MATR(A=kmeans, D=data[0], hyperpar=param, settings=settings_KMEANS, verbose=1,
-                                        path="Data/Results/Experiments/KMEANS/",
-                                        name=f"[{EXP_NUM}]Experiment - PCA_{data[1]}_dim-KMeans{FILENAME}"))
+
+aux1 = MATR(A=kmeans, D=pca_data, hyperpar=param, settings=settings_KMEANS, verbose=1,
+            path="Data/Results/Experiments/KMEANS/",
+            name=f"[{EXP_NUM}]Experiment - PCA_{pca_data}_dim-KMeans{FILENAME}")
 aux1.name = 'MATR'
 
 timestamp1 = datetime.now() - timestamp1
