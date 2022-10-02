@@ -64,6 +64,8 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
 
 data_aux = reduce_dimensionality(data=test_data, n_final_features=8)
 
+model.fit(data_aux)
+
 best_dbscan_settings = model.best_params_
 
 timestamp1 = datetime.now() - timestamp1
