@@ -84,7 +84,6 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 # timestamp2 = datetime.now() - timestamp2
 # print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 res = aux1
-candidates_CBOD = pd.Series([1 * (10 ** -i) for i in range(10)])
 
 
 def test_CBOD(data: DataFrame, candidate: float) -> float:
@@ -98,7 +97,9 @@ print(f"[{datetime.now()}]{'=' * 7} CBOD {'=' * 7}")
 print(f"\t[{datetime.now()}]{'=' * 5}Testing multiple candidates{'=' * 5}")
 timestamp5 = datetime.now()
 
-candidates_CBOD.apply(lambda x: test_CBOD(res, x))
+for i in range(10):
+    x = 10 ** -i
+    test_CBOD(res, x)
 
 timestamp5 = datetime.now() - timestamp5
 print(f"\t[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
