@@ -27,7 +27,7 @@ ray.init(num_cpus=20)
 import modin.pandas as pd
 
 master_timestamp = datetime.now()
-EXP_NUM = 7
+EXP_NUM = 8
 FILENAME = "10k_"
 # Importing Data
 print(f"[{datetime.now()}]IMPORTING DATA...")
@@ -41,7 +41,7 @@ settings_GridSearch = {'estimator': DBSCAN(),
                        'refit': True,
                        'verbose': 3,
                        'return_train_score': True,
-                       'scoring': 'adjusted_mutual_info_score',
+                       'scoring': None,  # 'adjusted_mutual_info_score',
                        'cv': 3,
                        'error_score': 1,
                        }
