@@ -146,12 +146,10 @@ print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
 DBSCAN_outliers_filtering = test_data.loc[DBSCAN_data_filtering.index]
 DBSCAN_data = DBSCAN_data.assign(outlier=DBSCAN_data['cluster'].apply(lambda x: 0 if x == 0 else 1))
 
-DBSCAN_data.drop(["Unnamed: 0"], inplace=True, axis=1)  # , "Unnamed: 0.1"
-
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log...")
 original_stdout = sys.stdout
-with open(f'Data/Results/DBSCAN_outliers_filtering.txt', 'w') as f:
+with open(f'Data/Results/Experiments/OutliersRetrieval/DBSCAN_outliers_filtering{FILENAME}.txt', 'w') as f:
     sys.stdout = f
     with pd1.option_context('expand_frame_repr', False, 'display.max_columns', 1000, 'display.max_rows', 10000):
         print(f"{'=' * 5} DBSCAN RESULTS {'=' * 5}")
@@ -163,7 +161,7 @@ sys.stdout = original_stdout
 
 # Print test_data pairplot
 print(f"\t[{datetime.now()}]Printing PairPlot Filtering...")
-visualize_cluster(data=DBSCAN_data[list(set(DBSCAN_data.columns) - {'cluster'})],
+visualize_cluster(data=DBSCAN_data[list(set(DBSCAN_data.columns) - {'cluster'} - {'Unnamed: 0'} - {'Unnamed: 0.1'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
                   additional=f"[DBSCAN]PCA_{len(DBSCAN_data.columns) - 1}_dim-DBSCAN_{DBSCAN_data['cluster'].max() + 1}",
