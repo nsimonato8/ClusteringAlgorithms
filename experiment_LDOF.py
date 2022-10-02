@@ -42,7 +42,7 @@ EXP_NUM = 0
 
 settings_LDOF = {
     'n': 100,
-    'k': 25
+    'k': 10
 }
 
 res = pca_data['8'][0]
