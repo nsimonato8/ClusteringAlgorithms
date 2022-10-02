@@ -44,7 +44,7 @@ settings_GridSearch = {'estimator': DBSCAN(),
                        'return_train_score': True,
                        'scoring': silhouette_score
                        }
-settings_DBSCAN = {'eps': [x for x in np.arange(2.0 * (10 ** 6), 2.5 * (10 ** 6), 100.)],
+settings_DBSCAN = {'eps': [x for x in np.arange(2.34 * (10 ** 6), 2.36 * (10 ** 6), 50.)],
                    'min_samples': [x for x in range(1, 1000, 1)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
