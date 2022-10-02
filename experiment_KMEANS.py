@@ -59,7 +59,7 @@ timestamp1 = datetime.now()
 
 aux1 = MATR(A=kmeans, D=pca_data, hyperpar=param, settings=settings_KMEANS, verbose=1,
             path="Data/Results/Experiments/KMEANS/",
-            name=f"[{EXP_NUM}]Experiment - PCA_{pca_data}_dim-KMeans{FILENAME}")
+            name=f"[{EXP_NUM}]Experiment - PCA_{len(pca_data.columns)}_dim-KMeans{FILENAME}")
 aux1.name = 'MATR'
 
 timestamp1 = datetime.now() - timestamp1
