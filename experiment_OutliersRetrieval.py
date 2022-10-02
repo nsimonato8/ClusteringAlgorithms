@@ -3,11 +3,7 @@ import sys
 import warnings
 from datetime import datetime
 
-import numpy as np
-from scipy.spatial.distance import euclidean
-
 from Utils.Visualization.visualization import visualize_cluster
-from Utils.algebric_op import similarity_matrix
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
@@ -138,16 +134,17 @@ print(f"\t[{datetime.now()}]Reading Outliers data...")
 DBSCAN_data = pd.read_csv(main_path + "DBSCAN/DBSCAN_Outliers_Filtering10k_7.csv")
 DBSCAN_data_filtering = DBSCAN_data.loc[DBSCAN_data['outlier'] != 1]
 
-print(f"\t[{datetime.now()}]Calculating stats...")
-for i in range(6):
-    aux = DBSCAN_data.loc[DBSCAN_data['cluster'] == i]
-    dist_mat = similarity_matrix(aux, euclidean)
-    icd = pd.Series(np.matrix.flatten(dist_mat.to_numpy())).drop_duplicates().mean()
-    print(f"[CLUSTER {i}]\t Numerosity: {aux.shape[0]} | Mean inter-cluster distance: {icd}")
+# print(f"\t[{datetime.now()}]Calculating stats...")
+# for i in range(6):
+#     aux = DBSCAN_data.loc[DBSCAN_data['cluster'] == i]
+#     dist_mat = similarity_matrix(aux, euclidean)
+#     icd = pd.Series(np.matrix.flatten(dist_mat.to_numpy())).drop_duplicates().mean()
+#     print(f"[CLUSTER {i}]\t Numerosity: {aux.shape[0]} | Mean inter-cluster distance: {icd}")
 
 # .loc in test_data
 print(f"\t[{datetime.now()}]Identifying Outliers data in original dataset...")
 DBSCAN_outliers_filtering = test_data.loc[DBSCAN_data_filtering.index]
+DBSCAN_data = DBSCAN_data.assign(outlier=DBSCAN_data['cluster'].apply(lambda x: 0 if x == 0 else 1))
 
 # Print log with outliers in .txt
 print(f"\t[{datetime.now()}]Printing Log...")
@@ -164,10 +161,10 @@ sys.stdout = original_stdout
 
 # Print test_data pairplot
 print(f"\t[{datetime.now()}]Printing PairPlot Filtering...")
-visualize_cluster(data=DBSCAN_outliers_filtering[list(set(DBSCAN_data.columns) - {'cluster'})],
+visualize_cluster(data=DBSCAN_data[list(set(DBSCAN_data.columns) - {'cluster'})],
                   i=EXP_NUM,
                   cluster_or_outliers='outlier',
-                  additional=f"[DBSCAN]PCA_{len(DBSCAN_outliers_filtering.columns) - 1}_dim-DBSCAN_{DBSCAN_outliers_filtering['cluster'].max() + 1}",
+                  additional=f"[DBSCAN]PCA_{len(DBSCAN_data.columns) - 1}_dim-DBSCAN_{DBSCAN_data['cluster'].max() + 1}",
                   path="Data/Results/Experiments/OutliersRetrieval/")
 
 master_timestamp = datetime.now() - master_timestamp
