@@ -90,7 +90,7 @@ candidates_CBOD = pd.Series([1 * 10 ** -i for i in range(1, 10)])
 def test_CBOD(data: DataFrame, candidate: float) -> float:
     labeled = CBOD(data=data, k=data['cluster'].max() + 1, epsilon=candidate)
     print(
-        f"[CBOD] Candidate: {candidate}\tOutliers ratio: {labeled.loc[labeled['outlier'] == 1].count() / labeled.shape[0]}")
+        f"[CBOD] Candidate: {candidate}\tOutliers ratio: {labeled.loc[labeled['outlier'] == 1]['cluster'].count() / labeled.shape[0]}")
     return labeled
 
 
