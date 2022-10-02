@@ -84,7 +84,7 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 # timestamp2 = datetime.now() - timestamp2
 # print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 res = aux1
-candidates_CBOD = pd.Series([1 * 10 ** -i for i in range(1, 10)])
+candidates_CBOD = pd.Series([1 * (10 ** -i) for i in range(10)])
 
 
 def test_CBOD(data: DataFrame, candidate: float) -> float:
