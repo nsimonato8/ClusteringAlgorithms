@@ -42,10 +42,11 @@ settings_GridSearch = {'estimator': DBSCAN(),
                        'refit': True,
                        'verbose': 3,
                        'return_train_score': True,
-                       'scoring': silhouette_score
+                       'scoring': silhouette_score,
+                       'cv': 3
                        }
-settings_DBSCAN = {'eps': [x for x in np.arange(2.34 * (10 ** 6), 2.36 * (10 ** 6), 50.)],
-                   'min_samples': [x for x in range(1, 1000, 1)],
+settings_DBSCAN = {'eps': [x for x in np.arange(2.34 * (10 ** 6), 2.36 * (10 ** 6), 100.)],
+                   'min_samples': [x for x in range(1, 100, 1)],
                    'metric': [euclidean],
                    'algorithm': ['auto'],
                    'n_jobs': [-1]}
@@ -60,6 +61,7 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
                      verbose=settings_GridSearch['verbose'],
                      return_train_score=settings_GridSearch['return_train_score'],
                      scoring=settings_GridSearch['scoring'],
+                     cv=settings_GridSearch['cv'],
                      param_grid=settings_DBSCAN)
 
 data_aux = reduce_dimensionality(data=test_data, n_final_features=8)
