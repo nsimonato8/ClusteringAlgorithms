@@ -66,18 +66,21 @@ model = GridSearchCV(estimator=settings_GridSearch['estimator'],
 data_aux = reduce_dimensionality(data=test_data, n_final_features=8)
 model.fit(data_aux)
 
-print(f"\tModel Parameters:\t{model.get_params()}")
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
+print(f"\tModel Parameters:\t{model.best_params_}")
 
-aux1 = data_aux.assign(cluster=data_aux.apply(lambda x: (x, model.predict(x))))
+aux1 = data_aux.assign(cluster=model.fit_predict(X=data_aux))
 
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
 print(f"[{datetime.now()}]OUTLIER DETECTION (with 8 dimensions)...")
 print(f"[{datetime.now()}]{'=' * 5} DBSCAN labels {'=' * 5}")
+timestamp2 = datetime.now()
 
 det_dbscan = aux1.assign(outlier=aux1['cluster'].apply(lambda x: 1 if x < 0 else 0))
 
+print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
 print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
 
 print(f"[{datetime.now()}]PRINTING CLUSTERING PAIRPLOTS TO FILES...")
@@ -120,8 +123,9 @@ with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]
     sys.stdout = f
     print(f"GridSearchCV settings:\t{settings_GridSearch}")
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
-    print(f"Selected model parameters:\t{model.get_params()}")
-    print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
+    print(f"Selected model parameters:\t{model.best_params_}")
+    print(f"Time elapsed for GridSearchCV computation (8 DIM):\t{timestamp1}")
+    print(f"Time elapsed for DBSCAN labeling:\t{timestamp1}")
     print(f"Time elapsed for Plotting:\t{timestamp3}")
     print(f"Total Time:\t{master_timestamp}")
 sys.stdout = original_stdout
