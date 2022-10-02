@@ -3,6 +3,8 @@ import sys
 import warnings
 from datetime import datetime
 
+from modin.pandas import DataFrame
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -81,16 +83,32 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 #     f'Data/Results/Experiments/KMEANS/PCA-KMeans_sil_score{EXP_NUM}{FILENAME}.png')
 # timestamp2 = datetime.now() - timestamp2
 # print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp2}...")
-
 res = aux1
+candidates_CBOD = pd.Series([1 * 10 ** -i for i in range(1, 10)])
 
-print(f"[{datetime.now()}]{'=' * 5} CBOD {'=' * 5}")
+
+def test_CBOD(data: DataFrame, candidate: float) -> float:
+    labeled = CBOD(data=data, k=data['cluster'].max() + 1, epsilon=candidate)
+    print(
+        f"[CBOD] Candidate: {candidate}\tOutliers ratio: {labeled.loc[labeled['outlier'] == 1].count() / labeled.shape[0]}")
+    return labeled
+
+
+print(f"[{datetime.now()}]{'=' * 7} CBOD {'=' * 7}")
+print(f"\t[{datetime.now()}]{'=' * 5}Testing multiple candidates{'=' * 5}")
 timestamp5 = datetime.now()
+
+candidates_CBOD.apply(lambda x: test_CBOD(res, x))
+
+timestamp5 = datetime.now() - timestamp5
+print(f"\t[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
+
+print(f"\t[{datetime.now()}]{'=' * 5}Testing just for {settings_CBOD['epsilon']} {'=' * 5}")
 det_cbod = CBOD(data=res, k=res['cluster'].max() + 1, epsilon=settings_CBOD['epsilon'])
 
 timestamp5 = datetime.now() - timestamp5
-print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
-print(f"[{datetime.now()}]{'=' * 5}---{'=' * 5}")
+print(f"\t[{datetime.now()}]DONE! Time elapsed:\t{timestamp5}...")
+print(f"[{datetime.now()}]{'=' * 7}---{'=' * 7}")
 
 # Printing log file
 # Saving the reference of the standard output
