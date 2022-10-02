@@ -100,17 +100,6 @@ visualize_cluster(data=det_dbscan[list(set(det_dbscan.columns) - {'cluster'})],
 timestamp3 = datetime.now() - timestamp3
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp3}...")
 
-original_stdout = sys.stdout
-with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]{FILENAME}_main_log_{EXP_NUM}.txt',
-          'w') as f:
-    sys.stdout = f
-    print(f"GridSearchCV settings:\t{settings_GridSearch}")
-    print(f"DBSCAN settings:\t{settings_DBSCAN}")
-    print(f"Selected model parameters:\t{model.get_params()}")
-    print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
-    print(f"Time elapsed for Plotting:\t{timestamp3}")
-sys.stdout = original_stdout
-
 print(f"[{datetime.now()}]PRINTING RESULTS TO FILES...")
 timestamp7 = datetime.now()
 
@@ -123,3 +112,15 @@ print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp7}...")
 
 master_timestamp = datetime.now() - master_timestamp
 print(f"[{datetime.now()}]EXPERIMENT {EXP_NUM} CONCLUDED! Time elapsed:\t{master_timestamp}...")
+
+original_stdout = sys.stdout
+with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]{FILENAME}_main_log_{EXP_NUM}.txt',
+          'w') as f:
+    sys.stdout = f
+    print(f"GridSearchCV settings:\t{settings_GridSearch}")
+    print(f"DBSCAN settings:\t{settings_DBSCAN}")
+    print(f"Selected model parameters:\t{model.get_params()}")
+    print(f"Time elapsed for GridSearchCV computation (all of the datasets):\t{timestamp1}")
+    print(f"Time elapsed for Plotting:\t{timestamp3}")
+    print(f"Total Time:\t{master_timestamp}")
+sys.stdout = original_stdout
