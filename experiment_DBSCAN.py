@@ -125,7 +125,7 @@ with open(f'Data/Results/Experiments/DBSCAN/[Experiment PCA-DBSCAN-GridSearchCV]
     print(f"DBSCAN settings:\t{settings_DBSCAN}")
     print(f"Selected model parameters:\t{model.best_params_}")
     print(f"Time elapsed for GridSearchCV computation (8 DIM):\t{timestamp1}")
-    print(f"Time elapsed for DBSCAN labeling:\t{timestamp1}")
+    print(f"Time elapsed for DBSCAN labeling:\t{timestamp2}")
     print(f"Time elapsed for Plotting:\t{timestamp3}")
     print(f"Total Time:\t{master_timestamp}")
 sys.stdout = original_stdout
