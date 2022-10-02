@@ -39,7 +39,6 @@ test_data = pd.read_csv(f"Data/{FILENAME}sessions_cleaned.csv", sep=",", skipini
 print(f"[{datetime.now()}]GENERATING SETTINGS...")
 
 settings_GridSearch = {'estimator': DBSCAN(),
-                       'n_jobs': 5,
                        'refit': True,
                        'verbose': 3,
                        'return_train_score': True,
@@ -57,7 +56,6 @@ print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
 print(f"[{datetime.now()}]STARTING GridSearch...")
 timestamp1 = datetime.now()
 model = GridSearchCV(estimator=settings_GridSearch['estimator'],
-                     n_jobs=settings_GridSearch['n_jobs'],
                      refit=settings_GridSearch['refit'],
                      verbose=settings_GridSearch['verbose'],
                      return_train_score=settings_GridSearch['return_train_score'],
