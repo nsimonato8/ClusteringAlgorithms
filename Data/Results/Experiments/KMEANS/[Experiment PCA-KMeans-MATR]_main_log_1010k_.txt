@@ -1,0 +1,15 @@
+PCA number of dimensions parameter:
+8      8
+9      9
+10    10
+11    11
+12    12
+13    13
+14    14
+dtype: int64
+
+KMeans number of cluster candidates:	range(10, 16)
+KMeans settings:	{'n_init': 10, 'max_iter': 500, 'verbose': 0, 'algorithm': 'lloyd', 'distance': <function euclidean at 0x7f04dfde3ee0>}
+CBOD settings:	{'epsilon': 0.005}
+Time elapsed for MATR computation (all of the datasets):	0:20:16.158979
+Time elapsed for Outlier Detection (CBOD):	2022-10-03 00:25:42.149819
