@@ -3,7 +3,8 @@ from modin.pandas import DataFrame
 from sklearn.metrics import silhouette_score
 
 
-def silhouette_tuning(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0):
+def silhouette_tuning(A: callable, D: DataFrame, hyperpar: [], settings: dict, verbose: int = 0, name: str = "MATR",
+                      path: str = ""):
     """
     This function returns the ideal value for an hyperparameter lambda, by using the Elbow method.
 
@@ -25,7 +26,7 @@ def silhouette_tuning(A: callable, D: DataFrame, hyperpar: [], settings: dict, v
         stat = pd.Series(map(lambda x: x[1], scores),
                          index=[f"Test for {hyperpar[i]['n_clusters']}" for i in range(len(hyperpar))])
         fig = stat.plot(kind="bar", ylabel="Silhouette Score", figsize=(15, 10)).get_figure()
-        fig.savefig(f'../Data/Results/TuningTests/silhouette_tuning_test_stats_KMeans.png')
+        fig.savefig(f'{path}{name}_silhouette_tuning_test_stats.png')
 
     max_t = max(scores, key=lambda i: hyperpar[i[0]]['n_clusters'])
     return res[max_t[0]]

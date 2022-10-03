@@ -3,6 +3,7 @@ import warnings
 from datetime import datetime
 
 from Clustering.Hierarchical.HAC import HAC
+from Tuning.silhouette import silhouette_tuning
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
@@ -10,7 +11,6 @@ warnings.simplefilter(action='ignore', category=UserWarning)
 import ray
 # import pandas as pd
 
-from DataPreProcessing.importance import reduce_dimensionality
 from Tuning.MATR import MATR
 
 os.environ["MODIN_CPUS"] = "20"
@@ -38,23 +38,23 @@ settings_HAC = {'compute_full_tree': 'auto',
                 'distance': 'euclidean',
                 'epsilon': None}
 
-data = reduce_dimensionality(test_data, 8)
+# test_data = reduce_dimensionality(test_data, 8)
 
 print(f"[{datetime.now()}]GENERATING HYPERPARAMETERS CANDIDATES...")
-param = [{'n_clusters': i} for i in range(4, 20)]
+param = [{'n_clusters': i} for i in range(2, 30)]
 
 print(f"[{datetime.now()}][HAC]STARTING MATR...")
 timestamp1 = datetime.now()
-MATR(A=HAC, D=data, hyperpar=param, settings=settings_HAC, verbose=1,
-     path="Data/Results/Analysis",
-     name=f"[{EXP_NUM}]]PCA_8_dim-HAC]_{FILENAME}_")
+hac_matr = MATR(A=HAC, D=test_data, hyperpar=param, settings=settings_HAC, verbose=1,
+                path="Data/Results/Analysis",
+                name=f"[Full_dim-HAC]MATR_{FILENAME}_")
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
 
-print(f"[{datetime.now()}][KMEANS]STARTING MATR...")
+print(f"[{datetime.now()}][HAC]STARTING Silhouette...")
 timestamp1 = datetime.now()
-MATR(A=HAC, D=data, hyperpar=param, settings=settings_HAC, verbose=1,
-     path="Data/Results/Analysis",
-     name=f"[{EXP_NUM}][PCA_8_dim-KMEANS]_{FILENAME}_")
+hac_silh = silhouette_tuning(A=HAC, D=test_data, hyperpar=param, settings=settings_HAC, verbose=1,
+                             path="Data/Results/Analysis",
+                             name=f"[Full_dim-HAC]SIL_{FILENAME}_")
 timestamp1 = datetime.now() - timestamp1
 print(f"[{datetime.now()}]DONE! Time elapsed:\t{timestamp1}...")
