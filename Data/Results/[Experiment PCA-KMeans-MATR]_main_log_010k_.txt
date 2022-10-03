@@ -9,5 +9,5 @@ PCA number of dimensions parameter:
 dtype: int64
 
 KMeans number of cluster candidates:	range(10, 16)
-LDOF settings:	{'n': 10, 'k': 10}
-Time elapsed for Outlier Detection (LDOF):	18:05:57.529932
+LDOF settings:	{'n': 100, 'k': 10}
+Time elapsed for Outlier Detection (LDOF):	18:46:05.774071
